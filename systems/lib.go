@@ -14,6 +14,6 @@ type Views struct {
 // InitViews initializes views
 func InitViews(manager *ecs.Manager, components *c.Components) *Views {
 	return &Views{
-		SpriteView: manager.CreateView(ecs.BuildTag(components.Sprite, components.Transform)),
+		SpriteView: manager.CreateView(ecs.BuildTag(components.SpriteRender, components.Transform)),
 	}
 }

@@ -2,11 +2,9 @@ package main
 
 import (
 	"log"
-	"math"
 
 	c "arkanoid/components"
 	e "arkanoid/ecs"
-	m "arkanoid/math"
 	"arkanoid/systems/sprite"
 
 	"github.com/hajimehoshi/ebiten"
@@ -28,6 +26,10 @@ func (g game) Layout(outsideWidth, outsideHeight int) (int, int) {
 }
 
 func (g game) Update(screen *ebiten.Image) error {
+	if ebiten.IsDrawingSkipped() {
+		return nil
+	}
+
 	sprite.TransformSystem(g.ecs, screen)
 	sprite.RenderSystem(g.ecs, screen)
 
@@ -35,37 +37,67 @@ func (g game) Update(screen *ebiten.Image) error {
 }
 
 func main() {
-	image, _, _ := ebitenutil.NewImageFromFile("gopher.png", ebiten.FilterNearest)
+	backgroundTextureImage, _, _ := ebitenutil.NewImageFromFile("assets/textures/background.png", ebiten.FilterNearest)
+	gameTextureImage, _, _ := ebitenutil.NewImageFromFile("assets/textures/spritesheet.png", ebiten.FilterNearest)
+
+	backgroundSpriteSheet := c.SpriteSheet{
+		Texture: backgroundTextureImage,
+		Sprites: []c.Sprite{
+			c.Sprite{
+				X:      0,
+				Y:      0,
+				Width:  windowWidth,
+				Height: windowHeight,
+			},
+		},
+	}
+
+	gameSpriteSheet := c.SpriteSheet{
+		Texture: gameTextureImage,
+		Sprites: []c.Sprite{
+			c.Sprite{
+				X:      0,
+				Y:      96,
+				Width:  144,
+				Height: 24,
+			},
+			c.Sprite{
+				X:      144,
+				Y:      96,
+				Width:  24,
+				Height: 24,
+			},
+		},
+	}
 
 	ecs := e.InitEcs()
 
 	ecs.Manager.NewEntity().
-		AddComponent(ecs.Components.Sprite,
-			&c.Sprite{
-				Image:   image,
-				Options: &ebiten.DrawImageOptions{},
+		AddComponent(ecs.Components.SpriteRender,
+			&c.SpriteRender{
+				SpriteSheet:  &backgroundSpriteSheet,
+				SpriteNumber: 0,
+				Options:      &ebiten.DrawImageOptions{},
 			}).
-		AddComponent(ecs.Components.Transform,
-			&c.Transform{
-				Scale:       m.Vector2{X: 1, Y: 1},
-				Rotation:    math.Pi / 4,
-				Translation: m.Vector2{X: 300, Y: 300},
-				Depth:       1,
-			})
+		AddComponent(ecs.Components.Transform, c.NewTransform().SetTranslation(360, 300).SetDepth(-1))
 
 	ecs.Manager.NewEntity().
-		AddComponent(ecs.Components.Sprite,
-			&c.Sprite{
-				Image:   image,
-				Options: &ebiten.DrawImageOptions{},
+		AddComponent(ecs.Components.SpriteRender,
+			&c.SpriteRender{
+				SpriteSheet:  &gameSpriteSheet,
+				SpriteNumber: 0,
+				Options:      &ebiten.DrawImageOptions{},
 			}).
-		AddComponent(ecs.Components.Transform,
-			&c.Transform{
-				Scale:       m.Vector2{X: 5, Y: 5},
-				Rotation:    math.Pi / 2,
-				Translation: m.Vector2{X: 360, Y: 300},
-				Depth:       0,
-			})
+		AddComponent(ecs.Components.Transform, c.NewTransform().SetTranslation(360, 12))
+
+	ecs.Manager.NewEntity().
+		AddComponent(ecs.Components.SpriteRender,
+			&c.SpriteRender{
+				SpriteSheet:  &gameSpriteSheet,
+				SpriteNumber: 1,
+				Options:      &ebiten.DrawImageOptions{},
+			}).
+		AddComponent(ecs.Components.Transform, c.NewTransform().SetTranslation(360, 35).SetDepth(0.2))
 
 	ebiten.SetWindowResizable(true)
 	ebiten.SetWindowSize(windowWidth, windowHeight)

@@ -8,8 +8,8 @@ import (
 
 // Components contains references to all components
 type Components struct {
-	Sprite    *ecs.Component
-	Transform *ecs.Component
+	SpriteRender *ecs.Component
+	Transform    *ecs.Component
 }
 
 // InitComponents initializes components

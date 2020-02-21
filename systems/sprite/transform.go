@@ -14,11 +14,11 @@ func TransformSystem(ecs e.Ecs, screen *ebiten.Image) {
 	screenHeight := float64(h)
 
 	for _, result := range ecs.Views.SpriteView.Get() {
-		sprite := result.Components[ecs.Components.Sprite].(*c.Sprite)
+		sprite := result.Components[ecs.Components.SpriteRender].(*c.SpriteRender)
 		transform := result.Components[ecs.Components.Transform].(*c.Transform)
 
-		w, h := sprite.Image.Size()
-		spriteWidth, spriteHeight := float64(w), float64(h)
+		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Width)
+		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Height)
 
 		// Reset geometry matrix
 		sprite.Options.GeoM.Reset()
