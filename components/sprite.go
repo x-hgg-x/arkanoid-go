@@ -2,8 +2,10 @@ package components
 
 import (
 	"arkanoid/math"
+	"arkanoid/utils"
 
 	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/ebitenutil"
 )
 
 // Sprite structure
@@ -21,17 +23,40 @@ type Sprite struct {
 // SpriteSheet structure
 type SpriteSheet struct {
 	// Texture image
-	Texture *ebiten.Image
+	Texture *ebiten.Image `toml:"texture_image"`
 	// List of sprites
 	Sprites []Sprite
 }
 
+// UnmarshalTOML fills structure fields with TOML data
+func (s *SpriteSheet) UnmarshalTOML(i interface{}) error {
+	subSection := i.(map[string]interface{})
+
+	textureImage, _, err := ebitenutil.NewImageFromFile(subSection["texture_image"].(string), ebiten.FilterNearest)
+	utils.LogError(err)
+	s.Texture = textureImage
+
+	sprites := subSection["sprites"].([]interface{})
+	s.Sprites = make([]Sprite, len(sprites))
+	for iSprite, v := range sprites {
+		sprite := v.(map[string]interface{})
+
+		s.Sprites[iSprite].X = int(sprite["x"].(int64))
+		s.Sprites[iSprite].Y = int(sprite["y"].(int64))
+		s.Sprites[iSprite].Width = int(sprite["width"].(int64))
+		s.Sprites[iSprite].Height = int(sprite["height"].(int64))
+	}
+	return nil
+}
+
 // SpriteRender component
 type SpriteRender struct {
+	// Reference sprite sheet name
+	SpriteSheetName string `toml:"sprite_sheet_name"`
 	// Reference sprite sheet
 	SpriteSheet *SpriteSheet
 	// Index of the sprite on the sprite sheet
-	SpriteNumber int
+	SpriteNumber int `toml:"sprite_number"`
 	// Draw options
 	Options *ebiten.DrawImageOptions
 }
@@ -41,7 +66,7 @@ type SpriteRender struct {
 // Image is first rotated, then scaled, and finally translated.
 type Transform struct {
 	// Scale1 vector defines image scaling. Contains scale value minus 1 so that zero value is identity.
-	Scale1 math.Vector2
+	Scale1 math.Vector2 `toml:"scale_minus_1"`
 	// Rotation angle is measured counterclockwise.
 	Rotation float64
 	// Translation defines the position of the image center relative to the origin.

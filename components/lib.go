@@ -10,6 +10,8 @@ import (
 type Components struct {
 	SpriteRender *ecs.Component
 	Transform    *ecs.Component
+	Paddle       *ecs.Component
+	Ball         *ecs.Component
 }
 
 // InitComponents initializes components
@@ -17,8 +19,8 @@ func InitComponents(manager *ecs.Manager) *Components {
 	components := &Components{}
 
 	v := reflect.ValueOf(components).Elem()
-	for i := 0; i < v.NumField(); i++ {
-		v.Field(i).Set(reflect.ValueOf(manager.NewComponent()))
+	for iField := 0; iField < v.NumField(); iField++ {
+		v.Field(iField).Set(reflect.ValueOf(manager.NewComponent()))
 	}
 
 	return components

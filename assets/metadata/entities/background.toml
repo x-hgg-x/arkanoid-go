@@ -1,0 +1,9 @@
+[[entity]]
+
+    [entity.components.SpriteRender]
+    sprite_sheet_name = "background"
+    sprite_number = 0
+
+    [entity.components.Transform]
+    translation = { x = 360.0, y = 300.0 }
+    depth = -1.0

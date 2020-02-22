@@ -1,0 +1,23 @@
+[[entity]]
+
+    [entity.components.SpriteRender]
+    sprite_sheet_name = "game"
+    sprite_number = 0
+
+    [entity.components.Transform]
+    translation = { x = 360.0, y = 12.0 }
+    depth = 0.0
+
+    [entity.components.Paddle]
+
+[[entity]]
+
+    [entity.components.SpriteRender]
+    sprite_sheet_name = "game"
+    sprite_number = 1
+
+    [entity.components.Transform]
+    translation = { x = 360.0, y = 35.0 }
+    depth = 0.2
+
+    [entity.components.Ball]

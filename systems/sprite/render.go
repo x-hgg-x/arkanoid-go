@@ -25,8 +25,8 @@ func RenderSystem(ecs e.Ecs, screen *ebiten.Image) {
 
 	// Copy query slice into a struct slice for sorting
 	spritesTransforms := make([]spriteTransform, len(spriteQuery))
-	for i, result := range spriteQuery {
-		spritesTransforms[i] = spriteTransform{
+	for iQuery, result := range spriteQuery {
+		spritesTransforms[iQuery] = spriteTransform{
 			sprite:    result.Components[ecs.Components.SpriteRender].(*c.SpriteRender),
 			transform: result.Components[ecs.Components.Transform].(*c.Transform),
 		}
