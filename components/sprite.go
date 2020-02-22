@@ -40,8 +40,8 @@ type SpriteRender struct {
 // The origin (0, 0) is the lower left part of screen.
 // Image is first rotated, then scaled, and finally translated.
 type Transform struct {
-	// Scale vector defines image scaling. Identity is (1, 1).
-	Scale math.Vector2
+	// Scale1 vector defines image scaling. Contains scale value minus 1 so that zero value is identity.
+	Scale1 math.Vector2
 	// Rotation angle is measured counterclockwise.
 	Rotation float64
 	// Translation defines the position of the image center relative to the origin.
@@ -52,18 +52,13 @@ type Transform struct {
 
 // NewTransform creates a new default transform, corresponding to identity.
 func NewTransform() *Transform {
-	return &Transform{
-		Scale:       math.Vector2{X: 1, Y: 1},
-		Rotation:    0,
-		Translation: math.Vector2{X: 0, Y: 0},
-		Depth:       0,
-	}
+	return &Transform{}
 }
 
 // SetScale sets transform scale.
 func (t *Transform) SetScale(sx, sy float64) *Transform {
-	t.Scale.X = sx
-	t.Scale.Y = sy
+	t.Scale1.X = sx - 1
+	t.Scale1.Y = sy - 1
 	return t
 }
 

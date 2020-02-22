@@ -28,7 +28,7 @@ func TransformSystem(ecs e.Ecs, screen *ebiten.Image) {
 		sprite.Options.GeoM.Rotate(-transform.Rotation)
 
 		// Perform scale
-		sprite.Options.GeoM.Scale(transform.Scale.X, transform.Scale.Y)
+		sprite.Options.GeoM.Scale(transform.Scale1.X+1, transform.Scale1.Y+1)
 
 		// Perform translation
 		sprite.Options.GeoM.Translate(transform.Translation.X, screenHeight-transform.Translation.Y)
