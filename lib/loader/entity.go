@@ -1,7 +1,7 @@
 package loader
 
 import (
-	"log"
+	"fmt"
 	"reflect"
 
 	c "arkanoid/lib/components"
@@ -40,7 +40,7 @@ func LoadEntities(entityMetadataPath string, ecsData e.Ecs, spriteSheets map[str
 			if spriteSheet, ok := spriteSheets[entity.Components.SpriteRender.SpriteSheetName]; ok {
 				entity.Components.SpriteRender.SpriteSheet = &spriteSheet
 			} else {
-				log.Fatalf("Unable to find sprite sheet with name '%s'", entity.Components.SpriteRender.SpriteSheetName)
+				utils.LogError(fmt.Errorf("unable to find sprite sheet with name '%s'", entity.Components.SpriteRender.SpriteSheetName))
 			}
 		}
 
