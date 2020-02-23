@@ -1,8 +1,8 @@
 package loader
 
 import (
-	c "arkanoid/components"
-	"arkanoid/utils"
+	c "arkanoid/lib/components"
+	"arkanoid/lib/utils"
 
 	"github.com/BurntSushi/toml"
 )

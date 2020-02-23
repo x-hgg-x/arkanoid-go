@@ -5,9 +5,9 @@ import (
 	"math"
 	"sort"
 
-	c "arkanoid/components"
-	e "arkanoid/ecs"
-	m "arkanoid/math"
+	c "arkanoid/lib/components"
+	e "arkanoid/lib/ecs"
+	m "arkanoid/lib/math"
 
 	"github.com/hajimehoshi/ebiten"
 )

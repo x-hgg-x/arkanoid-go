@@ -1,8 +1,8 @@
 package ecs
 
 import (
-	c "arkanoid/components"
-	"arkanoid/systems"
+	c "arkanoid/lib/components"
+	"arkanoid/lib/systems"
 
 	"github.com/ByteArena/ecs"
 )

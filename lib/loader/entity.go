@@ -4,9 +4,9 @@ import (
 	"log"
 	"reflect"
 
-	c "arkanoid/components"
-	e "arkanoid/ecs"
-	"arkanoid/utils"
+	c "arkanoid/lib/components"
+	e "arkanoid/lib/ecs"
+	"arkanoid/lib/utils"
 
 	"github.com/BurntSushi/toml"
 	"github.com/ByteArena/ecs"

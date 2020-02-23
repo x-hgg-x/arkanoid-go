@@ -1,8 +1,8 @@
 package components
 
 import (
-	"arkanoid/math"
-	"arkanoid/utils"
+	"arkanoid/lib/math"
+	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/ebitenutil"

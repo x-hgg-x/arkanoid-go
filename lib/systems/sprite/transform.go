@@ -1,8 +1,8 @@
 package sprite
 
 import (
-	c "arkanoid/components"
-	e "arkanoid/ecs"
+	c "arkanoid/lib/components"
+	e "arkanoid/lib/ecs"
 
 	"github.com/hajimehoshi/ebiten"
 )

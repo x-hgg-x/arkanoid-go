@@ -1,10 +1,10 @@
 package main
 
 import (
-	e "arkanoid/ecs"
-	"arkanoid/loader"
-	"arkanoid/systems/sprite"
-	"arkanoid/utils"
+	e "arkanoid/lib/ecs"
+	"arkanoid/lib/loader"
+	"arkanoid/lib/systems/sprite"
+	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
 )
