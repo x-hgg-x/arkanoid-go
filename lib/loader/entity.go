@@ -17,6 +17,7 @@ type componentList struct {
 	Transform    *c.Transform
 	Paddle       *c.Paddle
 	Ball         *c.Ball
+	Block        *c.Block
 }
 
 type entity struct {
@@ -45,12 +46,12 @@ func LoadEntities(entityMetadataPath string, ecsData e.Ecs, spriteSheets map[str
 		}
 
 		// Add components to a new entity
-		entities[iEntity] = addEntity(ecsData.Manager.NewEntity(), ecsData.Components, entity.Components)
+		entities[iEntity] = addEntityComponents(ecsData.Manager.NewEntity(), ecsData.Components, entity.Components)
 	}
 	return entities
 }
 
-func addEntity(entity *ecs.Entity, ecsComponentList *c.Components, components componentList) *ecs.Entity {
+func addEntityComponents(entity *ecs.Entity, ecsComponentList *c.Components, components componentList) *ecs.Entity {
 	v := reflect.ValueOf(components)
 	for iField := 0; iField < v.NumField(); iField++ {
 		if !v.Field(iField).IsNil() {

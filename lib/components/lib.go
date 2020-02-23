@@ -12,6 +12,7 @@ type Components struct {
 	Transform    *ecs.Component
 	Paddle       *ecs.Component
 	Ball         *ecs.Component
+	Block        *ecs.Component
 }
 
 // InitComponents initializes components

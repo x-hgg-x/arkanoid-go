@@ -7,6 +7,27 @@ sprites = [
 [sprite_sheet.game]
 texture_image = "assets/textures/game.png"
 sprites = [
-    { x = 0,   y = 96, width = 144, height = 24 },
-    { x = 144, y = 96, width = 24,  height = 24 },
+    { x = 0,   y = 0,  width = 64,  height = 32 }, # Sprite 0
+    { x = 64,  y = 0,  width = 64,  height = 32 }, # Sprite 1
+    { x = 128, y = 0,  width = 64,  height = 32 }, # Sprite 2
+    { x = 192, y = 0,  width = 64,  height = 32 }, # Sprite 3
+    { x = 256, y = 0,  width = 64,  height = 32 }, # Sprite 4
+    { x = 320, y = 0,  width = 64,  height = 32 }, # Sprite 5
+
+    { x = 0,   y = 32, width = 64,  height = 32 }, # Sprite 6
+    { x = 64,  y = 32, width = 64,  height = 32 }, # Sprite 7
+    { x = 128, y = 32, width = 64,  height = 32 }, # Sprite 8
+    { x = 192, y = 32, width = 64,  height = 32 }, # Sprite 9
+    { x = 256, y = 32, width = 64,  height = 32 }, # Sprite 10
+    { x = 320, y = 32, width = 64,  height = 32 }, # Sprite 11
+
+    { x = 0,   y = 64, width = 64,  height = 32 }, # Sprite 12
+    { x = 32,  y = 64, width = 64,  height = 32 }, # Sprite 13
+    { x = 64,  y = 64, width = 64,  height = 32 }, # Sprite 14
+    { x = 96,  y = 64, width = 64,  height = 32 }, # Sprite 15
+    { x = 128, y = 64, width = 64,  height = 32 }, # Sprite 16
+    { x = 160, y = 64, width = 64,  height = 32 }, # Sprite 17
+
+    { x = 0,   y = 96, width = 144, height = 24 }, # Sprite 18
+    { x = 144, y = 96, width = 24,  height = 24 }, # Sprite 19
 ]

@@ -3,6 +3,7 @@ package main
 import (
 	e "arkanoid/lib/ecs"
 	"arkanoid/lib/loader"
+	"arkanoid/lib/resources"
 	"arkanoid/lib/systems/sprite"
 	"arkanoid/lib/utils"
 
@@ -37,8 +38,12 @@ func (g game) Update(screen *ebiten.Image) error {
 func main() {
 	ecsData := e.InitEcs()
 
+	// Init screen dimensions
+	ecsData.Resources.ScreenDimensions = &resources.ScreenDimensions{Width: windowWidth, Height: windowHeight}
+
 	// Load sprite sheets
 	spriteSheets := loader.LoadSpriteSheet("assets/metadata/spritesheets/spritesheets.toml")
+	ecsData.Resources.SpriteSheets = &spriteSheets
 
 	// Load game entities
 	loader.LoadEntities("assets/metadata/entities/background.toml", ecsData, spriteSheets)
