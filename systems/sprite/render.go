@@ -66,7 +66,7 @@ func drawImageWithWrap(screen *ebiten.Image, spriteRender *c.SpriteRender) {
 			top := m.Max(0, sprite.Y-indY*textureHeight)
 			bottom := m.Min(textureHeight, sprite.Y+sprite.Height-indY*textureHeight)
 
-			op := *spriteRender.Options
+			op := spriteRender.Options
 			op.GeoM.Translate(float64(currentX), float64(currentY))
 			screen.DrawImage(texture.SubImage(image.Rect(left, top, right, bottom)).(*ebiten.Image), &op)
 

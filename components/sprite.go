@@ -58,7 +58,7 @@ type SpriteRender struct {
 	// Index of the sprite on the sprite sheet
 	SpriteNumber int `toml:"sprite_number"`
 	// Draw options
-	Options *ebiten.DrawImageOptions
+	Options ebiten.DrawImageOptions
 }
 
 // Transform component.

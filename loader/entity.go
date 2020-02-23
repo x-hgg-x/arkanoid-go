@@ -10,7 +10,6 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/ByteArena/ecs"
-	"github.com/hajimehoshi/ebiten"
 )
 
 type componentList struct {
@@ -29,20 +28,17 @@ type entityMetadata struct {
 }
 
 // LoadEntities create entities with components from a TOML file
-func LoadEntities(entityMetadataPath string, ecsData e.Ecs, spriteSheets map[string]*c.SpriteSheet) []*ecs.Entity {
+func LoadEntities(entityMetadataPath string, ecsData e.Ecs, spriteSheets map[string]c.SpriteSheet) []*ecs.Entity {
 	var entityMetadata entityMetadata
 	_, err := toml.DecodeFile(entityMetadataPath, &entityMetadata)
 	utils.LogError(err)
 
 	entities := make([]*ecs.Entity, len(entityMetadata.Entities))
 	for iEntity, entity := range entityMetadata.Entities {
-		// Fill SpriteRender fields
+		// Add reference to sprite sheet from its name
 		if entity.Components.SpriteRender != nil {
 			if spriteSheet, ok := spriteSheets[entity.Components.SpriteRender.SpriteSheetName]; ok {
-				// Add reference to sprite sheet by name
-				entity.Components.SpriteRender.SpriteSheet = spriteSheet
-				// Add draw options
-				entity.Components.SpriteRender.Options = &ebiten.DrawImageOptions{}
+				entity.Components.SpriteRender.SpriteSheet = &spriteSheet
 			} else {
 				log.Fatalf("Unable to find sprite sheet with name '%s'", entity.Components.SpriteRender.SpriteSheetName)
 			}
