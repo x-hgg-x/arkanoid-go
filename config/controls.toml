@@ -1,0 +1,40 @@
+[controls.axes.Paddle]
+mouse_axis = { axis = 0 }
+# emulated = { pos = { key = "Right" }, neg = { key = "Left" } }
+
+[controls.actions]
+ReleaseBall = [[{ mouse_button = "MouseButtonLeft" }], [{ key = "Z" }]]
+
+
+# Usage
+
+# Axis
+
+# With keyboard keys
+# [controls.axes.XXX]
+# emulated = { pos = { key = "Right" }, neg = { key = "Left" } }
+
+# With mouse buttons
+# [controls.axes.XXX]
+# emulated = { pos = { mouse_button = "MouseButtonRight" }, neg = { mouse_button = "MouseButtonLeft" } }
+
+# With gamepad buttons
+# [controls.axes.XXX.emulated]
+# pos = { controller = { id = 0, button = "GamepadButton15" } }
+# neg = { controller = { id = 0, button = "GamepadButton14" } }
+
+# With gamepad axis
+# [controls.axes.XXX]
+# controller_axis = { id = 0, axis = 0, invert = false, dead_zone = 0.2 }
+
+# With mouse axis
+# [controls.axes.XXX]
+# mouse_axis = { axis = 0 }
+
+
+# Actions
+# [controls.actions]
+# XXX = [
+#     [{ key = "Control" }, { key = "Q" }],
+#     [{ key = "Escape" }]
+# ]

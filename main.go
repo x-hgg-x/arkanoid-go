@@ -1,10 +1,14 @@
 package main
 
 import (
+	"os"
+
 	e "arkanoid/lib/ecs"
 	"arkanoid/lib/loader"
 	"arkanoid/lib/resources"
-	"arkanoid/lib/systems/sprite"
+	g "arkanoid/lib/systems/game"
+	i "arkanoid/lib/systems/input"
+	s "arkanoid/lib/systems/sprite"
 	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
@@ -15,23 +19,30 @@ const (
 	windowHeight = 600
 )
 
-type game struct {
+type mainGame struct {
 	ecs e.Ecs
 }
 
-func (g game) Layout(outsideWidth, outsideHeight int) (int, int) {
+func (game mainGame) Layout(outsideWidth, outsideHeight int) (int, int) {
 	ebiten.SetWindowSize(outsideWidth, outsideHeight)
 	return windowWidth, windowHeight
 }
 
-func (g game) Update(screen *ebiten.Image) error {
+func (game mainGame) Update(screen *ebiten.Image) error {
 	if ebiten.IsDrawingSkipped() {
 		return nil
 	}
 
-	sprite.TransformSystem(g.ecs, screen)
-	sprite.RenderSystem(g.ecs, screen)
+	i.InputSystem(game.ecs)
 
+	g.MovePaddleSystem(game.ecs)
+
+	s.TransformSystem(game.ecs)
+	s.RenderSystem(game.ecs, screen)
+
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+		os.Exit(0)
+	}
 	return nil
 }
 
@@ -40,6 +51,13 @@ func main() {
 
 	// Init screen dimensions
 	ecsData.Resources.ScreenDimensions = &resources.ScreenDimensions{Width: windowWidth, Height: windowHeight}
+
+	// Load controls
+	axes := []string{resources.PaddleAxis}
+	actions := []string{resources.ReleaseBallAction}
+	controls, inputHandler := loader.LoadControls("config/controls.toml", axes, actions)
+	ecsData.Resources.Controls = &controls
+	ecsData.Resources.InputHandler = &inputHandler
 
 	// Load sprite sheets
 	spriteSheets := loader.LoadSpriteSheet("assets/metadata/spritesheets/spritesheets.toml")
@@ -53,5 +71,5 @@ func main() {
 	ebiten.SetWindowSize(windowWidth, windowHeight)
 	ebiten.SetWindowTitle("Arkanoid")
 
-	utils.LogError(ebiten.RunGame(game{ecsData}))
+	utils.LogError(ebiten.RunGame(mainGame{ecsData}))
 }

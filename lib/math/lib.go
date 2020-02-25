@@ -6,7 +6,7 @@ type Vector2 struct {
 	Y float64
 }
 
-// Min returns the minimum between 2 integers.
+// Min returns the minimum between 2 integers
 func Min(a, b int) int {
 	if a < b {
 		return a
@@ -14,7 +14,7 @@ func Min(a, b int) int {
 	return b
 }
 
-// Max returns the maximum between 2 integers.
+// Max returns the maximum between 2 integers
 func Max(a, b int) int {
 	if a > b {
 		return a

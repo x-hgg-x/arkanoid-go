@@ -28,7 +28,7 @@ type entityMetadata struct {
 	Entities []entity `toml:"entity"`
 }
 
-// LoadEntities create entities with components from a TOML file
+// LoadEntities creates entities with components from a TOML file
 func LoadEntities(entityMetadataPath string, ecsData e.Ecs, spriteSheets map[string]c.SpriteSheet) []*ecs.Entity {
 	var entityMetadata entityMetadata
 	_, err := toml.DecodeFile(entityMetadataPath, &entityMetadata)

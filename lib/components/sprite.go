@@ -20,33 +20,26 @@ type Sprite struct {
 	Height int
 }
 
+// Texture structure
+type Texture struct {
+	// Texture image
+	Image *ebiten.Image
+}
+
+// UnmarshalText fills structure fields from text data
+func (t *Texture) UnmarshalText(text []byte) error {
+	textureImage, _, err := ebitenutil.NewImageFromFile(string(text), ebiten.FilterNearest)
+	utils.LogError(err)
+	t.Image = textureImage
+	return nil
+}
+
 // SpriteSheet structure
 type SpriteSheet struct {
 	// Texture image
-	Texture *ebiten.Image `toml:"texture_image"`
+	Texture Texture `toml:"texture_image"`
 	// List of sprites
 	Sprites []Sprite
-}
-
-// UnmarshalTOML fills structure fields with TOML data
-func (s *SpriteSheet) UnmarshalTOML(i interface{}) error {
-	subSection := i.(map[string]interface{})
-
-	textureImage, _, err := ebitenutil.NewImageFromFile(subSection["texture_image"].(string), ebiten.FilterNearest)
-	utils.LogError(err)
-	s.Texture = textureImage
-
-	sprites := subSection["sprites"].([]interface{})
-	s.Sprites = make([]Sprite, len(sprites))
-	for iSprite, v := range sprites {
-		sprite := v.(map[string]interface{})
-
-		s.Sprites[iSprite].X = int(sprite["x"].(int64))
-		s.Sprites[iSprite].Y = int(sprite["y"].(int64))
-		s.Sprites[iSprite].Width = int(sprite["width"].(int64))
-		s.Sprites[iSprite].Height = int(sprite["height"].(int64))
-	}
-	return nil
 }
 
 // SpriteRender component

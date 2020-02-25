@@ -1,4 +1,4 @@
-package sprite
+package spritesystem
 
 import (
 	"image"
@@ -48,7 +48,7 @@ func RenderSystem(ecs e.Ecs, screen *ebiten.Image) {
 func drawImageWithWrap(screen *ebiten.Image, spriteRender *c.SpriteRender) {
 	sprite := spriteRender.SpriteSheet.Sprites[spriteRender.SpriteNumber]
 	texture := spriteRender.SpriteSheet.Texture
-	textureWidth, textureHeight := texture.Size()
+	textureWidth, textureHeight := texture.Image.Size()
 
 	startX := int(math.Floor(float64(sprite.X) / float64(textureWidth)))
 	startY := int(math.Floor(float64(sprite.Y) / float64(textureHeight)))
@@ -68,7 +68,7 @@ func drawImageWithWrap(screen *ebiten.Image, spriteRender *c.SpriteRender) {
 
 			op := spriteRender.Options
 			op.GeoM.Translate(float64(currentX), float64(currentY))
-			screen.DrawImage(texture.SubImage(image.Rect(left, top, right, bottom)).(*ebiten.Image), &op)
+			screen.DrawImage(texture.Image.SubImage(image.Rect(left, top, right, bottom)).(*ebiten.Image), &op)
 
 			currentY += bottom - top
 		}

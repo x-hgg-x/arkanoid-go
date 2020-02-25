@@ -1,18 +1,13 @@
-package sprite
+package spritesystem
 
 import (
 	c "arkanoid/lib/components"
 	e "arkanoid/lib/ecs"
-
-	"github.com/hajimehoshi/ebiten"
 )
 
 // TransformSystem updates geometry matrix.
 // Geometry matrix is first rotated, then scaled, and finally translated.
-func TransformSystem(ecs e.Ecs, screen *ebiten.Image) {
-	_, h := screen.Size()
-	screenHeight := float64(h)
-
+func TransformSystem(ecs e.Ecs) {
 	for _, result := range ecs.Views.SpriteView.Get() {
 		sprite := result.Components[ecs.Components.SpriteRender].(*c.SpriteRender)
 		transform := result.Components[ecs.Components.Transform].(*c.Transform)
@@ -31,6 +26,7 @@ func TransformSystem(ecs e.Ecs, screen *ebiten.Image) {
 		sprite.Options.GeoM.Scale(transform.Scale1.X+1, transform.Scale1.Y+1)
 
 		// Perform translation
+		screenHeight := float64(ecs.Resources.ScreenDimensions.Height)
 		sprite.Options.GeoM.Translate(transform.Translation.X, screenHeight-transform.Translation.Y)
 	}
 }

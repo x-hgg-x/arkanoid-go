@@ -9,6 +9,8 @@
     translation = { x = 360.0, y = 12.0 }
 
     [entity.components.Paddle]
+    width = 144.0
+    height = 24.0
 
 
 # Ball

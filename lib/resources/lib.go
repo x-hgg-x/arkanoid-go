@@ -1,17 +1,13 @@
 package resources
 
-import c "arkanoid/lib/components"
-
-// ScreenDimensions contains current screen dimensions
-type ScreenDimensions struct {
-	Width  int
-	Height int
-}
+import "arkanoid/lib/components"
 
 // Resources contains reference to data not related to any entity
 type Resources struct {
 	ScreenDimensions *ScreenDimensions
-	SpriteSheets     *map[string]c.SpriteSheet
+	Controls         *Controls
+	InputHandler     *InputHandler
+	SpriteSheets     *map[string]components.SpriteSheet
 }
 
 // InitResources initializes resources
