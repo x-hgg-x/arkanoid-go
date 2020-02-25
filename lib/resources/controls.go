@@ -68,17 +68,7 @@ type ControllerAxis struct {
 	ID       int
 	Axis     int
 	Invert   bool
-	DeadZone float64
-}
-
-// UnmarshalTOML fills structure fields from TOML data
-func (a *ControllerAxis) UnmarshalTOML(i interface{}) error {
-	data := i.(map[string]interface{})
-	a.ID = int(data["id"].(int64))
-	a.Axis = int(data["axis"].(int64))
-	a.Invert = data["invert"].(bool)
-	a.DeadZone = data["dead_zone"].(float64)
-	return nil
+	DeadZone float64 `toml:"dead_zone"`
 }
 
 // MouseAxis is a mouse axis
