@@ -64,8 +64,8 @@ func main() {
 	ecsData.Resources.SpriteSheets = &spriteSheets
 
 	// Load game entities
-	loader.LoadEntities("assets/metadata/entities/background.toml", ecsData, spriteSheets)
-	loader.LoadEntities("assets/metadata/entities/game.toml", ecsData, spriteSheets)
+	loader.LoadEntities("assets/metadata/entities/background.toml", ecsData)
+	loader.LoadEntities("assets/metadata/entities/game.toml", ecsData)
 
 	ebiten.SetWindowResizable(true)
 	ebiten.SetWindowSize(windowWidth, windowHeight)

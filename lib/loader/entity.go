@@ -20,8 +20,21 @@ type componentList struct {
 	Block        *c.Block
 }
 
+type spriteRenderData struct {
+	SpriteSheetName string `toml:"sprite_sheet_name"`
+	SpriteNumber    int    `toml:"sprite_number"`
+}
+
+type componentListData struct {
+	SpriteRender *spriteRenderData
+	Transform    *c.Transform
+	Paddle       *c.Paddle
+	Ball         *c.Ball
+	Block        *c.Block
+}
+
 type entity struct {
-	Components componentList
+	Components componentListData
 }
 
 type entityMetadata struct {
@@ -29,24 +42,15 @@ type entityMetadata struct {
 }
 
 // LoadEntities creates entities with components from a TOML file
-func LoadEntities(entityMetadataPath string, ecsData e.Ecs, spriteSheets map[string]c.SpriteSheet) []*ecs.Entity {
+func LoadEntities(entityMetadataPath string, ecsData e.Ecs) []*ecs.Entity {
 	var entityMetadata entityMetadata
 	_, err := toml.DecodeFile(entityMetadataPath, &entityMetadata)
 	utils.LogError(err)
 
 	entities := make([]*ecs.Entity, len(entityMetadata.Entities))
 	for iEntity, entity := range entityMetadata.Entities {
-		// Add reference to sprite sheet from its name
-		if entity.Components.SpriteRender != nil {
-			if spriteSheet, ok := spriteSheets[entity.Components.SpriteRender.SpriteSheetName]; ok {
-				entity.Components.SpriteRender.SpriteSheet = &spriteSheet
-			} else {
-				utils.LogError(fmt.Errorf("unable to find sprite sheet with name '%s'", entity.Components.SpriteRender.SpriteSheetName))
-			}
-		}
-
 		// Add components to a new entity
-		entities[iEntity] = addEntityComponents(ecsData.Manager.NewEntity(), ecsData.Components, entity.Components)
+		entities[iEntity] = addEntityComponents(ecsData.Manager.NewEntity(), ecsData.Components, processComponentsListData(ecsData, entity.Components))
 	}
 	return entities
 }
@@ -62,4 +66,28 @@ func addEntityComponents(entity *ecs.Entity, ecsComponentList *c.Components, com
 		}
 	}
 	return entity
+}
+
+func processComponentsListData(ecsData e.Ecs, data componentListData) componentList {
+	// SpriteRender
+	var spriteRender *c.SpriteRender
+	if data.SpriteRender != nil {
+		// Add reference to sprite sheet from its name
+		if spriteSheet, ok := (*ecsData.Resources.SpriteSheets)[data.SpriteRender.SpriteSheetName]; ok {
+			spriteRender = &c.SpriteRender{
+				SpriteSheet:  &spriteSheet,
+				SpriteNumber: data.SpriteRender.SpriteNumber,
+			}
+		} else {
+			utils.LogError(fmt.Errorf("unable to find sprite sheet with name '%s'", data.SpriteRender.SpriteSheetName))
+		}
+	}
+
+	return componentList{
+		SpriteRender: spriteRender,
+		Transform:    data.Transform,
+		Paddle:       data.Paddle,
+		Ball:         data.Ball,
+		Block:        data.Block,
+	}
 }

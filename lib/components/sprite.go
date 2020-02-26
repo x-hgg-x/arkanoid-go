@@ -44,8 +44,6 @@ type SpriteSheet struct {
 
 // SpriteRender component
 type SpriteRender struct {
-	// Reference sprite sheet name
-	SpriteSheetName string `toml:"sprite_sheet_name"`
 	// Reference sprite sheet
 	SpriteSheet *SpriteSheet
 	// Index of the sprite on the sprite sheet
