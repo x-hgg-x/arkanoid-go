@@ -8,6 +8,7 @@ type Resources struct {
 	Controls         *Controls
 	InputHandler     *InputHandler
 	SpriteSheets     *map[string]components.SpriteSheet
+	Fonts            *map[string]Font
 }
 
 // InitResources initializes resources

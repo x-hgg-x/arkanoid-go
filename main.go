@@ -60,8 +60,12 @@ func main() {
 	ecsData.Resources.InputHandler = &inputHandler
 
 	// Load sprite sheets
-	spriteSheets := loader.LoadSpriteSheet("assets/metadata/spritesheets/spritesheets.toml")
+	spriteSheets := loader.LoadSpriteSheets("assets/metadata/spritesheets/spritesheets.toml")
 	ecsData.Resources.SpriteSheets = &spriteSheets
+
+	// Load fonts
+	fonts := loader.LoadFonts("assets/metadata/fonts/fonts.toml")
+	ecsData.Resources.Fonts = &fonts
 
 	// Load game entities
 	loader.LoadEntities("assets/metadata/entities/background.toml", ecsData)
