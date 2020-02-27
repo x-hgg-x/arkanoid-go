@@ -2,6 +2,7 @@ package loader
 
 import (
 	"fmt"
+	"image/color"
 	"reflect"
 
 	c "arkanoid/lib/components"
@@ -10,6 +11,7 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/ByteArena/ecs"
+	"github.com/hajimehoshi/ebiten"
 )
 
 type componentList struct {
@@ -20,7 +22,14 @@ type componentList struct {
 	Block        *c.Block
 }
 
+type fillData struct {
+	Width  int
+	Height int
+	Color  [4]uint8
+}
+
 type spriteRenderData struct {
+	Fill            *fillData
 	SpriteSheetName string `toml:"sprite_sheet_name"`
 	SpriteNumber    int    `toml:"sprite_number"`
 }
@@ -69,25 +78,51 @@ func addEntityComponents(entity *ecs.Entity, ecsComponentList *c.Components, com
 }
 
 func processComponentsListData(ecsData e.Ecs, data componentListData) componentList {
-	// SpriteRender
-	var spriteRender *c.SpriteRender
-	if data.SpriteRender != nil {
-		// Add reference to sprite sheet from its name
-		if spriteSheet, ok := (*ecsData.Resources.SpriteSheets)[data.SpriteRender.SpriteSheetName]; ok {
-			spriteRender = &c.SpriteRender{
-				SpriteSheet:  &spriteSheet,
-				SpriteNumber: data.SpriteRender.SpriteNumber,
-			}
-		} else {
-			utils.LogError(fmt.Errorf("unable to find sprite sheet with name '%s'", data.SpriteRender.SpriteSheetName))
-		}
-	}
-
 	return componentList{
-		SpriteRender: spriteRender,
+		SpriteRender: processSpriteRenderData(ecsData, data.SpriteRender),
 		Transform:    data.Transform,
 		Paddle:       data.Paddle,
 		Ball:         data.Ball,
 		Block:        data.Block,
+	}
+}
+
+func processSpriteRenderData(ecsData e.Ecs, spriteRenderData *spriteRenderData) *c.SpriteRender {
+	if spriteRenderData == nil {
+		return nil
+	}
+	if spriteRenderData.Fill != nil && spriteRenderData.SpriteSheetName != "" {
+		utils.LogError(fmt.Errorf("fill and sprite_sheet_name fields are exclusive"))
+	}
+
+	// Sprite is included in sprite sheet
+	if spriteRenderData.SpriteSheetName != "" {
+		// Add reference to sprite sheet from its name
+		spriteSheet, ok := (*ecsData.Resources.SpriteSheets)[spriteRenderData.SpriteSheetName]
+		if !ok {
+			utils.LogError(fmt.Errorf("unable to find sprite sheet with name '%s'", spriteRenderData.SpriteSheetName))
+		}
+		return &c.SpriteRender{
+			SpriteSheet:  &spriteSheet,
+			SpriteNumber: spriteRenderData.SpriteNumber,
+		}
+	}
+
+	// Sprite is a colored rectangle
+	textureImage, err := ebiten.NewImage(spriteRenderData.Fill.Width, spriteRenderData.Fill.Height, ebiten.FilterNearest)
+	utils.LogError(err)
+	textureImage.Fill(color.RGBA{
+		R: spriteRenderData.Fill.Color[0],
+		G: spriteRenderData.Fill.Color[1],
+		B: spriteRenderData.Fill.Color[2],
+		A: spriteRenderData.Fill.Color[3],
+	})
+
+	return &c.SpriteRender{
+		SpriteSheet: &c.SpriteSheet{
+			Texture: c.Texture{Image: textureImage},
+			Sprites: []c.Sprite{c.Sprite{X: 0, Y: 0, Width: spriteRenderData.Fill.Width, Height: spriteRenderData.Fill.Height}},
+		},
+		SpriteNumber: 0,
 	}
 }
