@@ -17,10 +17,10 @@ type spriteTransform struct {
 	transform *c.Transform
 }
 
-// RenderSystem draw images.
+// RenderSpriteSystem draws images.
 // Images are drawn in ascending order of depth.
 // Images with higher depth are thus drawn above images with lower depth.
-func RenderSystem(ecs e.Ecs, screen *ebiten.Image) {
+func RenderSpriteSystem(ecs e.Ecs, screen *ebiten.Image) {
 	spriteQuery := ecs.Views.SpriteView.Get()
 
 	// Copy query slice into a struct slice for sorting

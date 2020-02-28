@@ -10,6 +10,8 @@ import (
 type Components struct {
 	SpriteRender *ecs.Component
 	Transform    *ecs.Component
+	Text         *ecs.Component
+	UITransform  *ecs.Component
 	Paddle       *ecs.Component
 	Ball         *ecs.Component
 	Block        *ecs.Component

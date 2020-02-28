@@ -6,6 +6,12 @@ type Vector2 struct {
 	Y float64
 }
 
+// VectorInt2 type
+type VectorInt2 struct {
+	X int
+	Y int
+}
+
 // Min returns the minimum between 2 integers
 func Min(a, b int) int {
 	if a < b {

@@ -11,32 +11,26 @@ import (
 
 	"github.com/BurntSushi/toml"
 	"github.com/ByteArena/ecs"
+	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
+	"golang.org/x/image/font"
 )
 
 type componentList struct {
 	SpriteRender *c.SpriteRender
 	Transform    *c.Transform
+	Text         *c.Text
+	UITransform  *c.UITransform
 	Paddle       *c.Paddle
 	Ball         *c.Ball
 	Block        *c.Block
 }
 
-type fillData struct {
-	Width  int
-	Height int
-	Color  [4]uint8
-}
-
-type spriteRenderData struct {
-	Fill            *fillData
-	SpriteSheetName string `toml:"sprite_sheet_name"`
-	SpriteNumber    int    `toml:"sprite_number"`
-}
-
 type componentListData struct {
 	SpriteRender *spriteRenderData
 	Transform    *c.Transform
+	Text         *textData
+	UITransform  *c.UITransform
 	Paddle       *c.Paddle
 	Ball         *c.Ball
 	Block        *c.Block
@@ -81,10 +75,24 @@ func processComponentsListData(ecsData e.Ecs, data componentListData) componentL
 	return componentList{
 		SpriteRender: processSpriteRenderData(ecsData, data.SpriteRender),
 		Transform:    data.Transform,
+		Text:         processTextData(ecsData, data.Text),
+		UITransform:  data.UITransform,
 		Paddle:       data.Paddle,
 		Ball:         data.Ball,
 		Block:        data.Block,
 	}
+}
+
+type fillData struct {
+	Width  int
+	Height int
+	Color  [4]uint8
+}
+
+type spriteRenderData struct {
+	Fill            *fillData
+	SpriteSheetName string `toml:"sprite_sheet_name"`
+	SpriteNumber    int    `toml:"sprite_number"`
 }
 
 func processSpriteRenderData(ecsData e.Ecs, spriteRenderData *spriteRenderData) *c.SpriteRender {
@@ -111,6 +119,7 @@ func processSpriteRenderData(ecsData e.Ecs, spriteRenderData *spriteRenderData) 
 	// Sprite is a colored rectangle
 	textureImage, err := ebiten.NewImage(spriteRenderData.Fill.Width, spriteRenderData.Fill.Height, ebiten.FilterNearest)
 	utils.LogError(err)
+
 	textureImage.Fill(color.RGBA{
 		R: spriteRenderData.Fill.Color[0],
 		G: spriteRenderData.Fill.Color[1],
@@ -124,5 +133,61 @@ func processSpriteRenderData(ecsData e.Ecs, spriteRenderData *spriteRenderData) 
 			Sprites: []c.Sprite{c.Sprite{X: 0, Y: 0, Width: spriteRenderData.Fill.Width, Height: spriteRenderData.Fill.Height}},
 		},
 		SpriteNumber: 0,
+	}
+}
+
+type fontFaceOptions struct {
+	Size              float64
+	DPI               float64
+	Hinting           string
+	GlyphCacheEntries int `toml:"glyph_cache_entries"`
+	SubPixelsX        int `toml:"sub_pixels_x"`
+	SubPixelsY        int `toml:"sub_pixels_y"`
+}
+
+var hintingMap = map[string]font.Hinting{
+	"":         font.HintingNone,
+	"None":     font.HintingNone,
+	"Vertical": font.HintingVertical,
+	"Full":     font.HintingFull,
+}
+
+type fontFaceData struct {
+	Font    string
+	Options fontFaceOptions
+}
+
+type textData struct {
+	ID       string
+	Text     string
+	FontFace fontFaceData `toml:"font_face"`
+	Color    [4]uint8
+}
+
+func processTextData(ecsData e.Ecs, textData *textData) *c.Text {
+	if textData == nil {
+		return nil
+	}
+
+	// Search font from its name
+	textFont, ok := (*ecsData.Resources.Fonts)[textData.FontFace.Font]
+	if !ok {
+		utils.LogError(fmt.Errorf("unable to find font with name '%s'", textData.FontFace.Font))
+	}
+
+	options := &truetype.Options{
+		Size:              textData.FontFace.Options.Size,
+		DPI:               textData.FontFace.Options.DPI,
+		Hinting:           hintingMap[textData.FontFace.Options.Hinting],
+		GlyphCacheEntries: textData.FontFace.Options.GlyphCacheEntries,
+		SubPixelsX:        textData.FontFace.Options.SubPixelsX,
+		SubPixelsY:        textData.FontFace.Options.SubPixelsY,
+	}
+
+	return &c.Text{
+		ID:       textData.ID,
+		Text:     textData.Text,
+		FontFace: truetype.NewFace(textFont.Font, options),
+		Color:    color.RGBA{R: textData.Color[0], G: textData.Color[1], B: textData.Color[2], A: textData.Color[3]},
 	}
 }

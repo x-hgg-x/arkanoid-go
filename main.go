@@ -9,6 +9,7 @@ import (
 	g "arkanoid/lib/systems/game"
 	i "arkanoid/lib/systems/input"
 	s "arkanoid/lib/systems/sprite"
+	u "arkanoid/lib/systems/ui"
 	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
@@ -38,7 +39,8 @@ func (game mainGame) Update(screen *ebiten.Image) error {
 	g.MovePaddleSystem(game.ecs)
 
 	s.TransformSystem(game.ecs)
-	s.RenderSystem(game.ecs, screen)
+	s.RenderSpriteSystem(game.ecs, screen)
+	u.RenderUISystem(game.ecs, screen)
 
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		os.Exit(0)
@@ -70,6 +72,10 @@ func main() {
 	// Load game entities
 	loader.LoadEntities("assets/metadata/entities/background.toml", ecsData)
 	loader.LoadEntities("assets/metadata/entities/game.toml", ecsData)
+
+	// Load score and life entities
+	loader.LoadEntities("assets/metadata/entities/ui/score.toml", ecsData)
+	loader.LoadEntities("assets/metadata/entities/ui/life.toml", ecsData)
 
 	ebiten.SetWindowResizable(true)
 	ebiten.SetWindowSize(windowWidth, windowHeight)
