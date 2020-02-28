@@ -36,3 +36,10 @@ type UITransform struct {
 	// Pivot defines the position of the element relative to its translation (default is Middle).
 	Pivot string
 }
+
+// MouseReactive component
+type MouseReactive struct {
+	ID          string
+	Hovered     bool
+	JustClicked bool
+}

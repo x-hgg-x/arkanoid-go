@@ -34,7 +34,12 @@ func (game mainGame) Update(screen *ebiten.Image) error {
 		return nil
 	}
 
+	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
+		os.Exit(0)
+	}
+
 	i.InputSystem(game.ecs)
+	u.UISystem(game.ecs)
 
 	g.MovePaddleSystem(game.ecs)
 
@@ -42,9 +47,6 @@ func (game mainGame) Update(screen *ebiten.Image) error {
 	s.RenderSpriteSystem(game.ecs, screen)
 	u.RenderUISystem(game.ecs, screen)
 
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
-		os.Exit(0)
-	}
 	return nil
 }
 
