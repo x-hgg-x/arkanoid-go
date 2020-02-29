@@ -1,15 +1,10 @@
 package main
 
 import (
-	"os"
-
 	e "arkanoid/lib/ecs"
 	"arkanoid/lib/loader"
 	"arkanoid/lib/resources"
-	g "arkanoid/lib/systems/game"
-	i "arkanoid/lib/systems/input"
-	s "arkanoid/lib/systems/sprite"
-	u "arkanoid/lib/systems/ui"
+	"arkanoid/lib/states"
 	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
@@ -21,32 +16,21 @@ const (
 )
 
 type mainGame struct {
-	ecs e.Ecs
+	ecs          e.Ecs
+	stateMachine states.StateMachine
 }
 
-func (game mainGame) Layout(outsideWidth, outsideHeight int) (int, int) {
+func (game *mainGame) Layout(outsideWidth, outsideHeight int) (int, int) {
 	ebiten.SetWindowSize(outsideWidth, outsideHeight)
 	return windowWidth, windowHeight
 }
 
-func (game mainGame) Update(screen *ebiten.Image) error {
+func (game *mainGame) Update(screen *ebiten.Image) error {
 	if ebiten.IsDrawingSkipped() {
 		return nil
 	}
 
-	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
-		os.Exit(0)
-	}
-
-	i.InputSystem(game.ecs)
-	u.UISystem(game.ecs)
-
-	g.MovePaddleSystem(game.ecs)
-
-	s.TransformSystem(game.ecs)
-	s.RenderSpriteSystem(game.ecs, screen)
-	u.RenderUISystem(game.ecs, screen)
-
+	game.stateMachine.Update(game.ecs, screen)
 	return nil
 }
 
@@ -71,17 +55,9 @@ func main() {
 	fonts := loader.LoadFonts("assets/metadata/fonts/fonts.toml")
 	ecsData.Resources.Fonts = &fonts
 
-	// Load game entities
-	loader.LoadEntities("assets/metadata/entities/background.toml", ecsData)
-	loader.LoadEntities("assets/metadata/entities/game.toml", ecsData)
-
-	// Load score and life entities
-	loader.LoadEntities("assets/metadata/entities/ui/score.toml", ecsData)
-	loader.LoadEntities("assets/metadata/entities/ui/life.toml", ecsData)
-
 	ebiten.SetWindowResizable(true)
 	ebiten.SetWindowSize(windowWidth, windowHeight)
 	ebiten.SetWindowTitle("Arkanoid")
 
-	utils.LogError(ebiten.RunGame(mainGame{ecsData}))
+	utils.LogError(ebiten.RunGame(&mainGame{ecsData, states.Init(&states.GameplayState{}, ecsData)}))
 }
