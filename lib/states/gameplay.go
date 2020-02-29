@@ -1,7 +1,7 @@
 package states
 
 import (
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
 	"arkanoid/lib/loader"
 	g "arkanoid/lib/systems/game"
 	i "arkanoid/lib/systems/input"
@@ -14,29 +14,29 @@ import (
 // GameplayState is the main game state
 type GameplayState struct{}
 
-func (state *GameplayState) onPause(ecs e.Ecs)  {}
-func (state *GameplayState) onResume(ecs e.Ecs) {}
-func (state *GameplayState) onStop(ecs e.Ecs)   {}
+func (state *GameplayState) onPause(world ecs.World)  {}
+func (state *GameplayState) onResume(world ecs.World) {}
+func (state *GameplayState) onStop(world ecs.World)   {}
 
-func (state *GameplayState) onStart(ecs e.Ecs) {
+func (state *GameplayState) onStart(world ecs.World) {
 	// Load game entities
-	loader.LoadEntities("assets/metadata/entities/background.toml", ecs)
-	loader.LoadEntities("assets/metadata/entities/game.toml", ecs)
+	loader.LoadEntities("assets/metadata/entities/background.toml", world)
+	loader.LoadEntities("assets/metadata/entities/game.toml", world)
 
 	// Load ui entities
-	loader.LoadEntities("assets/metadata/entities/ui/score.toml", ecs)
-	loader.LoadEntities("assets/metadata/entities/ui/life.toml", ecs)
+	loader.LoadEntities("assets/metadata/entities/ui/score.toml", world)
+	loader.LoadEntities("assets/metadata/entities/ui/life.toml", world)
 }
 
-func (state *GameplayState) update(ecs e.Ecs, screen *ebiten.Image) transition {
-	i.InputSystem(ecs)
-	u.UISystem(ecs)
+func (state *GameplayState) update(world ecs.World, screen *ebiten.Image) transition {
+	i.InputSystem(world)
+	u.UISystem(world)
 
-	g.MovePaddleSystem(ecs)
+	g.MovePaddleSystem(world)
 
-	s.TransformSystem(ecs)
-	s.RenderSpriteSystem(ecs, screen)
-	u.RenderUISystem(ecs, screen)
+	s.TransformSystem(world)
+	s.RenderSpriteSystem(world, screen)
+	u.RenderUISystem(world, screen)
 
 	return transition{}
 }

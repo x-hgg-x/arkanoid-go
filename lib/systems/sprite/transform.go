@@ -2,15 +2,15 @@ package spritesystem
 
 import (
 	c "arkanoid/lib/components"
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
 )
 
 // TransformSystem updates geometry matrix.
 // Geometry matrix is first rotated, then scaled, and finally translated.
-func TransformSystem(ecs e.Ecs) {
-	for _, result := range ecs.Views.SpriteView.Get() {
-		sprite := result.Components[ecs.Components.SpriteRender].(*c.SpriteRender)
-		transform := result.Components[ecs.Components.Transform].(*c.Transform)
+func TransformSystem(world ecs.World) {
+	for _, result := range world.Views.SpriteView.Get() {
+		sprite := result.Components[world.Components.SpriteRender].(*c.SpriteRender)
+		transform := result.Components[world.Components.Transform].(*c.Transform)
 
 		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Width)
 		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Height)
@@ -26,7 +26,7 @@ func TransformSystem(ecs e.Ecs) {
 		sprite.Options.GeoM.Scale(transform.Scale1.X+1, transform.Scale1.Y+1)
 
 		// Perform translation
-		screenHeight := float64(ecs.Resources.ScreenDimensions.Height)
+		screenHeight := float64(world.Resources.ScreenDimensions.Height)
 		sprite.Options.GeoM.Translate(transform.Translation.X, screenHeight-transform.Translation.Y)
 	}
 }

@@ -6,7 +6,7 @@ import (
 	"sort"
 
 	c "arkanoid/lib/components"
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
 	m "arkanoid/lib/math"
 
 	"github.com/hajimehoshi/ebiten"
@@ -20,15 +20,15 @@ type spriteTransform struct {
 // RenderSpriteSystem draws images.
 // Images are drawn in ascending order of depth.
 // Images with higher depth are thus drawn above images with lower depth.
-func RenderSpriteSystem(ecs e.Ecs, screen *ebiten.Image) {
-	spriteQuery := ecs.Views.SpriteView.Get()
+func RenderSpriteSystem(world ecs.World, screen *ebiten.Image) {
+	spriteQuery := world.Views.SpriteView.Get()
 
 	// Copy query slice into a struct slice for sorting
 	spritesTransforms := make([]spriteTransform, len(spriteQuery))
 	for iQuery, result := range spriteQuery {
 		spritesTransforms[iQuery] = spriteTransform{
-			sprite:    result.Components[ecs.Components.SpriteRender].(*c.SpriteRender),
-			transform: result.Components[ecs.Components.Transform].(*c.Transform),
+			sprite:    result.Components[world.Components.SpriteRender].(*c.SpriteRender),
+			transform: result.Components[world.Components.Transform].(*c.Transform),
 		}
 	}
 

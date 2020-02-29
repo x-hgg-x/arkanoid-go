@@ -1,10 +1,11 @@
 package uisystem
 
 import (
-	c "arkanoid/lib/components"
-	e "arkanoid/lib/ecs"
-	"arkanoid/lib/utils"
 	"fmt"
+
+	c "arkanoid/lib/components"
+	"arkanoid/lib/ecs"
+	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/text"
@@ -12,10 +13,10 @@ import (
 )
 
 // RenderUISystem draws text entities
-func RenderUISystem(ecs e.Ecs, screen *ebiten.Image) {
-	for _, result := range ecs.Views.TextView.Get() {
-		textData := result.Components[ecs.Components.Text].(*c.Text)
-		uiTransform := result.Components[ecs.Components.UITransform].(*c.UITransform)
+func RenderUISystem(world ecs.World, screen *ebiten.Image) {
+	for _, result := range world.Views.TextView.Get() {
+		textData := result.Components[world.Components.Text].(*c.Text)
+		uiTransform := result.Components[world.Components.UITransform].(*c.UITransform)
 
 		bounds, _ := font.BoundString(textData.FontFace, textData.Text)
 		centerX := ((bounds.Min.X + bounds.Max.X) / 2).Round()
@@ -49,7 +50,7 @@ func RenderUISystem(ecs e.Ecs, screen *ebiten.Image) {
 		}
 
 		// Draw text
-		screenHeight := ecs.Resources.ScreenDimensions.Height
+		screenHeight := world.Resources.ScreenDimensions.Height
 		text.Draw(screen, textData.Text, textData.FontFace, uiTransform.Translation.X-x, screenHeight-uiTransform.Translation.Y-y, textData.Color)
 	}
 }

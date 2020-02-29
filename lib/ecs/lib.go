@@ -8,22 +8,22 @@ import (
 	"github.com/ByteArena/ecs"
 )
 
-// Ecs is the main ECS structure
-type Ecs struct {
+// World is the main ECS structure
+type World struct {
 	Manager    *ecs.Manager
 	Components *c.Components
 	Views      *systems.Views
 	Resources  *resources.Resources
 }
 
-// InitEcs initializes the main ECS structure
-func InitEcs() Ecs {
+// InitWorld initializes the world
+func InitWorld() World {
 	manager := ecs.NewManager()
 	components := c.InitComponents(manager)
 	views := systems.InitViews(manager, components)
 	resources := resources.InitResources()
 
-	return Ecs{
+	return World{
 		Manager:    manager,
 		Components: components,
 		Views:      views,

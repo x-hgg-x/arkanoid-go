@@ -47,7 +47,7 @@ type entityMetadata struct {
 }
 
 // LoadEntities creates entities with components from a TOML file
-func LoadEntities(entityMetadataPath string, ecsData e.Ecs) []*ecs.Entity {
+func LoadEntities(entityMetadataPath string, world e.World) []*ecs.Entity {
 	var entityMetadata entityMetadata
 	_, err := toml.DecodeFile(entityMetadataPath, &entityMetadata)
 	utils.LogError(err)
@@ -55,7 +55,7 @@ func LoadEntities(entityMetadataPath string, ecsData e.Ecs) []*ecs.Entity {
 	entities := make([]*ecs.Entity, len(entityMetadata.Entities))
 	for iEntity, entity := range entityMetadata.Entities {
 		// Add components to a new entity
-		entities[iEntity] = addEntityComponents(ecsData.Manager.NewEntity(), ecsData.Components, processComponentsListData(ecsData, entity.Components))
+		entities[iEntity] = addEntityComponents(world.Manager.NewEntity(), world.Components, processComponentsListData(world, entity.Components))
 	}
 	return entities
 }
@@ -73,11 +73,11 @@ func addEntityComponents(entity *ecs.Entity, ecsComponentList *c.Components, com
 	return entity
 }
 
-func processComponentsListData(ecsData e.Ecs, data componentListData) componentList {
+func processComponentsListData(world e.World, data componentListData) componentList {
 	return componentList{
-		SpriteRender:  processSpriteRenderData(ecsData, data.SpriteRender),
+		SpriteRender:  processSpriteRenderData(world, data.SpriteRender),
 		Transform:     data.Transform,
-		Text:          processTextData(ecsData, data.Text),
+		Text:          processTextData(world, data.Text),
 		UITransform:   data.UITransform,
 		MouseReactive: data.MouseReactive,
 		Paddle:        data.Paddle,
@@ -98,7 +98,7 @@ type spriteRenderData struct {
 	SpriteNumber    int    `toml:"sprite_number"`
 }
 
-func processSpriteRenderData(ecsData e.Ecs, spriteRenderData *spriteRenderData) *c.SpriteRender {
+func processSpriteRenderData(world e.World, spriteRenderData *spriteRenderData) *c.SpriteRender {
 	if spriteRenderData == nil {
 		return nil
 	}
@@ -109,7 +109,7 @@ func processSpriteRenderData(ecsData e.Ecs, spriteRenderData *spriteRenderData) 
 	// Sprite is included in sprite sheet
 	if spriteRenderData.SpriteSheetName != "" {
 		// Add reference to sprite sheet from its name
-		spriteSheet, ok := (*ecsData.Resources.SpriteSheets)[spriteRenderData.SpriteSheetName]
+		spriteSheet, ok := (*world.Resources.SpriteSheets)[spriteRenderData.SpriteSheetName]
 		if !ok {
 			utils.LogError(fmt.Errorf("unable to find sprite sheet with name '%s'", spriteRenderData.SpriteSheetName))
 		}
@@ -167,13 +167,13 @@ type textData struct {
 	Color    [4]uint8
 }
 
-func processTextData(ecsData e.Ecs, textData *textData) *c.Text {
+func processTextData(world e.World, textData *textData) *c.Text {
 	if textData == nil {
 		return nil
 	}
 
 	// Search font from its name
-	textFont, ok := (*ecsData.Resources.Fonts)[textData.FontFace.Font]
+	textFont, ok := (*world.Resources.Fonts)[textData.FontFace.Font]
 	if !ok {
 		utils.LogError(fmt.Errorf("unable to find font with name '%s'", textData.FontFace.Font))
 	}

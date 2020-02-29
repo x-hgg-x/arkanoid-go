@@ -3,24 +3,24 @@ package inputsystem
 import (
 	"math"
 
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
 	"arkanoid/lib/resources"
 
 	"github.com/hajimehoshi/ebiten"
 )
 
 // InputSystem updates input axis values and actions
-func InputSystem(ecs e.Ecs) {
-	for k, v := range ecs.Resources.Controls.Axes {
-		ecs.Resources.InputHandler.Axes[k] = getAxisValue(ecs, v)
+func InputSystem(world ecs.World) {
+	for k, v := range world.Resources.Controls.Axes {
+		world.Resources.InputHandler.Axes[k] = getAxisValue(world, v)
 	}
 
-	for k, v := range ecs.Resources.Controls.Actions {
-		ecs.Resources.InputHandler.Actions[k] = isActionDone(v)
+	for k, v := range world.Resources.Controls.Actions {
+		world.Resources.InputHandler.Actions[k] = isActionDone(v)
 	}
 }
 
-func getAxisValue(ecs e.Ecs, axis resources.Axis) float64 {
+func getAxisValue(world ecs.World, axis resources.Axis) float64 {
 	axisValue := 0.0
 
 	switch axis.Type {
@@ -47,8 +47,8 @@ func getAxisValue(ecs e.Ecs, axis resources.Axis) float64 {
 			axisValue *= -1
 		}
 	case "MouseAxis":
-		screenWidth := float64(ecs.Resources.ScreenDimensions.Width)
-		screenHeight := float64(ecs.Resources.ScreenDimensions.Height)
+		screenWidth := float64(world.Resources.ScreenDimensions.Width)
+		screenHeight := float64(world.Resources.ScreenDimensions.Height)
 
 		x, y := ebiten.CursorPosition()
 		switch axis.MouseAxis.Axis {

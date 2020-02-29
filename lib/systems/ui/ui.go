@@ -2,20 +2,20 @@ package uisystem
 
 import (
 	c "arkanoid/lib/components"
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/inpututil"
 )
 
 // UISystem sets mouse reactive components
-func UISystem(ecs e.Ecs) {
-	for _, result := range ecs.Views.MouseReactive.Get() {
-		sprite := result.Components[ecs.Components.SpriteRender].(*c.SpriteRender)
-		transform := result.Components[ecs.Components.Transform].(*c.Transform)
-		mouseReactive := result.Components[ecs.Components.MouseReactive].(*c.MouseReactive)
+func UISystem(world ecs.World) {
+	for _, result := range world.Views.MouseReactive.Get() {
+		sprite := result.Components[world.Components.SpriteRender].(*c.SpriteRender)
+		transform := result.Components[world.Components.Transform].(*c.Transform)
+		mouseReactive := result.Components[world.Components.MouseReactive].(*c.MouseReactive)
 
-		screenHeight := float64(ecs.Resources.ScreenDimensions.Height)
+		screenHeight := float64(world.Resources.ScreenDimensions.Height)
 
 		spriteWidth := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Width)
 		spriteHeight := float64(sprite.SpriteSheet.Sprites[sprite.SpriteNumber].Height)
