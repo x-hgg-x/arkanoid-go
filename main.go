@@ -59,5 +59,5 @@ func main() {
 	ebiten.SetWindowSize(windowWidth, windowHeight)
 	ebiten.SetWindowTitle("Arkanoid")
 
-	utils.LogError(ebiten.RunGame(&mainGame{world, states.Init(&states.GameplayState{}, world)}))
+	utils.LogError(ebiten.RunGame(&mainGame{world, states.Init(&states.MainMenuState{}, world)}))
 }

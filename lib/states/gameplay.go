@@ -14,11 +14,11 @@ import (
 // GameplayState is the main game state
 type GameplayState struct{}
 
-func (state *GameplayState) onPause(world ecs.World)  {}
-func (state *GameplayState) onResume(world ecs.World) {}
-func (state *GameplayState) onStop(world ecs.World)   {}
+func (st *GameplayState) onPause(world ecs.World)  {}
+func (st *GameplayState) onResume(world ecs.World) {}
+func (st *GameplayState) onStop(world ecs.World)   {}
 
-func (state *GameplayState) onStart(world ecs.World) {
+func (st *GameplayState) onStart(world ecs.World) {
 	// Load game entities
 	loader.LoadEntities("assets/metadata/entities/background.toml", world)
 	loader.LoadEntities("assets/metadata/entities/game.toml", world)
@@ -28,7 +28,7 @@ func (state *GameplayState) onStart(world ecs.World) {
 	loader.LoadEntities("assets/metadata/entities/ui/life.toml", world)
 }
 
-func (state *GameplayState) update(world ecs.World, screen *ebiten.Image) transition {
+func (st *GameplayState) update(world ecs.World, screen *ebiten.Image) transition {
 	i.InputSystem(world)
 	u.UISystem(world)
 
