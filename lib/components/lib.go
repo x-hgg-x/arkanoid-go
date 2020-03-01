@@ -15,6 +15,7 @@ type Components struct {
 	MouseReactive *ecs.Component
 	Paddle        *ecs.Component
 	Ball          *ecs.Component
+	StickyBall    *ecs.Component
 	Block         *ecs.Component
 }
 

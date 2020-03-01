@@ -24,6 +24,7 @@ type componentList struct {
 	MouseReactive *c.MouseReactive
 	Paddle        *c.Paddle
 	Ball          *c.Ball
+	StickyBall    *c.StickyBall
 	Block         *c.Block
 }
 
@@ -35,6 +36,7 @@ type componentListData struct {
 	MouseReactive *c.MouseReactive
 	Paddle        *c.Paddle
 	Ball          *c.Ball
+	StickyBall    *c.StickyBall
 	Block         *c.Block
 }
 
@@ -82,6 +84,7 @@ func processComponentsListData(world e.World, data componentListData) componentL
 		MouseReactive: data.MouseReactive,
 		Paddle:        data.Paddle,
 		Ball:          data.Ball,
+		StickyBall:    data.StickyBall,
 		Block:         data.Block,
 	}
 }

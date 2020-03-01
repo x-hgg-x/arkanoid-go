@@ -28,6 +28,6 @@ func MovePaddleSystem(world ecs.World) {
 
 		minValue := paddle.Width / 2
 		maxValue := float64(world.Resources.ScreenDimensions.Width) - paddle.Width/2
-		transform.Translation.X = math.Min(math.Max(float64(paddleX), minValue), maxValue)
+		transform.Translation.X = math.Min(math.Max(paddleX, minValue), maxValue)
 	}
 }
