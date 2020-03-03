@@ -5,6 +5,7 @@ import (
 
 	c "arkanoid/lib/components"
 	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
@@ -13,10 +14,10 @@ import (
 )
 
 // RenderUISystem draws text entities
-func RenderUISystem(world ecs.World, screen *ebiten.Image) {
-	for _, result := range world.Views.TextView.Get() {
-		textData := result.Components[world.Components.Text].(*c.Text)
-		uiTransform := result.Components[world.Components.UITransform].(*c.UITransform)
+func RenderUISystem(world w.World, screen *ebiten.Image) {
+	ecs.Join(world.Components.Text, world.Components.UITransform).Visit(ecs.Visit(func(index int) {
+		textData := world.Components.Text.Get(index).(*c.Text)
+		uiTransform := world.Components.UITransform.Get(index).(*c.UITransform)
 
 		bounds, _ := font.BoundString(textData.FontFace, textData.Text)
 		centerX := ((bounds.Min.X + bounds.Max.X) / 2).Round()
@@ -52,5 +53,5 @@ func RenderUISystem(world ecs.World, screen *ebiten.Image) {
 		// Draw text
 		screenHeight := world.Resources.ScreenDimensions.Height
 		text.Draw(screen, textData.Text, textData.FontFace, uiTransform.Translation.X-x, screenHeight-uiTransform.Translation.Y-y, textData.Color)
-	}
+	}))
 }

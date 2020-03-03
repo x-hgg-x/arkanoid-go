@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
@@ -34,15 +34,15 @@ type transition struct {
 
 type state interface {
 	// Executed when the state begins
-	onStart(world ecs.World)
+	onStart(world w.World)
 	// Executed when the state exits
-	onStop(world ecs.World)
+	onStop(world w.World)
 	// Executed when a new state is pushed over this one
-	onPause(world ecs.World)
+	onPause(world w.World)
 	// Executed when the state become active again (states pushed over this one have been popped)
-	onResume(world ecs.World)
+	onResume(world w.World)
 	// Executed on every frame when the state is active
-	update(world ecs.World, screen *ebiten.Image) transition
+	update(world w.World, screen *ebiten.Image) transition
 }
 
 // StateMachine contains a stack of states.
@@ -52,13 +52,13 @@ type StateMachine struct {
 }
 
 // Init creates a new state machine with an initial state
-func Init(s state, world ecs.World) StateMachine {
+func Init(s state, world w.World) StateMachine {
 	s.onStart(world)
 	return StateMachine{[]state{s}}
 }
 
 // Update updates the state machine
-func (sm *StateMachine) Update(world ecs.World, screen *ebiten.Image) {
+func (sm *StateMachine) Update(world w.World, screen *ebiten.Image) {
 	if len(sm.states) < 1 {
 		os.Exit(0)
 	}
@@ -78,7 +78,7 @@ func (sm *StateMachine) Update(world ecs.World, screen *ebiten.Image) {
 }
 
 // Remove the active state and resume the next state
-func (sm *StateMachine) _Pop(world ecs.World) {
+func (sm *StateMachine) _Pop(world w.World) {
 	sm.states[len(sm.states)-1].onStop(world)
 	sm.states = sm.states[:len(sm.states)-1]
 
@@ -88,7 +88,7 @@ func (sm *StateMachine) _Pop(world ecs.World) {
 }
 
 // Pause the active state and add new states to the stack
-func (sm *StateMachine) _Push(world ecs.World, newStates []state) {
+func (sm *StateMachine) _Push(world w.World, newStates []state) {
 	if len(newStates) > 0 {
 		sm.states[len(sm.states)-1].onPause(world)
 
@@ -103,7 +103,7 @@ func (sm *StateMachine) _Push(world ecs.World, newStates []state) {
 }
 
 // Remove the active state and replace it by a new one
-func (sm *StateMachine) _Switch(world ecs.World, newStates []state) {
+func (sm *StateMachine) _Switch(world w.World, newStates []state) {
 	if len(newStates) != 1 {
 		utils.LogError(fmt.Errorf("switch transition accept only one new state"))
 	}
@@ -114,7 +114,7 @@ func (sm *StateMachine) _Switch(world ecs.World, newStates []state) {
 }
 
 // Remove all states and insert a new stack
-func (sm *StateMachine) _Replace(world ecs.World, newStates []state) {
+func (sm *StateMachine) _Replace(world w.World, newStates []state) {
 	for len(sm.states) > 0 {
 		sm.states[len(sm.states)-1].onStop(world)
 		sm.states = sm.states[:len(sm.states)-1]
@@ -131,7 +131,7 @@ func (sm *StateMachine) _Replace(world ecs.World, newStates []state) {
 }
 
 // Remove all states and quit
-func (sm *StateMachine) _Quit(world ecs.World) {
+func (sm *StateMachine) _Quit(world w.World) {
 	for len(sm.states) > 0 {
 		sm.states[len(sm.states)-1].onStop(world)
 		sm.states = sm.states[:len(sm.states)-1]

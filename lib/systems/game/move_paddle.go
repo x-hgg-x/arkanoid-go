@@ -5,16 +5,17 @@ import (
 
 	c "arkanoid/lib/components"
 	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/resources"
 
 	"github.com/hajimehoshi/ebiten"
 )
 
 // MovePaddleSystem moves paddle
-func MovePaddleSystem(world ecs.World) {
-	for _, result := range world.Views.PaddleView.Get() {
-		paddle := result.Components[world.Components.Paddle].(*c.Paddle)
-		transform := result.Components[world.Components.Transform].(*c.Transform)
+func MovePaddleSystem(world w.World) {
+	ecs.Join(world.Components.Paddle, world.Components.Transform).Visit(ecs.Visit(func(index int) {
+		paddle := world.Components.Paddle.Get(index).(*c.Paddle)
+		transform := world.Components.Transform.Get(index).(*c.Transform)
 
 		screenWidth := float64(world.Resources.ScreenDimensions.Width)
 		paddleX := transform.Translation.X
@@ -29,5 +30,5 @@ func MovePaddleSystem(world ecs.World) {
 		minValue := paddle.Width / 2
 		maxValue := float64(world.Resources.ScreenDimensions.Width) - paddle.Width/2
 		transform.Translation.X = math.Min(math.Max(paddleX, minValue), maxValue)
-	}
+	}))
 }

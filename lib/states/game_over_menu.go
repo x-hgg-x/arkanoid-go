@@ -3,24 +3,25 @@ package states
 import (
 	"fmt"
 
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
 	s "arkanoid/lib/systems/sprite"
 	u "arkanoid/lib/systems/ui"
 
-	"github.com/ByteArena/ecs"
 	"github.com/hajimehoshi/ebiten"
 )
 
 // GameOverState is the game over menu state
 type GameOverState struct {
-	gameOverMenu []*ecs.Entity
+	gameOverMenu []ecs.Entity
 	selection    int
 }
 
 //
 // Menu interface
 //
+
 func (st *GameOverState) getSelection() int {
 	return st.selection
 }
@@ -55,18 +56,19 @@ func (st *GameOverState) getCursorMenuIDs() []string {
 //
 // State interface
 //
-func (st *GameOverState) onPause(world e.World)  {}
-func (st *GameOverState) onResume(world e.World) {}
 
-func (st *GameOverState) onStart(world e.World) {
+func (st *GameOverState) onPause(world w.World)  {}
+func (st *GameOverState) onResume(world w.World) {}
+
+func (st *GameOverState) onStart(world w.World) {
 	st.gameOverMenu = loader.LoadEntities("assets/metadata/entities/ui/game_over_menu.toml", world)
 }
 
-func (st *GameOverState) onStop(world e.World) {
-	world.Manager.DisposeEntities(st.gameOverMenu...)
+func (st *GameOverState) onStop(world w.World) {
+	world.Manager.DeleteEntities(st.gameOverMenu...)
 }
 
-func (st *GameOverState) update(world e.World, screen *ebiten.Image) transition {
+func (st *GameOverState) update(world w.World, screen *ebiten.Image) transition {
 	u.UISystem(world)
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)

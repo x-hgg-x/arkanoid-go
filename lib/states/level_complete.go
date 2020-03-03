@@ -3,24 +3,25 @@ package states
 import (
 	"fmt"
 
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
 	s "arkanoid/lib/systems/sprite"
 	u "arkanoid/lib/systems/ui"
 
-	"github.com/ByteArena/ecs"
 	"github.com/hajimehoshi/ebiten"
 )
 
 // LevelCompleteState is the level complete menu state
 type LevelCompleteState struct {
-	levelCompleteMenu []*ecs.Entity
+	levelCompleteMenu []ecs.Entity
 	selection         int
 }
 
 //
 // Menu interface
 //
+
 func (st *LevelCompleteState) getSelection() int {
 	return st.selection
 }
@@ -49,18 +50,19 @@ func (st *LevelCompleteState) getCursorMenuIDs() []string {
 //
 // State interface
 //
-func (st *LevelCompleteState) onPause(world e.World)  {}
-func (st *LevelCompleteState) onResume(world e.World) {}
 
-func (st *LevelCompleteState) onStart(world e.World) {
+func (st *LevelCompleteState) onPause(world w.World)  {}
+func (st *LevelCompleteState) onResume(world w.World) {}
+
+func (st *LevelCompleteState) onStart(world w.World) {
 	st.levelCompleteMenu = loader.LoadEntities("assets/metadata/entities/ui/level_complete_menu.toml", world)
 }
 
-func (st *LevelCompleteState) onStop(world e.World) {
-	world.Manager.DisposeEntities(st.levelCompleteMenu...)
+func (st *LevelCompleteState) onStop(world w.World) {
+	world.Manager.DeleteEntities(st.levelCompleteMenu...)
 }
 
-func (st *LevelCompleteState) update(world e.World, screen *ebiten.Image) transition {
+func (st *LevelCompleteState) update(world w.World, screen *ebiten.Image) transition {
 	u.UISystem(world)
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)

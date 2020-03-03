@@ -5,6 +5,7 @@ import (
 
 	c "arkanoid/lib/components"
 	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	m "arkanoid/lib/math"
 	"arkanoid/lib/resources"
 
@@ -14,20 +15,23 @@ import (
 var stickyBallFrame = 0
 
 // StickyBallSystem moves sticky ball with paddle
-func StickyBallSystem(world ecs.World) {
+func StickyBallSystem(world w.World) {
 	stickyBallFrame++
 
-	if len(world.Views.PaddleView.Get()) < 1 {
+	paddles := ecs.Join(world.Components.Paddle, world.Components.Transform)
+	if paddles.Empty() {
 		return
 	}
-	paddleComponents := world.Views.PaddleView.Get()[0].Components
-	paddleWidth := paddleComponents[world.Components.Paddle].(*c.Paddle).Width
-	paddleX := paddleComponents[world.Components.Transform].(*c.Transform).Translation.X
+	firstPaddle := paddles.Next(-1)
+	paddleWidth := world.Components.Paddle.Get(firstPaddle).(*c.Paddle).Width
+	paddleX := world.Components.Transform.Get(firstPaddle).(*c.Transform).Translation.X
 
-	for _, result := range world.Views.StickyBallView.Get() {
-		ball := result.Components[world.Components.Ball].(*c.Ball)
-		stickyBall := result.Components[world.Components.StickyBall].(*c.StickyBall)
-		ballTransform := result.Components[world.Components.Transform].(*c.Transform)
+	stickyBalls := ecs.Join(world.Components.Ball, world.Components.StickyBall, world.Components.Transform)
+
+	stickyBalls.Visit(ecs.Visit(func(index int) {
+		ball := world.Components.Ball.Get(index).(*c.Ball)
+		stickyBall := world.Components.StickyBall.Get(index).(*c.StickyBall)
+		ballTransform := world.Components.Transform.Get(index).(*c.Transform)
 
 		// Follow paddle
 		translationMinValue := ball.Radius / 2
@@ -42,11 +46,11 @@ func StickyBallSystem(world ecs.World) {
 		angleMaxValue := math.Pi / 3
 		angle := math.Min(math.Max((paddleX-ballTransform.Translation.X)/paddleWidth*math.Pi, angleMinValue), angleMaxValue)
 		ball.Direction = m.Vector2{X: math.Sin(-angle), Y: math.Cos(angle)}
-	}
+	}))
 
 	if world.Resources.InputHandler.Actions[resources.ReleaseBallAction] {
-		for _, result := range world.Views.StickyBallView.Get() {
-			result.Entity.RemoveComponent(world.Components.StickyBall)
-		}
+		stickyBalls.Visit(ecs.Visit(func(index int) {
+			ecs.Entity(index).RemoveComponent(world.Components.StickyBall)
+		}))
 	}
 }

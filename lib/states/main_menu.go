@@ -3,24 +3,25 @@ package states
 import (
 	"fmt"
 
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
 	s "arkanoid/lib/systems/sprite"
 	u "arkanoid/lib/systems/ui"
 
-	"github.com/ByteArena/ecs"
 	"github.com/hajimehoshi/ebiten"
 )
 
 // MainMenuState is the main menu state
 type MainMenuState struct {
-	mainMenu  []*ecs.Entity
+	mainMenu  []ecs.Entity
 	selection int
 }
 
 //
 // Menu interface
 //
+
 func (st *MainMenuState) getSelection() int {
 	return st.selection
 }
@@ -52,18 +53,19 @@ func (st *MainMenuState) getCursorMenuIDs() []string {
 //
 // State interface
 //
-func (st *MainMenuState) onPause(world e.World)  {}
-func (st *MainMenuState) onResume(world e.World) {}
 
-func (st *MainMenuState) onStart(world e.World) {
+func (st *MainMenuState) onPause(world w.World)  {}
+func (st *MainMenuState) onResume(world w.World) {}
+
+func (st *MainMenuState) onStart(world w.World) {
 	st.mainMenu = loader.LoadEntities("assets/metadata/entities/ui/main_menu.toml", world)
 }
 
-func (st *MainMenuState) onStop(world e.World) {
-	world.Manager.DisposeEntities(st.mainMenu...)
+func (st *MainMenuState) onStop(world w.World) {
+	world.Manager.DeleteEntities(st.mainMenu...)
 }
 
-func (st *MainMenuState) update(world e.World, screen *ebiten.Image) transition {
+func (st *MainMenuState) update(world w.World, screen *ebiten.Image) transition {
 	u.UISystem(world)
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
 	"arkanoid/lib/resources"
 	"arkanoid/lib/states"
@@ -16,7 +16,7 @@ const (
 )
 
 type mainGame struct {
-	world        ecs.World
+	world        w.World
 	stateMachine states.StateMachine
 }
 
@@ -35,7 +35,7 @@ func (game *mainGame) Update(screen *ebiten.Image) error {
 }
 
 func main() {
-	world := ecs.InitWorld()
+	world := w.InitWorld()
 
 	// Init screen dimensions
 	world.Resources.ScreenDimensions = &resources.ScreenDimensions{Width: windowWidth, Height: windowHeight}

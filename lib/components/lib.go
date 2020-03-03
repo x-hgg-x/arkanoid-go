@@ -3,7 +3,7 @@ package components
 import (
 	"reflect"
 
-	"github.com/ByteArena/ecs"
+	"arkanoid/lib/ecs"
 )
 
 // Components contains references to all components

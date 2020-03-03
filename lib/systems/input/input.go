@@ -3,14 +3,14 @@ package inputsystem
 import (
 	"math"
 
-	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/resources"
 
 	"github.com/hajimehoshi/ebiten"
 )
 
 // InputSystem updates input axis values and actions
-func InputSystem(world ecs.World) {
+func InputSystem(world w.World) {
 	for k, v := range world.Resources.Controls.Axes {
 		world.Resources.InputHandler.Axes[k] = getAxisValue(world, v)
 	}
@@ -20,7 +20,7 @@ func InputSystem(world ecs.World) {
 	}
 }
 
-func getAxisValue(world ecs.World, axis resources.Axis) float64 {
+func getAxisValue(world w.World, axis resources.Axis) float64 {
 	axisValue := 0.0
 
 	switch axis.Type {

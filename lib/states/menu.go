@@ -3,6 +3,7 @@ package states
 import (
 	c "arkanoid/lib/components"
 	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/math"
 
 	"github.com/hajimehoshi/ebiten"
@@ -17,7 +18,8 @@ type menu interface {
 	getCursorMenuIDs() []string
 }
 
-func updateMenu(menu menu, world ecs.World) transition {
+func updateMenu(menu menu, world w.World) transition {
+	var transition transition
 	selection := menu.getSelection()
 	numItems := len(menu.getCursorMenuIDs())
 
@@ -33,30 +35,34 @@ func updateMenu(menu menu, world ecs.World) transition {
 
 	// Handle mouse events
 	for iElem, id := range menu.getMenuIDs() {
-		for _, result := range world.Views.MouseReactive.Get() {
-			mouseReactive := result.Components[world.Components.MouseReactive].(*c.MouseReactive)
-			if mouseReactive.ID == id && mouseReactive.Hovered {
-				menu.setSelection(iElem)
-				if mouseReactive.JustClicked {
-					return menu.confirmSelection()
+		if ecs.Join(world.Components.SpriteRender, world.Components.Transform, world.Components.MouseReactive).Visit(
+			func(index int) (skip bool) {
+				mouseReactive := world.Components.MouseReactive.Get(index).(*c.MouseReactive)
+				if mouseReactive.ID == id && mouseReactive.Hovered {
+					menu.setSelection(iElem)
+					if mouseReactive.JustClicked {
+						transition = menu.confirmSelection()
+						return true
+					}
 				}
-			}
-
+				return false
+			}) {
+			return transition
 		}
 	}
 
 	// Set cursor color
 	newSelection := menu.getSelection()
 	for iCursor, id := range menu.getCursorMenuIDs() {
-		for _, result := range world.Views.TextView.Get() {
-			text := result.Components[world.Components.Text].(*c.Text)
+		ecs.Join(world.Components.Text, world.Components.UITransform).Visit(ecs.Visit(func(index int) {
+			text := world.Components.Text.Get(index).(*c.Text)
 			if text.ID == id {
 				text.Color.A = 0
 				if iCursor == newSelection {
 					text.Color.A = 255
 				}
 			}
-		}
+		}))
 	}
-	return transition{}
+	return transition
 }

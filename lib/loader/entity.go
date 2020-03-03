@@ -6,11 +6,11 @@ import (
 	"reflect"
 
 	c "arkanoid/lib/components"
-	e "arkanoid/lib/ecs"
+	"arkanoid/lib/ecs"
+	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/utils"
 
 	"github.com/BurntSushi/toml"
-	"github.com/ByteArena/ecs"
 	"github.com/golang/freetype/truetype"
 	"github.com/hajimehoshi/ebiten"
 	"golang.org/x/image/font"
@@ -49,12 +49,12 @@ type entityMetadata struct {
 }
 
 // LoadEntities creates entities with components from a TOML file
-func LoadEntities(entityMetadataPath string, world e.World) []*ecs.Entity {
+func LoadEntities(entityMetadataPath string, world w.World) []ecs.Entity {
 	var entityMetadata entityMetadata
 	_, err := toml.DecodeFile(entityMetadataPath, &entityMetadata)
 	utils.LogError(err)
 
-	entities := make([]*ecs.Entity, len(entityMetadata.Entities))
+	entities := make([]ecs.Entity, len(entityMetadata.Entities))
 	for iEntity, entity := range entityMetadata.Entities {
 		// Add components to a new entity
 		entities[iEntity] = addEntityComponents(world.Manager.NewEntity(), world.Components, processComponentsListData(world, entity.Components))
@@ -62,7 +62,7 @@ func LoadEntities(entityMetadataPath string, world e.World) []*ecs.Entity {
 	return entities
 }
 
-func addEntityComponents(entity *ecs.Entity, ecsComponentList *c.Components, components componentList) *ecs.Entity {
+func addEntityComponents(entity ecs.Entity, ecsComponentList *c.Components, components componentList) ecs.Entity {
 	v := reflect.ValueOf(components)
 	for iField := 0; iField < v.NumField(); iField++ {
 		if !v.Field(iField).IsNil() {
@@ -75,7 +75,7 @@ func addEntityComponents(entity *ecs.Entity, ecsComponentList *c.Components, com
 	return entity
 }
 
-func processComponentsListData(world e.World, data componentListData) componentList {
+func processComponentsListData(world w.World, data componentListData) componentList {
 	return componentList{
 		SpriteRender:  processSpriteRenderData(world, data.SpriteRender),
 		Transform:     data.Transform,
@@ -101,7 +101,7 @@ type spriteRenderData struct {
 	SpriteNumber    int    `toml:"sprite_number"`
 }
 
-func processSpriteRenderData(world e.World, spriteRenderData *spriteRenderData) *c.SpriteRender {
+func processSpriteRenderData(world w.World, spriteRenderData *spriteRenderData) *c.SpriteRender {
 	if spriteRenderData == nil {
 		return nil
 	}
@@ -170,7 +170,7 @@ type textData struct {
 	Color    [4]uint8
 }
 
-func processTextData(world e.World, textData *textData) *c.Text {
+func processTextData(world w.World, textData *textData) *c.Text {
 	if textData == nil {
 		return nil
 	}
