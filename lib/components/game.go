@@ -17,8 +17,7 @@ type Ball struct {
 
 // StickyBall component
 type StickyBall struct {
-	WidthExtent float64 `toml:"width_extent"`
-	Period      float64
+	Period float64
 }
 
 // Block component

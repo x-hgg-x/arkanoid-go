@@ -41,6 +41,7 @@ func (st *GameplayState) update(world w.World, screen *ebiten.Image) transition 
 
 	g.MovePaddleSystem(world)
 	g.StickyBallSystem(world)
+	g.MoveBallSystem(world)
 
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)

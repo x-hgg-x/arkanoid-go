@@ -15,10 +15,10 @@ import (
 func MovePaddleSystem(world w.World) {
 	ecs.Join(world.Components.Paddle, world.Components.Transform).Visit(ecs.Visit(func(index int) {
 		paddle := world.Components.Paddle.Get(index).(*c.Paddle)
-		transform := world.Components.Transform.Get(index).(*c.Transform)
+		paddleTransform := world.Components.Transform.Get(index).(*c.Transform)
 
 		screenWidth := float64(world.Resources.ScreenDimensions.Width)
-		paddleX := transform.Translation.X
+		paddleX := paddleTransform.Translation.X
 		axisValue := world.Resources.InputHandler.Axes[resources.PaddleAxis]
 
 		if world.Resources.Controls.Axes[resources.PaddleAxis].Type == "MouseAxis" {
@@ -29,6 +29,6 @@ func MovePaddleSystem(world w.World) {
 
 		minValue := paddle.Width / 2
 		maxValue := float64(world.Resources.ScreenDimensions.Width) - paddle.Width/2
-		transform.Translation.X = math.Min(math.Max(paddleX, minValue), maxValue)
+		paddleTransform.Translation.X = math.Min(math.Max(paddleX, minValue), maxValue)
 	}))
 }

@@ -39,12 +39,10 @@ func StickyBallSystem(world w.World) {
 		ballTransform.Translation.X = math.Min(math.Max(paddleX, translationMinValue), translationMaxValue)
 
 		// Add oscillation
-		ballTransform.Translation.X += stickyBall.WidthExtent / 2 * math.Sin(2*math.Pi*float64(stickyBallFrame)/ebiten.DefaultTPS/stickyBall.Period)
+		ballTransform.Translation.X += paddleWidth / 4 * math.Sin(2*math.Pi*float64(stickyBallFrame)/ebiten.DefaultTPS/stickyBall.Period)
 
 		// Set ball direction
-		angleMinValue := -math.Pi / 3
-		angleMaxValue := math.Pi / 3
-		angle := math.Min(math.Max((paddleX-ballTransform.Translation.X)/paddleWidth*math.Pi, angleMinValue), angleMaxValue)
+		angle := (paddleX - ballTransform.Translation.X) / paddleWidth * math.Pi
 		ball.Direction = m.Vector2{X: math.Sin(-angle), Y: math.Cos(angle)}
 	}))
 
