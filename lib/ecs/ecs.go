@@ -74,7 +74,8 @@ type component interface {
 
 // Join returns tag describing intersection of components
 func Join(components ...component) *bit.Set {
-	tag := components[0]._Tag()
+	tag := &bit.Set{}
+	tag.Set(components[0]._Tag())
 	for _, component := range components[1:] {
 		tag = component._Join(tag)
 	}
@@ -102,7 +103,7 @@ func (c *Component) _Tag() *bit.Set {
 }
 
 func (c *Component) _Join(tag *bit.Set) *bit.Set {
-	return tag.And(&c.tag)
+	return tag.SetAnd(tag, &c.tag)
 }
 
 // AntiComponent is an inverted component used for filtering entities that don't have a component
@@ -115,7 +116,7 @@ func (a *AntiComponent) _Tag() *bit.Set {
 }
 
 func (a *AntiComponent) _Join(tag *bit.Set) *bit.Set {
-	return tag.AndNot(&a.tag)
+	return tag.SetAndNot(tag, &a.tag)
 }
 
 //
