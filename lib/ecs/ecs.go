@@ -63,6 +63,11 @@ func (entity Entity) RemoveComponent(component *Component) Entity {
 	return entity
 }
 
+// HasComponent checks if component has entity
+func (entity Entity) HasComponent(component *Component) bool {
+	return component.tag.Contains(int(entity))
+}
+
 //
 // Component
 //
