@@ -13,9 +13,9 @@ import (
 
 // MovePaddleSystem moves paddle
 func MovePaddleSystem(world w.World) {
-	ecs.Join(world.Components.Paddle, world.Components.Transform).Visit(ecs.Visit(func(index int) {
-		paddle := world.Components.Paddle.Get(index).(*c.Paddle)
-		paddleTransform := world.Components.Transform.Get(index).(*c.Transform)
+	ecs.Join(world.Components.Paddle, world.Components.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		paddle := world.Components.Paddle.Get(entity).(*c.Paddle)
+		paddleTransform := world.Components.Transform.Get(entity).(*c.Transform)
 
 		screenWidth := float64(world.Resources.ScreenDimensions.Width)
 		paddleX := paddleTransform.Translation.X

@@ -15,9 +15,9 @@ import (
 
 // RenderUISystem draws text entities
 func RenderUISystem(world w.World, screen *ebiten.Image) {
-	ecs.Join(world.Components.Text, world.Components.UITransform).Visit(ecs.Visit(func(index int) {
-		textData := world.Components.Text.Get(index).(*c.Text)
-		uiTransform := world.Components.UITransform.Get(index).(*c.UITransform)
+	ecs.Join(world.Components.Text, world.Components.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		textData := world.Components.Text.Get(entity).(*c.Text)
+		uiTransform := world.Components.UITransform.Get(entity).(*c.UITransform)
 
 		bounds, _ := font.BoundString(textData.FontFace, textData.Text)
 		centerX := ((bounds.Min.X + bounds.Max.X) / 2).Round()

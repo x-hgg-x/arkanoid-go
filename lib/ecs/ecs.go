@@ -94,8 +94,8 @@ type Component struct {
 }
 
 // Get returns data corresponding to entity
-func (c *Component) Get(index int) interface{} {
-	return c.data[Entity(index)]
+func (c *Component) Get(entity Entity) interface{} {
+	return c.data[entity]
 }
 
 // Not returns an inverted component used for filtering entities that don't have the component
@@ -129,9 +129,9 @@ func (a *AntiComponent) _Join(tag *bit.Set) *bit.Set {
 //
 
 // Visit is a decorator function for bit.Set.Visit() method
-func Visit(f func(index int)) func(index int) bool {
+func Visit(f func(entity Entity)) func(index int) bool {
 	return func(index int) bool {
-		f(index)
+		f(Entity(index))
 		return false
 	}
 }

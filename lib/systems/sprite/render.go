@@ -27,10 +27,10 @@ func RenderSpriteSystem(world w.World, screen *ebiten.Image) {
 	// Copy query slice into a struct slice for sorting
 	iSprite := 0
 	spritesTransforms := make([]spriteTransform, sprites.Size())
-	sprites.Visit(ecs.Visit(func(index int) {
+	sprites.Visit(ecs.Visit(func(entity ecs.Entity) {
 		spritesTransforms[iSprite] = spriteTransform{
-			sprite:    world.Components.SpriteRender.Get(index).(*c.SpriteRender),
-			transform: world.Components.Transform.Get(index).(*c.Transform),
+			sprite:    world.Components.SpriteRender.Get(entity).(*c.SpriteRender),
+			transform: world.Components.Transform.Get(entity).(*c.Transform),
 		}
 		iSprite++
 	}))

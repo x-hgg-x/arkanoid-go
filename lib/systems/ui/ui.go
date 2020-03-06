@@ -11,10 +11,10 @@ import (
 
 // UISystem sets mouse reactive components
 func UISystem(world w.World) {
-	ecs.Join(world.Components.SpriteRender, world.Components.Transform, world.Components.MouseReactive).Visit(ecs.Visit(func(index int) {
-		sprite := world.Components.SpriteRender.Get(index).(*c.SpriteRender)
-		transform := world.Components.Transform.Get(index).(*c.Transform)
-		mouseReactive := world.Components.MouseReactive.Get(index).(*c.MouseReactive)
+	ecs.Join(world.Components.SpriteRender, world.Components.Transform, world.Components.MouseReactive).Visit(ecs.Visit(func(entity ecs.Entity) {
+		sprite := world.Components.SpriteRender.Get(entity).(*c.SpriteRender)
+		transform := world.Components.Transform.Get(entity).(*c.Transform)
+		mouseReactive := world.Components.MouseReactive.Get(entity).(*c.MouseReactive)
 
 		screenHeight := float64(world.Resources.ScreenDimensions.Height)
 

@@ -22,16 +22,16 @@ func StickyBallSystem(world w.World) {
 	if paddles.Empty() {
 		return
 	}
-	firstPaddle := paddles.Next(-1)
+	firstPaddle := ecs.Entity(paddles.Next(-1))
 	paddleWidth := world.Components.Paddle.Get(firstPaddle).(*c.Paddle).Width
 	paddleX := world.Components.Transform.Get(firstPaddle).(*c.Transform).Translation.X
 
 	stickyBalls := ecs.Join(world.Components.Ball, world.Components.StickyBall, world.Components.Transform)
 
-	stickyBalls.Visit(ecs.Visit(func(index int) {
-		ball := world.Components.Ball.Get(index).(*c.Ball)
-		stickyBall := world.Components.StickyBall.Get(index).(*c.StickyBall)
-		ballTransform := world.Components.Transform.Get(index).(*c.Transform)
+	stickyBalls.Visit(ecs.Visit(func(entity ecs.Entity) {
+		ball := world.Components.Ball.Get(entity).(*c.Ball)
+		stickyBall := world.Components.StickyBall.Get(entity).(*c.StickyBall)
+		ballTransform := world.Components.Transform.Get(entity).(*c.Transform)
 
 		// Follow paddle
 		translationMinValue := ball.Radius / 2
@@ -47,8 +47,8 @@ func StickyBallSystem(world w.World) {
 	}))
 
 	if world.Resources.InputHandler.Actions[resources.ReleaseBallAction] {
-		stickyBalls.Visit(ecs.Visit(func(index int) {
-			ecs.Entity(index).RemoveComponent(world.Components.StickyBall)
+		stickyBalls.Visit(ecs.Visit(func(entity ecs.Entity) {
+			ecs.Entity(entity).RemoveComponent(world.Components.StickyBall)
 		}))
 	}
 }
