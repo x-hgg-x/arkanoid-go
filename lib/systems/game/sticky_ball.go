@@ -31,24 +31,24 @@ func StickyBallSystem(world w.World) {
 	stickyBalls.Visit(ecs.Visit(func(entity ecs.Entity) {
 		ball := world.Components.Ball.Get(entity).(*c.Ball)
 		stickyBall := world.Components.StickyBall.Get(entity).(*c.StickyBall)
-		ballTransform := world.Components.Transform.Get(entity).(*c.Transform)
+		ballTranslation := &world.Components.Transform.Get(entity).(*c.Transform).Translation
 
 		// Follow paddle
 		translationMinValue := ball.Radius / 2
 		translationMaxValue := float64(world.Resources.ScreenDimensions.Width) - ball.Radius/2
-		ballTransform.Translation.X = math.Min(math.Max(paddleX, translationMinValue), translationMaxValue)
+		ballTranslation.X = math.Min(math.Max(paddleX, translationMinValue), translationMaxValue)
 
 		// Add oscillation
-		ballTransform.Translation.X += paddleWidth / 4 * math.Sin(2*math.Pi*float64(stickyBallFrame)/ebiten.DefaultTPS/stickyBall.Period)
+		ballTranslation.X += paddleWidth / 4 * math.Sin(2*math.Pi*float64(stickyBallFrame)/ebiten.DefaultTPS/stickyBall.Period)
 
 		// Set ball direction
-		angle := (paddleX - ballTransform.Translation.X) / paddleWidth * math.Pi
+		angle := (paddleX - ballTranslation.X) / paddleWidth * math.Pi
 		ball.Direction = m.Vector2{X: math.Sin(-angle), Y: math.Cos(angle)}
 	}))
 
 	if world.Resources.InputHandler.Actions[resources.ReleaseBallAction] {
 		stickyBalls.Visit(ecs.Visit(func(entity ecs.Entity) {
-			ecs.Entity(entity).RemoveComponent(world.Components.StickyBall)
+			entity.RemoveComponent(world.Components.StickyBall)
 		}))
 	}
 }

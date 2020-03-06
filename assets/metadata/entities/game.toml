@@ -35,115 +35,115 @@
 
 # Blocks
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 104.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 104.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 168.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 168.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 232.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 232.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 296.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 296.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 360.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 360.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 424.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 424.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 488.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 488.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 552.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 552.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 616.0, y = 350.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 0 }, Transform = { translation = { x = 616.0, y = 350.0 } }, Block = { width = 64.0, height = 32.0 } }
 
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 104.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 104.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 168.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 168.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 232.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 232.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 296.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 296.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 360.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 360.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 424.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 424.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 488.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 488.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 552.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 552.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 616.0, y = 382.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 1 }, Transform = { translation = { x = 616.0, y = 382.0 } }, Block = { width = 64.0, height = 32.0 } }
 
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 104.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 104.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 168.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 168.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 232.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 232.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 296.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 296.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 360.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 360.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 424.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 424.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 488.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 488.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 552.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 552.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 616.0, y = 414.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 2 }, Transform = { translation = { x = 616.0, y = 414.0 } }, Block = { width = 64.0, height = 32.0 } }
 
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 104.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 104.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 168.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 168.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 232.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 232.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 296.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 296.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 360.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 360.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 424.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 424.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 488.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 488.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 552.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 552.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 616.0, y = 446.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 3 }, Transform = { translation = { x = 616.0, y = 446.0 } }, Block = { width = 64.0, height = 32.0 } }
 
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 104.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 104.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 168.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 168.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 232.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 232.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 296.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 296.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 360.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 360.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 424.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 424.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 488.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 488.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 552.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 552.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 616.0, y = 478.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 4 }, Transform = { translation = { x = 616.0, y = 478.0 } }, Block = { width = 64.0, height = 32.0 } }
 
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 104.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 104.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 168.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 168.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 232.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 232.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 296.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 296.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 360.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 360.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 424.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 424.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 488.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 488.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 552.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 552.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
 [[entity]]
-components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 616.0, y = 510.0 } }, Block = {} }
+components = { SpriteRender = { sprite_sheet_name = "game", sprite_number = 5 }, Transform = { translation = { x = 616.0, y = 510.0 } }, Block = { width = 64.0, height = 32.0 } }
