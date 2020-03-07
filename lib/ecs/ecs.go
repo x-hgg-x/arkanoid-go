@@ -80,9 +80,11 @@ type component interface {
 // Join returns tag describing intersection of components
 func Join(components ...component) *bit.Set {
 	tag := &bit.Set{}
-	tag.Set(components[0]._Tag())
-	for _, component := range components[1:] {
-		tag = component._Join(tag)
+	if len(components) > 0 {
+		tag.Set(components[0]._Tag())
+		for _, component := range components[1:] {
+			tag = component._Join(tag)
+		}
 	}
 	return tag
 }
