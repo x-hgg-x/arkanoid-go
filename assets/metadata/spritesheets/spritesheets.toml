@@ -23,11 +23,11 @@ sprites = [
     { x = 320, y = 32, width = 64,  height = 32 }, # Sprite 11
 
     { x = 0,   y = 64, width = 64,  height = 32 }, # Sprite 12
-    { x = 32,  y = 64, width = 64,  height = 32 }, # Sprite 13
-    { x = 64,  y = 64, width = 64,  height = 32 }, # Sprite 14
-    { x = 96,  y = 64, width = 64,  height = 32 }, # Sprite 15
-    { x = 128, y = 64, width = 64,  height = 32 }, # Sprite 16
-    { x = 160, y = 64, width = 64,  height = 32 }, # Sprite 17
+    { x = 64,  y = 64, width = 64,  height = 32 }, # Sprite 13
+    { x = 128, y = 64, width = 64,  height = 32 }, # Sprite 14
+    { x = 192, y = 64, width = 64,  height = 32 }, # Sprite 15
+    { x = 256, y = 64, width = 64,  height = 32 }, # Sprite 16
+    { x = 320, y = 64, width = 64,  height = 32 }, # Sprite 17
 
     # Paddle
     { x = 0,   y = 96, width = 144, height = 24 }, # Sprite 18

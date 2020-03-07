@@ -30,5 +30,6 @@ type StickyBall struct {
 type Block struct {
 	Width  float64
 	Height float64
+	Health float64
 	Body   *box2d.B2Body
 }

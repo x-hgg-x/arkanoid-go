@@ -50,6 +50,7 @@ func (st *GameplayState) update(world w.World, screen *ebiten.Image) transition 
 	g.StickyBallSystem(world)
 	g.MoveBallSystem(world)
 	g.CollisionSystem(world)
+	g.BlockHealthSystem(world)
 
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)

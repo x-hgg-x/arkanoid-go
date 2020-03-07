@@ -14,6 +14,8 @@ import (
 
 // CollisionSystem manages collisions
 func CollisionSystem(world w.World) {
+	gameEvents := &world.Resources.Game.Events
+
 	paddles := ecs.Join(world.Components.Paddle, world.Components.Transform)
 	if paddles.Empty() {
 		return
@@ -99,6 +101,8 @@ func CollisionSystem(world w.World) {
 			}
 
 			if blockBody != nil {
+				blockCollisionEvent := resources.BlockCollisionEvent{Entity: blockBody.GetUserData().(ecs.Entity)}
+				gameEvents.BlockCollisionEvents = append(gameEvents.BlockCollisionEvents, blockCollisionEvent)
 				blockbodies = append(blockbodies, blockBody)
 			}
 		}
