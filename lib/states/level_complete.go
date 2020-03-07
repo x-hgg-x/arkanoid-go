@@ -3,6 +3,7 @@ package states
 import (
 	"fmt"
 
+	c "arkanoid/lib/components"
 	"arkanoid/lib/ecs"
 	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
@@ -14,6 +15,7 @@ import (
 
 // LevelCompleteState is the level complete menu state
 type LevelCompleteState struct {
+	Score             int
 	levelCompleteMenu []ecs.Entity
 	selection         int
 }
@@ -56,6 +58,13 @@ func (st *LevelCompleteState) onResume(world w.World) {}
 
 func (st *LevelCompleteState) onStart(world w.World) {
 	st.levelCompleteMenu = loader.LoadEntities("assets/metadata/entities/ui/level_complete_menu.toml", world)
+
+	ecs.Join(world.Components.Text, world.Components.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		text := world.Components.Text.Get(entity).(*c.Text)
+		if text.ID == "score" {
+			text.Text = fmt.Sprintf("SCORE: %d", st.Score)
+		}
+	}))
 }
 
 func (st *LevelCompleteState) onStop(world w.World) {

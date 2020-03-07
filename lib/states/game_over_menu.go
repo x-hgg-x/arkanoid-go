@@ -3,6 +3,7 @@ package states
 import (
 	"fmt"
 
+	c "arkanoid/lib/components"
 	"arkanoid/lib/ecs"
 	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
@@ -14,6 +15,7 @@ import (
 
 // GameOverState is the game over menu state
 type GameOverState struct {
+	Score        int
 	gameOverMenu []ecs.Entity
 	selection    int
 }
@@ -62,6 +64,13 @@ func (st *GameOverState) onResume(world w.World) {}
 
 func (st *GameOverState) onStart(world w.World) {
 	st.gameOverMenu = loader.LoadEntities("assets/metadata/entities/ui/game_over_menu.toml", world)
+
+	ecs.Join(world.Components.Text, world.Components.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		text := world.Components.Text.Get(entity).(*c.Text)
+		if text.ID == "score" {
+			text.Text = fmt.Sprintf("SCORE: %d", st.Score)
+		}
+	}))
 }
 
 func (st *GameOverState) onStop(world w.World) {

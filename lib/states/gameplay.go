@@ -34,11 +34,13 @@ func (st *GameplayState) onStart(world w.World) {
 	st.game = append(st.game, loader.LoadEntities("assets/metadata/entities/ui/score.toml", world)...)
 	st.game = append(st.game, loader.LoadEntities("assets/metadata/entities/ui/life.toml", world)...)
 
+	world.Resources.Game = resources.NewGame()
 	initializeCollisionWorld(world)
 }
 
 func (st *GameplayState) onStop(world w.World) {
 	destroyCollisionWorld(world)
+	world.Resources.Game = nil
 	world.Manager.DeleteEntities(st.game...)
 }
 
@@ -51,6 +53,8 @@ func (st *GameplayState) update(world w.World, screen *ebiten.Image) transition 
 	g.MoveBallSystem(world)
 	g.CollisionSystem(world)
 	g.BlockHealthSystem(world)
+	g.LifeSystem(world)
+	g.ScoreSystem(world)
 
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)
@@ -59,6 +63,16 @@ func (st *GameplayState) update(world w.World, screen *ebiten.Image) transition 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 		return transition{transType: transPush, newStates: []state{&PauseMenuState{}}}
 	}
+
+	switch world.Resources.Game.StateEvent {
+	case resources.StateEventGameOver:
+		world.Resources.Game.StateEvent = resources.StateEventNone
+		return transition{transType: transSwitch, newStates: []state{&GameOverState{Score: world.Resources.Game.Score}}}
+	case resources.StateEventLevelComplete:
+		world.Resources.Game.StateEvent = resources.StateEventNone
+		return transition{transType: transSwitch, newStates: []state{&LevelCompleteState{Score: world.Resources.Game.Score}}}
+	}
+
 	return transition{}
 }
 

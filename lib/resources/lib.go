@@ -9,7 +9,7 @@ type Resources struct {
 	InputHandler     *InputHandler
 	SpriteSheets     *map[string]components.SpriteSheet
 	Fonts            *map[string]Font
-	Game             Game
+	Game             *Game
 }
 
 // InitResources initializes resources

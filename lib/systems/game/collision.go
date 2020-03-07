@@ -84,6 +84,9 @@ func CollisionSystem(world w.World) {
 		if ballTranslation.Y <= ball.Radius && !bounced {
 			entity.AddComponent(world.Components.StickyBall, &c.StickyBall{Period: 2})
 			*ballTranslation = m.Vector2{X: paddleTranslation.X, Y: paddle.Height + ball.Radius}
+
+			gameEvents.LifeEvents = append(gameEvents.LifeEvents, resources.LifeEvent{})
+			gameEvents.ScoreEvents = append(gameEvents.ScoreEvents, resources.ScoreEvent{Score: -1000})
 		}
 
 		// Bounce at the blocks
@@ -101,9 +104,11 @@ func CollisionSystem(world w.World) {
 			}
 
 			if blockBody != nil {
+				blockbodies = append(blockbodies, blockBody)
+
 				blockCollisionEvent := resources.BlockCollisionEvent{Entity: blockBody.GetUserData().(ecs.Entity)}
 				gameEvents.BlockCollisionEvents = append(gameEvents.BlockCollisionEvents, blockCollisionEvent)
-				blockbodies = append(blockbodies, blockBody)
+				gameEvents.ScoreEvents = append(gameEvents.ScoreEvents, resources.ScoreEvent{Score: 50})
 			}
 		}
 
