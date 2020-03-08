@@ -1,6 +1,8 @@
 package resources
 
 import (
+	"fmt"
+
 	"arkanoid/lib/utils"
 
 	"github.com/hajimehoshi/ebiten"
@@ -20,8 +22,11 @@ type Key struct {
 
 // UnmarshalText fills structure fields from text data
 func (k *Key) UnmarshalText(text []byte) error {
-	k.Key = utils.KeyMap[string(text)]
-	return nil
+	if key, ok := utils.KeyMap[string(text)]; ok {
+		k.Key = key
+		return nil
+	}
+	return fmt.Errorf("unknown key string: '%s'", string(text))
 }
 
 // MouseButton is a mouse button
@@ -31,8 +36,11 @@ type MouseButton struct {
 
 // UnmarshalText fills structure fields from text data
 func (b *MouseButton) UnmarshalText(text []byte) error {
-	b.MouseButton = utils.MouseButtonMap[string(text)]
-	return nil
+	if mouseButton, ok := utils.MouseButtonMap[string(text)]; ok {
+		b.MouseButton = mouseButton
+		return nil
+	}
+	return fmt.Errorf("unknown mouse button string: '%s'", string(text))
 }
 
 // ControllerButton is a gamepad button
@@ -44,9 +52,12 @@ type ControllerButton struct {
 // UnmarshalTOML fills structure fields from TOML data
 func (b *ControllerButton) UnmarshalTOML(i interface{}) error {
 	data := i.(map[string]interface{})
-	b.ID = int(data["id"].(int64))
-	b.GamepadButton = utils.GamepadButtonMap[data["button"].(string)]
-	return nil
+	if gamepadButton, ok := utils.GamepadButtonMap[data["button"].(string)]; ok {
+		b.ID = int(data["id"].(int64))
+		b.GamepadButton = gamepadButton
+		return nil
+	}
+	return fmt.Errorf("unknown gamepad button string: '%s'", data["button"].(string))
 }
 
 // Button can be a US keyboard key, a mouse button or a gamepad button
