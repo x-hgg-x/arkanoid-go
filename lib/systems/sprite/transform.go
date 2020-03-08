@@ -19,12 +19,14 @@ func TransformSystem(world w.World) {
 		// Reset geometry matrix
 		sprite.Options.GeoM.Reset()
 
-		// Perform rotation
+		// Center sprite on top left pixel
 		sprite.Options.GeoM.Translate(-spriteWidth/2, -spriteHeight/2)
-		sprite.Options.GeoM.Rotate(-transform.Rotation)
 
 		// Perform scale
 		sprite.Options.GeoM.Scale(transform.Scale1.X+1, transform.Scale1.Y+1)
+
+		// Perform rotation
+		sprite.Options.GeoM.Rotate(-transform.Rotation)
 
 		// Perform translation
 		screenHeight := float64(world.Resources.ScreenDimensions.Height)
