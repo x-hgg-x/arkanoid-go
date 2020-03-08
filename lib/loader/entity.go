@@ -17,27 +17,29 @@ import (
 )
 
 type componentList struct {
-	SpriteRender  *c.SpriteRender
-	Transform     *c.Transform
-	Text          *c.Text
-	UITransform   *c.UITransform
-	MouseReactive *c.MouseReactive
-	Paddle        *c.Paddle
-	Ball          *c.Ball
-	StickyBall    *c.StickyBall
-	Block         *c.Block
+	SpriteRender   *c.SpriteRender
+	Transform      *c.Transform
+	Text           *c.Text
+	UITransform    *c.UITransform
+	MouseReactive  *c.MouseReactive
+	Paddle         *c.Paddle
+	Ball           *c.Ball
+	StickyBall     *c.StickyBall
+	AttractionLine *c.AttractionLine
+	Block          *c.Block
 }
 
 type componentListData struct {
-	SpriteRender  *spriteRenderData
-	Transform     *c.Transform
-	Text          *textData
-	UITransform   *c.UITransform
-	MouseReactive *c.MouseReactive
-	Paddle        *c.Paddle
-	Ball          *c.Ball
-	StickyBall    *c.StickyBall
-	Block         *c.Block
+	SpriteRender   *spriteRenderData
+	Transform      *c.Transform
+	Text           *textData
+	UITransform    *c.UITransform
+	MouseReactive  *c.MouseReactive
+	Paddle         *c.Paddle
+	Ball           *c.Ball
+	StickyBall     *c.StickyBall
+	AttractionLine *c.AttractionLine
+	Block          *c.Block
 }
 
 type entity struct {
@@ -77,15 +79,16 @@ func addEntityComponents(entity ecs.Entity, ecsComponentList *c.Components, comp
 
 func processComponentsListData(world w.World, data componentListData) componentList {
 	return componentList{
-		SpriteRender:  processSpriteRenderData(world, data.SpriteRender),
-		Transform:     data.Transform,
-		Text:          processTextData(world, data.Text),
-		UITransform:   data.UITransform,
-		MouseReactive: data.MouseReactive,
-		Paddle:        data.Paddle,
-		Ball:          data.Ball,
-		StickyBall:    data.StickyBall,
-		Block:         data.Block,
+		SpriteRender:   processSpriteRenderData(world, data.SpriteRender),
+		Transform:      data.Transform,
+		Text:           processTextData(world, data.Text),
+		UITransform:    data.UITransform,
+		MouseReactive:  data.MouseReactive,
+		Paddle:         data.Paddle,
+		Ball:           data.Ball,
+		StickyBall:     data.StickyBall,
+		AttractionLine: data.AttractionLine,
+		Block:          data.Block,
 	}
 }
 

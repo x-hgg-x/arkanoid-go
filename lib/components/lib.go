@@ -8,15 +8,16 @@ import (
 
 // Components contains references to all components
 type Components struct {
-	SpriteRender  *ecs.Component
-	Transform     *ecs.Component
-	Text          *ecs.Component
-	UITransform   *ecs.Component
-	MouseReactive *ecs.Component
-	Paddle        *ecs.Component
-	Ball          *ecs.Component
-	StickyBall    *ecs.Component
-	Block         *ecs.Component
+	SpriteRender   *ecs.Component
+	Transform      *ecs.Component
+	Text           *ecs.Component
+	UITransform    *ecs.Component
+	MouseReactive  *ecs.Component
+	Paddle         *ecs.Component
+	Ball           *ecs.Component
+	StickyBall     *ecs.Component
+	AttractionLine *ecs.Component
+	Block          *ecs.Component
 }
 
 // InitComponents initializes components

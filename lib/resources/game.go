@@ -21,6 +21,14 @@ type StopBallAttractionEvent struct {
 	CollisionTime time.Time
 }
 
+// BallAttractionVfxEvent is triggered when visual effects change
+type BallAttractionVfxEvent struct {
+	BallEntity               ecs.Entity
+	BallColorScale           [4]float64
+	AttractionLineEntity     ecs.Entity
+	AttractionLineColorScale [4]float64
+}
+
 // LifeEvent is triggered when the player lose a life
 type LifeEvent struct{}
 
@@ -33,6 +41,7 @@ type ScoreEvent struct {
 type Events struct {
 	BlockCollisionEvents     []BlockCollisionEvent
 	StopBallAttractionEvents []StopBallAttractionEvent
+	BallAttractionVfxEvents  []BallAttractionVfxEvent
 	LifeEvents               []LifeEvent
 	ScoreEvents              []ScoreEvent
 }

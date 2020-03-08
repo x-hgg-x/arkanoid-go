@@ -53,10 +53,16 @@ func CollisionSystem(world w.World) {
 		}
 	}
 
+	attractionLines := []ecs.Entity{}
+	ecs.Join(world.Components.AttractionLine, world.Components.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		attractionLines = append(attractionLines, entity)
+	}))
+
 	// Loop on balls
-	ecs.Join(world.Components.Ball, world.Components.StickyBall.Not(), world.Components.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
-		ball := world.Components.Ball.Get(entity).(*c.Ball)
-		ballTranslation := &world.Components.Transform.Get(entity).(*c.Transform).Translation
+	attractionLineIndex := 0
+	ecs.Join(world.Components.Ball, world.Components.StickyBall.Not(), world.Components.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
+		ball := world.Components.Ball.Get(ballEntity).(*c.Ball)
+		ballTranslation := &world.Components.Transform.Get(ballEntity).(*c.Transform).Translation
 
 		// Bounce at the top, left and right of the arena
 		if ballTranslation.X <= ball.Radius {
@@ -86,11 +92,20 @@ func CollisionSystem(world w.World) {
 
 		// Lose a life when ball reach the bottom of the arena
 		if ballTranslation.Y <= ball.Radius && !bounced {
-			entity.AddComponent(world.Components.StickyBall, &c.StickyBall{Period: 2})
+			ballEntity.AddComponent(world.Components.StickyBall, &c.StickyBall{Period: 2})
 			*ballTranslation = m.Vector2{X: paddleTranslation.X, Y: paddle.Height + ball.Radius}
 
 			gameEvents.LifeEvents = append(gameEvents.LifeEvents, resources.LifeEvent{})
 			gameEvents.ScoreEvents = append(gameEvents.ScoreEvents, resources.ScoreEvent{Score: -1000})
+
+			if attractionLineIndex < len(attractionLines) {
+				gameEvents.BallAttractionVfxEvents = append(gameEvents.BallAttractionVfxEvents, resources.BallAttractionVfxEvent{
+					BallEntity:               ballEntity,
+					BallColorScale:           [4]float64{1, 1, 1, 1},
+					AttractionLineEntity:     attractionLines[attractionLineIndex],
+					AttractionLineColorScale: [4]float64{1, 1, 1, 0},
+				})
+			}
 		}
 
 		// Bounce at the blocks
@@ -162,5 +177,7 @@ func CollisionSystem(world w.World) {
 			Y: -ball.Direction.X*sin - ball.Direction.Y*cos,
 		}
 		ball.Direction.Normalize()
+
+		attractionLineIndex++
 	}))
 }

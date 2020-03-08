@@ -27,6 +27,9 @@ type StickyBall struct {
 	Period float64
 }
 
+// AttractionLine component
+type AttractionLine struct{}
+
 // Block component
 type Block struct {
 	Width  float64
