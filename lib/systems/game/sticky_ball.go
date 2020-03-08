@@ -44,6 +44,9 @@ func StickyBallSystem(world w.World) {
 		// Set ball direction
 		angle := (paddleX - ballTranslation.X) / paddleWidth * math.Pi
 		ball.Direction = m.Vector2{X: math.Sin(-angle), Y: math.Cos(angle)}
+
+		// Reset ball velocity
+		ball.VelocityMult = 1
 	}))
 
 	if world.Resources.InputHandler.Actions[resources.ReleaseBallAction] {

@@ -14,7 +14,7 @@ func MoveBallSystem(world w.World) {
 		ball := world.Components.Ball.Get(entity).(*c.Ball)
 		ballTranslation := &world.Components.Transform.Get(entity).(*c.Transform).Translation
 
-		ballTranslation.X += ball.Velocity * ball.Direction.X / ebiten.DefaultTPS
-		ballTranslation.Y += ball.Velocity * ball.Direction.Y / ebiten.DefaultTPS
+		ballTranslation.X += ball.Velocity * ball.VelocityMult * ball.Direction.X / ebiten.DefaultTPS
+		ballTranslation.Y += ball.Velocity * ball.VelocityMult * ball.Direction.Y / ebiten.DefaultTPS
 	}))
 }

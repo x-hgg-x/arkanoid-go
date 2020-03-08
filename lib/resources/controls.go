@@ -13,6 +13,8 @@ const (
 	PaddleAxis = "Paddle"
 	// ReleaseBallAction is the action for releasing ball
 	ReleaseBallAction = "ReleaseBall"
+	// BallAttractionAction is the action for attracting ball
+	BallAttractionAction = "BallAttraction"
 )
 
 // Key is a US keyboard key

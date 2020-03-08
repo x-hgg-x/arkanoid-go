@@ -4,6 +4,7 @@ mouse_axis = { axis = 0 }
 
 [controls.actions]
 ReleaseBall = [[{ mouse_button = "MouseButtonLeft" }], [{ key = "Z" }]]
+BallAttraction = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 
 
 # Usage

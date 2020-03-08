@@ -1,6 +1,8 @@
 package resources
 
 import (
+	"time"
+
 	"arkanoid/lib/ecs"
 
 	"github.com/ByteArena/box2d"
@@ -14,6 +16,11 @@ type BlockCollisionEvent struct {
 	Entity ecs.Entity
 }
 
+// StopBallAttractionEvent is triggered when a block or paddle collision occurs
+type StopBallAttractionEvent struct {
+	CollisionTime time.Time
+}
+
 // LifeEvent is triggered when the player lose a life
 type LifeEvent struct{}
 
@@ -24,9 +31,10 @@ type ScoreEvent struct {
 
 // Events contains game events for communication between game systems
 type Events struct {
-	BlockCollisionEvents []BlockCollisionEvent
-	LifeEvents           []LifeEvent
-	ScoreEvents          []ScoreEvent
+	BlockCollisionEvents     []BlockCollisionEvent
+	StopBallAttractionEvents []StopBallAttractionEvent
+	LifeEvents               []LifeEvent
+	ScoreEvents              []ScoreEvent
 }
 
 // StateEvent is an event for game progression

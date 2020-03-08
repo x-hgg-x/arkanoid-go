@@ -27,6 +27,7 @@
     [entity.components.Ball]
     radius = 11.0
     velocity = 450.0
+    velocity_mult = 1.0
     direction = { x = 0.0, y = 1.0 }
 
     [entity.components.StickyBall]

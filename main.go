@@ -42,7 +42,7 @@ func main() {
 
 	// Load controls
 	axes := []string{resources.PaddleAxis}
-	actions := []string{resources.ReleaseBallAction}
+	actions := []string{resources.ReleaseBallAction, resources.BallAttractionAction}
 	controls, inputHandler := loader.LoadControls("config/controls.toml", axes, actions)
 	world.Resources.Controls = &controls
 	world.Resources.InputHandler = &inputHandler

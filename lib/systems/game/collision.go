@@ -2,6 +2,7 @@ package gamesystem
 
 import (
 	"math"
+	"time"
 
 	c "arkanoid/lib/components"
 	"arkanoid/lib/ecs"
@@ -77,6 +78,9 @@ func CollisionSystem(world w.World) {
 				maxValue := math.Pi / 3
 				angle := math.Min(math.Max((paddleTranslation.X-ballTranslation.X)/paddle.Width*math.Pi, minValue), maxValue)
 				ball.Direction = m.Vector2{X: math.Sin(-angle), Y: math.Cos(angle)}
+
+				gameEvents.StopBallAttractionEvents = append(gameEvents.StopBallAttractionEvents, resources.StopBallAttractionEvent{CollisionTime: time.Now()})
+				break
 			}
 		}
 
@@ -115,7 +119,11 @@ func CollisionSystem(world w.World) {
 		if len(blockNormals) == 0 {
 			// No colliding blocks
 			return
-		} else if len(blockNormals) >= 3 {
+		}
+
+		gameEvents.StopBallAttractionEvents = append(gameEvents.StopBallAttractionEvents, resources.StopBallAttractionEvent{CollisionTime: time.Now()})
+
+		if len(blockNormals) >= 3 {
 			// 3 or more colliding blocks: reverse ball direction
 			ball.Direction.X *= -1
 			ball.Direction.Y *= -1
@@ -143,12 +151,7 @@ func CollisionSystem(world w.World) {
 			} else {
 				normal = m.Vector2{X: -positionDiffPerp.X, Y: -positionDiffPerp.Y}
 			}
-
-			// Normalize normal
-			normalNorm := normal.Norm()
-			normal.X /= normalNorm
-			normal.Y /= normalNorm
-
+			normal.Normalize()
 			incidenceAngle = math.Atan2(-ball.Direction.Perp(normal), -ball.Direction.Dot(normal))
 		}
 
@@ -158,10 +161,6 @@ func CollisionSystem(world w.World) {
 			X: -ball.Direction.X*cos + ball.Direction.Y*sin,
 			Y: -ball.Direction.X*sin - ball.Direction.Y*cos,
 		}
-
-		// Renormalize ball direction
-		ballNorm := ball.Direction.Norm()
-		ball.Direction.X /= ballNorm
-		ball.Direction.Y /= ballNorm
+		ball.Direction.Normalize()
 	}))
 }

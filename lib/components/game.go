@@ -15,10 +15,11 @@ type Paddle struct {
 
 // Ball component
 type Ball struct {
-	Radius    float64
-	Velocity  float64
-	Direction math.Vector2
-	Body      *box2d.B2Body
+	Radius       float64
+	Velocity     float64
+	VelocityMult float64 `toml:"velocity_mult"`
+	Direction    math.Vector2
+	Body         *box2d.B2Body
 }
 
 // StickyBall component
