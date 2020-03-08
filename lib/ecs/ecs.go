@@ -97,7 +97,10 @@ type Component struct {
 
 // Get returns data corresponding to entity
 func (c *Component) Get(entity Entity) interface{} {
-	return c.data[entity]
+	if data, ok := c.data[entity]; ok {
+		return data
+	}
+	return nil
 }
 
 // Not returns an inverted component used for filtering entities that don't have the component
