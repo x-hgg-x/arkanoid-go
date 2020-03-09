@@ -1,202 +1,59 @@
 package loader
 
 import (
-	"fmt"
-	"image/color"
-	"reflect"
+	gc "arkanoid/lib/components"
 
-	c "arkanoid/lib/components"
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
-	"arkanoid/lib/utils"
+	"github.com/x-hgg-x/goecsengine/loader"
+	"github.com/x-hgg-x/goecsengine/utils"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/BurntSushi/toml"
-	"github.com/golang/freetype/truetype"
-	"github.com/hajimehoshi/ebiten"
-	"golang.org/x/image/font"
+	ecs "github.com/x-hgg-x/goecs"
 )
 
-type componentList struct {
-	SpriteRender   *c.SpriteRender
-	Transform      *c.Transform
-	Text           *c.Text
-	UITransform    *c.UITransform
-	MouseReactive  *c.MouseReactive
-	Paddle         *c.Paddle
-	Ball           *c.Ball
-	StickyBall     *c.StickyBall
-	AttractionLine *c.AttractionLine
-	Block          *c.Block
+type gameComponentList struct {
+	Paddle         *gc.Paddle
+	Ball           *gc.Ball
+	StickyBall     *gc.StickyBall
+	AttractionLine *gc.AttractionLine
+	Block          *gc.Block
 }
 
-type componentListData struct {
-	SpriteRender   *spriteRenderData
-	Transform      *c.Transform
-	Text           *textData
-	UITransform    *c.UITransform
-	MouseReactive  *c.MouseReactive
-	Paddle         *c.Paddle
-	Ball           *c.Ball
-	StickyBall     *c.StickyBall
-	AttractionLine *c.AttractionLine
-	Block          *c.Block
+type gameComponents struct {
+	Game gameComponentList
 }
 
 type entity struct {
-	Components componentListData
+	Components gameComponents
 }
 
-type entityMetadata struct {
+type entityGameMetadata struct {
 	Entities []entity `toml:"entity"`
+}
+
+func loadGameComponents(entityMetadataPath string, world w.World) []gameComponentList {
+	var entityGameMetadata entityGameMetadata
+	_, err := toml.DecodeFile(entityMetadataPath, &entityGameMetadata)
+	utils.LogError(err)
+
+	gameComponentList := make([]gameComponentList, len(entityGameMetadata.Entities))
+	for iEntity, entity := range entityGameMetadata.Entities {
+		gameComponentList[iEntity] = entity.Components.Game
+	}
+	return gameComponentList
 }
 
 // LoadEntities creates entities with components from a TOML file
 func LoadEntities(entityMetadataPath string, world w.World) []ecs.Entity {
-	var entityMetadata entityMetadata
-	_, err := toml.DecodeFile(entityMetadataPath, &entityMetadata)
-	utils.LogError(err)
+	engineComponentList := loader.LoadEngineComponents(entityMetadataPath, world)
+	gameComponentList := loadGameComponents(entityMetadataPath, world)
 
-	entities := make([]ecs.Entity, len(entityMetadata.Entities))
-	for iEntity, entity := range entityMetadata.Entities {
+	entities := make([]ecs.Entity, len(engineComponentList))
+	for iEntity := range engineComponentList {
 		// Add components to a new entity
-		entities[iEntity] = addEntityComponents(world.Manager.NewEntity(), world.Components, processComponentsListData(world, entity.Components))
+		entities[iEntity] = world.Manager.NewEntity()
+		loader.AddEntityComponents(entities[iEntity], world.Components.Engine, engineComponentList[iEntity])
+		loader.AddEntityComponents(entities[iEntity], world.Components.Game, gameComponentList[iEntity])
 	}
 	return entities
-}
-
-func addEntityComponents(entity ecs.Entity, ecsComponentList *c.Components, components componentList) ecs.Entity {
-	v := reflect.ValueOf(components)
-	for iField := 0; iField < v.NumField(); iField++ {
-		if !v.Field(iField).IsNil() {
-			component := v.Field(iField)
-			componentName := component.Elem().Type().Name()
-			ecsComponent := reflect.ValueOf(ecsComponentList).Elem().FieldByName(componentName).Interface().(*ecs.Component)
-			entity.AddComponent(ecsComponent, component.Interface())
-		}
-	}
-	return entity
-}
-
-func processComponentsListData(world w.World, data componentListData) componentList {
-	return componentList{
-		SpriteRender:   processSpriteRenderData(world, data.SpriteRender),
-		Transform:      data.Transform,
-		Text:           processTextData(world, data.Text),
-		UITransform:    data.UITransform,
-		MouseReactive:  data.MouseReactive,
-		Paddle:         data.Paddle,
-		Ball:           data.Ball,
-		StickyBall:     data.StickyBall,
-		AttractionLine: data.AttractionLine,
-		Block:          data.Block,
-	}
-}
-
-type fillData struct {
-	Width  int
-	Height int
-	Color  [4]uint8
-}
-
-type spriteRenderData struct {
-	Fill            *fillData
-	SpriteSheetName string `toml:"sprite_sheet_name"`
-	SpriteNumber    int    `toml:"sprite_number"`
-}
-
-func processSpriteRenderData(world w.World, spriteRenderData *spriteRenderData) *c.SpriteRender {
-	if spriteRenderData == nil {
-		return nil
-	}
-	if spriteRenderData.Fill != nil && spriteRenderData.SpriteSheetName != "" {
-		utils.LogError(fmt.Errorf("fill and sprite_sheet_name fields are exclusive"))
-	}
-
-	// Sprite is included in sprite sheet
-	if spriteRenderData.SpriteSheetName != "" {
-		// Add reference to sprite sheet from its name
-		spriteSheet, ok := (*world.Resources.SpriteSheets)[spriteRenderData.SpriteSheetName]
-		if !ok {
-			utils.LogError(fmt.Errorf("unable to find sprite sheet with name '%s'", spriteRenderData.SpriteSheetName))
-		}
-		return &c.SpriteRender{
-			SpriteSheet:  &spriteSheet,
-			SpriteNumber: spriteRenderData.SpriteNumber,
-		}
-	}
-
-	// Sprite is a colored rectangle
-	textureImage, err := ebiten.NewImage(spriteRenderData.Fill.Width, spriteRenderData.Fill.Height, ebiten.FilterNearest)
-	utils.LogError(err)
-
-	textureImage.Fill(color.RGBA{
-		R: spriteRenderData.Fill.Color[0],
-		G: spriteRenderData.Fill.Color[1],
-		B: spriteRenderData.Fill.Color[2],
-		A: spriteRenderData.Fill.Color[3],
-	})
-
-	return &c.SpriteRender{
-		SpriteSheet: &c.SpriteSheet{
-			Texture: c.Texture{Image: textureImage},
-			Sprites: []c.Sprite{c.Sprite{X: 0, Y: 0, Width: spriteRenderData.Fill.Width, Height: spriteRenderData.Fill.Height}},
-		},
-		SpriteNumber: 0,
-	}
-}
-
-type fontFaceOptions struct {
-	Size              float64
-	DPI               float64
-	Hinting           string
-	GlyphCacheEntries int `toml:"glyph_cache_entries"`
-	SubPixelsX        int `toml:"sub_pixels_x"`
-	SubPixelsY        int `toml:"sub_pixels_y"`
-}
-
-var hintingMap = map[string]font.Hinting{
-	"":         font.HintingNone,
-	"None":     font.HintingNone,
-	"Vertical": font.HintingVertical,
-	"Full":     font.HintingFull,
-}
-
-type fontFaceData struct {
-	Font    string
-	Options fontFaceOptions
-}
-
-type textData struct {
-	ID       string
-	Text     string
-	FontFace fontFaceData `toml:"font_face"`
-	Color    [4]uint8
-}
-
-func processTextData(world w.World, textData *textData) *c.Text {
-	if textData == nil {
-		return nil
-	}
-
-	// Search font from its name
-	textFont, ok := (*world.Resources.Fonts)[textData.FontFace.Font]
-	if !ok {
-		utils.LogError(fmt.Errorf("unable to find font with name '%s'", textData.FontFace.Font))
-	}
-
-	options := &truetype.Options{
-		Size:              textData.FontFace.Options.Size,
-		DPI:               textData.FontFace.Options.DPI,
-		Hinting:           hintingMap[textData.FontFace.Options.Hinting],
-		GlyphCacheEntries: textData.FontFace.Options.GlyphCacheEntries,
-		SubPixelsX:        textData.FontFace.Options.SubPixelsX,
-		SubPixelsY:        textData.FontFace.Options.SubPixelsY,
-	}
-
-	return &c.Text{
-		ID:       textData.ID,
-		Text:     textData.Text,
-		FontFace: truetype.NewFace(textFont.Font, options),
-		Color:    color.RGBA{R: textData.Color[0], G: textData.Color[1], B: textData.Color[2], A: textData.Color[3]},
-	}
 }

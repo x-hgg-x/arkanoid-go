@@ -3,11 +3,13 @@ package states
 import (
 	"fmt"
 
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
-	s "arkanoid/lib/systems/sprite"
-	u "arkanoid/lib/systems/ui"
+
+	ecs "github.com/x-hgg-x/goecs"
+	"github.com/x-hgg-x/goecsengine/states"
+	s "github.com/x-hgg-x/goecsengine/systems/sprite"
+	u "github.com/x-hgg-x/goecsengine/systems/ui"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -30,14 +32,14 @@ func (st *MainMenuState) setSelection(selection int) {
 	st.selection = selection
 }
 
-func (st *MainMenuState) confirmSelection() transition {
+func (st *MainMenuState) confirmSelection() states.Transition {
 	switch st.selection {
 	case 0:
 		// New game
-		return transition{transType: transSwitch, newStates: []state{&GameplayState{}}}
+		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&GameplayState{}}}
 	case 1:
 		// Exit
-		return transition{transType: transQuit}
+		return states.Transition{TransType: states.TransQuit}
 	}
 	panic(fmt.Errorf("unknown selection: %d", st.selection))
 }
@@ -54,25 +56,31 @@ func (st *MainMenuState) getCursorMenuIDs() []string {
 // State interface
 //
 
-func (st *MainMenuState) onPause(world w.World)  {}
-func (st *MainMenuState) onResume(world w.World) {}
+// OnPause method
+func (st *MainMenuState) OnPause(world w.World) {}
 
-func (st *MainMenuState) onStart(world w.World) {
+// OnResume method
+func (st *MainMenuState) OnResume(world w.World) {}
+
+// OnStart method
+func (st *MainMenuState) OnStart(world w.World) {
 	st.mainMenu = loader.LoadEntities("assets/metadata/entities/ui/main_menu.toml", world)
 }
 
-func (st *MainMenuState) onStop(world w.World) {
+// OnStop method
+func (st *MainMenuState) OnStop(world w.World) {
 	world.Manager.DeleteEntities(st.mainMenu...)
 }
 
-func (st *MainMenuState) update(world w.World, screen *ebiten.Image) transition {
+// Update method
+func (st *MainMenuState) Update(world w.World, screen *ebiten.Image) states.Transition {
 	u.UISystem(world)
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)
 	u.RenderUISystem(world, screen)
 
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
-		return transition{transType: transQuit}
+		return states.Transition{TransType: states.TransQuit}
 	}
 	return updateMenu(st, world)
 }

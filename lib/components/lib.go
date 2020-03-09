@@ -1,18 +1,15 @@
 package components
 
 import (
-	"reflect"
+	"arkanoid/lib/math"
 
-	"arkanoid/lib/ecs"
+	ecs "github.com/x-hgg-x/goecs"
+
+	"github.com/ByteArena/box2d"
 )
 
-// Components contains references to all components
+// Components contains references to all game components
 type Components struct {
-	SpriteRender   *ecs.Component
-	Transform      *ecs.Component
-	Text           *ecs.Component
-	UITransform    *ecs.Component
-	MouseReactive  *ecs.Component
 	Paddle         *ecs.Component
 	Ball           *ecs.Component
 	StickyBall     *ecs.Component
@@ -20,14 +17,34 @@ type Components struct {
 	Block          *ecs.Component
 }
 
-// InitComponents initializes components
-func InitComponents(manager *ecs.Manager) *Components {
-	components := &Components{}
+// Paddle component
+type Paddle struct {
+	Width  float64
+	Height float64
+	Body   *box2d.B2Body
+}
 
-	v := reflect.ValueOf(components).Elem()
-	for iField := 0; iField < v.NumField(); iField++ {
-		v.Field(iField).Set(reflect.ValueOf(manager.NewComponent()))
-	}
+// Ball component
+type Ball struct {
+	Radius       float64
+	Velocity     float64
+	VelocityMult float64 `toml:"velocity_mult"`
+	Direction    math.Vector2
+	Body         *box2d.B2Body
+}
 
-	return components
+// StickyBall component
+type StickyBall struct {
+	Period float64
+}
+
+// AttractionLine component
+type AttractionLine struct{}
+
+// Block component
+type Block struct {
+	Width  float64
+	Height float64
+	Health float64
+	Body   *box2d.B2Body
 }

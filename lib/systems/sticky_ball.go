@@ -3,11 +3,13 @@ package gamesystem
 import (
 	"math"
 
-	c "arkanoid/lib/components"
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
+	gc "arkanoid/lib/components"
 	m "arkanoid/lib/math"
 	"arkanoid/lib/resources"
+
+	ecs "github.com/x-hgg-x/goecs"
+	ec "github.com/x-hgg-x/goecsengine/components"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -18,20 +20,22 @@ var stickyBallFrame = 0
 func StickyBallSystem(world w.World) {
 	stickyBallFrame++
 
-	paddles := ecs.Join(world.Components.Paddle, world.Components.Transform)
+	gameComponents := world.Components.Game.(*gc.Components)
+
+	paddles := ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform)
 	if paddles.Empty() {
 		return
 	}
 	firstPaddle := ecs.Entity(paddles.Next(-1))
-	paddleWidth := world.Components.Paddle.Get(firstPaddle).(*c.Paddle).Width
-	paddleX := world.Components.Transform.Get(firstPaddle).(*c.Transform).Translation.X
+	paddleWidth := gameComponents.Paddle.Get(firstPaddle).(*gc.Paddle).Width
+	paddleX := world.Components.Engine.Transform.Get(firstPaddle).(*ec.Transform).Translation.X
 
-	stickyBalls := ecs.Join(world.Components.Ball, world.Components.StickyBall, world.Components.Transform)
+	stickyBalls := ecs.Join(gameComponents.Ball, gameComponents.StickyBall, world.Components.Engine.Transform)
 
 	stickyBalls.Visit(ecs.Visit(func(entity ecs.Entity) {
-		ball := world.Components.Ball.Get(entity).(*c.Ball)
-		stickyBall := world.Components.StickyBall.Get(entity).(*c.StickyBall)
-		ballTranslation := &world.Components.Transform.Get(entity).(*c.Transform).Translation
+		ball := gameComponents.Ball.Get(entity).(*gc.Ball)
+		stickyBall := gameComponents.StickyBall.Get(entity).(*gc.StickyBall)
+		ballTranslation := &world.Components.Engine.Transform.Get(entity).(*ec.Transform).Translation
 
 		// Follow paddle
 		translationMinValue := ball.Radius / 2
@@ -51,7 +55,7 @@ func StickyBallSystem(world w.World) {
 
 	if world.Resources.InputHandler.Actions[resources.ReleaseBallAction] {
 		stickyBalls.Visit(ecs.Visit(func(entity ecs.Entity) {
-			entity.RemoveComponent(world.Components.StickyBall)
+			entity.RemoveComponent(gameComponents.StickyBall)
 		}))
 	}
 }

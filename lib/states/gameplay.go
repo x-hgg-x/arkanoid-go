@@ -3,16 +3,19 @@ package states
 import (
 	"fmt"
 
-	c "arkanoid/lib/components"
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
+	gc "arkanoid/lib/components"
 	"arkanoid/lib/loader"
 	"arkanoid/lib/resources"
-	g "arkanoid/lib/systems/game"
-	i "arkanoid/lib/systems/input"
-	s "arkanoid/lib/systems/sprite"
-	u "arkanoid/lib/systems/ui"
-	"arkanoid/lib/utils"
+	g "arkanoid/lib/systems"
+
+	ecs "github.com/x-hgg-x/goecs"
+	ec "github.com/x-hgg-x/goecsengine/components"
+	"github.com/x-hgg-x/goecsengine/states"
+	i "github.com/x-hgg-x/goecsengine/systems/input"
+	s "github.com/x-hgg-x/goecsengine/systems/sprite"
+	u "github.com/x-hgg-x/goecsengine/systems/ui"
+	"github.com/x-hgg-x/goecsengine/utils"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/ByteArena/box2d"
 	"github.com/hajimehoshi/ebiten"
@@ -24,10 +27,14 @@ type GameplayState struct {
 	game []ecs.Entity
 }
 
-func (st *GameplayState) onPause(world w.World)  {}
-func (st *GameplayState) onResume(world w.World) {}
+// OnPause method
+func (st *GameplayState) OnPause(world w.World) {}
 
-func (st *GameplayState) onStart(world w.World) {
+// OnResume method
+func (st *GameplayState) OnResume(world w.World) {}
+
+// OnStart method
+func (st *GameplayState) OnStart(world w.World) {
 	// Load game and ui entities
 	st.game = append(st.game, loader.LoadEntities("assets/metadata/entities/background.toml", world)...)
 	st.game = append(st.game, loader.LoadEntities("assets/metadata/entities/game.toml", world)...)
@@ -38,13 +45,15 @@ func (st *GameplayState) onStart(world w.World) {
 	initializeCollisionWorld(world)
 }
 
-func (st *GameplayState) onStop(world w.World) {
+// OnStop method
+func (st *GameplayState) OnStop(world w.World) {
 	destroyCollisionWorld(world)
 	world.Resources.Game = nil
 	world.Manager.DeleteEntities(st.game...)
 }
 
-func (st *GameplayState) update(world w.World, screen *ebiten.Image) transition {
+// Update method
+func (st *GameplayState) Update(world w.World, screen *ebiten.Image) states.Transition {
 	i.InputSystem(world)
 	u.UISystem(world)
 
@@ -63,32 +72,35 @@ func (st *GameplayState) update(world w.World, screen *ebiten.Image) transition 
 	u.RenderUISystem(world, screen)
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		return transition{transType: transPush, newStates: []state{&PauseMenuState{}}}
+		return states.Transition{TransType: states.TransPush, NewStates: []states.State{&PauseMenuState{}}}
 	}
 
-	switch world.Resources.Game.StateEvent {
+	gameResources := world.Resources.Game.(*resources.Game)
+	switch gameResources.StateEvent {
 	case resources.StateEventGameOver:
-		world.Resources.Game.StateEvent = resources.StateEventNone
-		return transition{transType: transSwitch, newStates: []state{&GameOverState{Score: world.Resources.Game.Score}}}
+		gameResources.StateEvent = resources.StateEventNone
+		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&GameOverState{Score: gameResources.Score}}}
 	case resources.StateEventLevelComplete:
-		world.Resources.Game.StateEvent = resources.StateEventNone
-		return transition{transType: transSwitch, newStates: []state{&LevelCompleteState{Score: world.Resources.Game.Score}}}
+		gameResources.StateEvent = resources.StateEventNone
+		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&LevelCompleteState{Score: gameResources.Score}}}
 	}
 
-	return transition{}
+	return states.Transition{}
 }
 
 func initializeCollisionWorld(world w.World) {
+	gameComponents := world.Components.Game.(*gc.Components)
+
 	// Init Box2D world
 	collisionWorld := box2d.MakeB2World(box2d.MakeB2Vec2(0, 0))
 
 	// Create paddle body
-	paddles := ecs.Join(world.Components.Paddle, world.Components.Transform)
+	paddles := ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform)
 	if paddles.Empty() {
 		utils.LogError(fmt.Errorf("unable to find paddle"))
 	}
 	firstPaddle := ecs.Entity(paddles.Next(-1))
-	paddle := world.Components.Paddle.Get(firstPaddle).(*c.Paddle)
+	paddle := gameComponents.Paddle.Get(firstPaddle).(*gc.Paddle)
 
 	paddleDef := box2d.MakeB2BodyDef()
 	paddleBody := collisionWorld.CreateBody(&paddleDef)
@@ -99,9 +111,9 @@ func initializeCollisionWorld(world w.World) {
 	paddle.Body = paddleBody
 
 	// Create blocks bodies
-	ecs.Join(world.Components.Block, world.Components.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
-		block := world.Components.Block.Get(entity).(*c.Block)
-		blockTranslation := world.Components.Transform.Get(entity).(*c.Transform).Translation
+	ecs.Join(gameComponents.Block, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		block := gameComponents.Block.Get(entity).(*gc.Block)
+		blockTranslation := world.Components.Engine.Transform.Get(entity).(*ec.Transform).Translation
 
 		blockDef := box2d.MakeB2BodyDef()
 		blockDef.Position.Set(blockTranslation.X/resources.B2PixelRatio, blockTranslation.Y/resources.B2PixelRatio)
@@ -114,8 +126,8 @@ func initializeCollisionWorld(world w.World) {
 	}))
 
 	// Create balls bodies
-	ecs.Join(world.Components.Ball, world.Components.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
-		ball := world.Components.Ball.Get(entity).(*c.Ball)
+	ecs.Join(gameComponents.Ball, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		ball := gameComponents.Ball.Get(entity).(*gc.Ball)
 
 		ballDef := box2d.MakeB2BodyDef()
 		ballDef.Type = box2d.B2BodyType.B2_dynamicBody
@@ -127,9 +139,9 @@ func initializeCollisionWorld(world w.World) {
 		ball.Body = ballBody
 	}))
 
-	world.Resources.Game.CollisionWorld = &collisionWorld
+	world.Resources.Game.(*resources.Game).CollisionWorld = &collisionWorld
 }
 
 func destroyCollisionWorld(world w.World) {
-	world.Resources.Game.CollisionWorld = nil
+	world.Resources.Game.(*resources.Game).CollisionWorld = nil
 }

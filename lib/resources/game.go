@@ -3,7 +3,7 @@ package resources
 import (
 	"time"
 
-	"arkanoid/lib/ecs"
+	ecs "github.com/x-hgg-x/goecs"
 
 	"github.com/ByteArena/box2d"
 )

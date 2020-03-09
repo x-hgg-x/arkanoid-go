@@ -1,11 +1,15 @@
 package main
 
 import (
-	w "arkanoid/lib/ecs/world"
-	"arkanoid/lib/loader"
-	"arkanoid/lib/resources"
-	"arkanoid/lib/states"
-	"arkanoid/lib/utils"
+	gc "arkanoid/lib/components"
+	gr "arkanoid/lib/resources"
+	gs "arkanoid/lib/states"
+
+	"github.com/x-hgg-x/goecsengine/loader"
+	er "github.com/x-hgg-x/goecsengine/resources"
+	es "github.com/x-hgg-x/goecsengine/states"
+	"github.com/x-hgg-x/goecsengine/utils"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -17,7 +21,7 @@ const (
 
 type mainGame struct {
 	world        w.World
-	stateMachine states.StateMachine
+	stateMachine es.StateMachine
 }
 
 func (game *mainGame) Layout(outsideWidth, outsideHeight int) (int, int) {
@@ -35,14 +39,14 @@ func (game *mainGame) Update(screen *ebiten.Image) error {
 }
 
 func main() {
-	world := w.InitWorld()
+	world := w.InitWorld(&gc.Components{}, nil)
 
 	// Init screen dimensions
-	world.Resources.ScreenDimensions = &resources.ScreenDimensions{Width: windowWidth, Height: windowHeight}
+	world.Resources.ScreenDimensions = &er.ScreenDimensions{Width: windowWidth, Height: windowHeight}
 
 	// Load controls
-	axes := []string{resources.PaddleAxis}
-	actions := []string{resources.ReleaseBallAction, resources.BallAttractionAction}
+	axes := []string{gr.PaddleAxis}
+	actions := []string{gr.ReleaseBallAction, gr.BallAttractionAction}
 	controls, inputHandler := loader.LoadControls("config/controls.toml", axes, actions)
 	world.Resources.Controls = &controls
 	world.Resources.InputHandler = &inputHandler
@@ -59,5 +63,5 @@ func main() {
 	ebiten.SetWindowSize(windowWidth, windowHeight)
 	ebiten.SetWindowTitle("Arkanoid")
 
-	utils.LogError(ebiten.RunGame(&mainGame{world, states.Init(&states.MainMenuState{}, world)}))
+	utils.LogError(ebiten.RunGame(&mainGame{world, es.Init(&gs.MainMenuState{}, world)}))
 }

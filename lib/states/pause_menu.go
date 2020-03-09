@@ -3,11 +3,13 @@ package states
 import (
 	"fmt"
 
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
-	s "arkanoid/lib/systems/sprite"
-	u "arkanoid/lib/systems/ui"
+
+	ecs "github.com/x-hgg-x/goecs"
+	"github.com/x-hgg-x/goecsengine/states"
+	s "github.com/x-hgg-x/goecsengine/systems/sprite"
+	u "github.com/x-hgg-x/goecsengine/systems/ui"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/inpututil"
@@ -31,17 +33,17 @@ func (st *PauseMenuState) setSelection(selection int) {
 	st.selection = selection
 }
 
-func (st *PauseMenuState) confirmSelection() transition {
+func (st *PauseMenuState) confirmSelection() states.Transition {
 	switch st.selection {
 	case 0:
 		// Resume
-		return transition{transType: transPop}
+		return states.Transition{TransType: states.TransPop}
 	case 1:
 		// Main Menu
-		return transition{transType: transReplace, newStates: []state{&MainMenuState{}}}
+		return states.Transition{TransType: states.TransReplace, NewStates: []states.State{&MainMenuState{}}}
 	case 2:
 		// Exit
-		return transition{transType: transQuit}
+		return states.Transition{TransType: states.TransQuit}
 	}
 	panic(fmt.Errorf("unknown selection: %d", st.selection))
 }
@@ -58,25 +60,31 @@ func (st *PauseMenuState) getCursorMenuIDs() []string {
 // State interface
 //
 
-func (st *PauseMenuState) onPause(world w.World)  {}
-func (st *PauseMenuState) onResume(world w.World) {}
+// OnPause method
+func (st *PauseMenuState) OnPause(world w.World) {}
 
-func (st *PauseMenuState) onStart(world w.World) {
+// OnResume method
+func (st *PauseMenuState) OnResume(world w.World) {}
+
+// OnStart method
+func (st *PauseMenuState) OnStart(world w.World) {
 	st.pauseMenu = loader.LoadEntities("assets/metadata/entities/ui/pause_menu.toml", world)
 }
 
-func (st *PauseMenuState) onStop(world w.World) {
+// OnStop method
+func (st *PauseMenuState) OnStop(world w.World) {
 	world.Manager.DeleteEntities(st.pauseMenu...)
 }
 
-func (st *PauseMenuState) update(world w.World, screen *ebiten.Image) transition {
+// Update method
+func (st *PauseMenuState) Update(world w.World, screen *ebiten.Image) states.Transition {
 	u.UISystem(world)
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)
 	u.RenderUISystem(world, screen)
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		return transition{transType: transPop}
+		return states.Transition{TransType: states.TransPop}
 	}
 	return updateMenu(st, world)
 }

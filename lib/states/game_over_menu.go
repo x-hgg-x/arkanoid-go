@@ -3,12 +3,14 @@ package states
 import (
 	"fmt"
 
-	c "arkanoid/lib/components"
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/loader"
-	s "arkanoid/lib/systems/sprite"
-	u "arkanoid/lib/systems/ui"
+
+	ecs "github.com/x-hgg-x/goecs"
+	ec "github.com/x-hgg-x/goecsengine/components"
+	"github.com/x-hgg-x/goecsengine/states"
+	s "github.com/x-hgg-x/goecsengine/systems/sprite"
+	u "github.com/x-hgg-x/goecsengine/systems/ui"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
 )
@@ -32,17 +34,17 @@ func (st *GameOverState) setSelection(selection int) {
 	st.selection = selection
 }
 
-func (st *GameOverState) confirmSelection() transition {
+func (st *GameOverState) confirmSelection() states.Transition {
 	switch st.selection {
 	case 0:
 		// Restart
-		return transition{transType: transSwitch, newStates: []state{&GameplayState{}}}
+		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&GameplayState{}}}
 	case 1:
 		// Main Menu
-		return transition{transType: transSwitch, newStates: []state{&MainMenuState{}}}
+		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&MainMenuState{}}}
 	case 2:
 		// Exit
-		return transition{transType: transQuit}
+		return states.Transition{TransType: states.TransQuit}
 	}
 	panic(fmt.Errorf("unknown selection: %d", st.selection))
 }
@@ -59,25 +61,31 @@ func (st *GameOverState) getCursorMenuIDs() []string {
 // State interface
 //
 
-func (st *GameOverState) onPause(world w.World)  {}
-func (st *GameOverState) onResume(world w.World) {}
+// OnPause method
+func (st *GameOverState) OnPause(world w.World) {}
 
-func (st *GameOverState) onStart(world w.World) {
+// OnResume method
+func (st *GameOverState) OnResume(world w.World) {}
+
+// OnStart method
+func (st *GameOverState) OnStart(world w.World) {
 	st.gameOverMenu = loader.LoadEntities("assets/metadata/entities/ui/game_over_menu.toml", world)
 
-	ecs.Join(world.Components.Text, world.Components.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
-		text := world.Components.Text.Get(entity).(*c.Text)
+	ecs.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		text := world.Components.Engine.Text.Get(entity).(*ec.Text)
 		if text.ID == "score" {
 			text.Text = fmt.Sprintf("SCORE: %d", st.Score)
 		}
 	}))
 }
 
-func (st *GameOverState) onStop(world w.World) {
+// OnStop method
+func (st *GameOverState) OnStop(world w.World) {
 	world.Manager.DeleteEntities(st.gameOverMenu...)
 }
 
-func (st *GameOverState) update(world w.World, screen *ebiten.Image) transition {
+// Update method
+func (st *GameOverState) Update(world w.World, screen *ebiten.Image) states.Transition {
 	u.UISystem(world)
 	s.TransformSystem(world)
 	s.RenderSpriteSystem(world, screen)

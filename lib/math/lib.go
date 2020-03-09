@@ -30,28 +30,6 @@ func (v *Vector2) Normalize() {
 	v.Y /= norm
 }
 
-// VectorInt2 type
-type VectorInt2 struct {
-	X int
-	Y int
-}
-
-// Min returns the minimum between 2 integers
-func Min(a, b int) int {
-	if a < b {
-		return a
-	}
-	return b
-}
-
-// Max returns the maximum between 2 integers
-func Max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
-}
-
 // Abs returns the absolute value of an integer
 func Abs(x int) int {
 	if x < 0 {

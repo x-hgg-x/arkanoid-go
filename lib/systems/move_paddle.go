@@ -3,19 +3,23 @@ package gamesystem
 import (
 	"math"
 
-	c "arkanoid/lib/components"
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
+	gc "arkanoid/lib/components"
 	"arkanoid/lib/resources"
+
+	ecs "github.com/x-hgg-x/goecs"
+	ec "github.com/x-hgg-x/goecsengine/components"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
 )
 
 // MovePaddleSystem moves paddle
 func MovePaddleSystem(world w.World) {
-	ecs.Join(world.Components.Paddle, world.Components.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
-		paddle := world.Components.Paddle.Get(entity).(*c.Paddle)
-		paddleTransform := world.Components.Transform.Get(entity).(*c.Transform)
+	gameComponents := world.Components.Game.(*gc.Components)
+
+	ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		paddle := gameComponents.Paddle.Get(entity).(*gc.Paddle)
+		paddleTransform := world.Components.Engine.Transform.Get(entity).(*ec.Transform)
 
 		screenWidth := float64(world.Resources.ScreenDimensions.Width)
 		paddleX := paddleTransform.Translation.X

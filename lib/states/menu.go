@@ -1,10 +1,12 @@
 package states
 
 import (
-	c "arkanoid/lib/components"
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
 	"arkanoid/lib/math"
+
+	ecs "github.com/x-hgg-x/goecs"
+	ec "github.com/x-hgg-x/goecsengine/components"
+	"github.com/x-hgg-x/goecsengine/states"
+	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
 	"github.com/hajimehoshi/ebiten/inpututil"
@@ -13,13 +15,13 @@ import (
 type menu interface {
 	getSelection() int
 	setSelection(selection int)
-	confirmSelection() transition
+	confirmSelection() states.Transition
 	getMenuIDs() []string
 	getCursorMenuIDs() []string
 }
 
-func updateMenu(menu menu, world w.World) transition {
-	var transition transition
+func updateMenu(menu menu, world w.World) states.Transition {
+	var Transition states.Transition
 	selection := menu.getSelection()
 	numItems := len(menu.getCursorMenuIDs())
 
@@ -35,27 +37,27 @@ func updateMenu(menu menu, world w.World) transition {
 
 	// Handle mouse events
 	for iElem, id := range menu.getMenuIDs() {
-		if ecs.Join(world.Components.SpriteRender, world.Components.Transform, world.Components.MouseReactive).Visit(
+		if ecs.Join(world.Components.Engine.SpriteRender, world.Components.Engine.Transform, world.Components.Engine.MouseReactive).Visit(
 			func(index int) (skip bool) {
-				mouseReactive := world.Components.MouseReactive.Get(ecs.Entity(index)).(*c.MouseReactive)
+				mouseReactive := world.Components.Engine.MouseReactive.Get(ecs.Entity(index)).(*ec.MouseReactive)
 				if mouseReactive.ID == id && mouseReactive.Hovered {
 					menu.setSelection(iElem)
 					if mouseReactive.JustClicked {
-						transition = menu.confirmSelection()
+						Transition = menu.confirmSelection()
 						return true
 					}
 				}
 				return false
 			}) {
-			return transition
+			return Transition
 		}
 	}
 
 	// Set cursor color
 	newSelection := menu.getSelection()
 	for iCursor, id := range menu.getCursorMenuIDs() {
-		ecs.Join(world.Components.Text, world.Components.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
-			text := world.Components.Text.Get(entity).(*c.Text)
+		ecs.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+			text := world.Components.Engine.Text.Get(entity).(*ec.Text)
 			if text.ID == id {
 				text.Color.A = 0
 				if iCursor == newSelection {
@@ -64,5 +66,5 @@ func updateMenu(menu menu, world w.World) transition {
 			}
 		}))
 	}
-	return transition
+	return Transition
 }

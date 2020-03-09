@@ -3,11 +3,13 @@ package gamesystem
 import (
 	"time"
 
-	c "arkanoid/lib/components"
-	"arkanoid/lib/ecs"
-	w "arkanoid/lib/ecs/world"
+	gc "arkanoid/lib/components"
 	m "arkanoid/lib/math"
 	"arkanoid/lib/resources"
+
+	ecs "github.com/x-hgg-x/goecs"
+	ec "github.com/x-hgg-x/goecsengine/components"
+	w "github.com/x-hgg-x/goecsengine/world"
 )
 
 const timeoutMillis = 250
@@ -19,18 +21,21 @@ var (
 
 // BallAttractionSystem attracts ball towards paddle
 func BallAttractionSystem(world w.World) {
+	gameComponents := world.Components.Game.(*gc.Components)
+	gameResources := world.Resources.Game.(*resources.Game)
+
 	attractionLines := []ecs.Entity{}
-	ecs.Join(world.Components.AttractionLine, world.Components.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	ecs.Join(gameComponents.AttractionLine, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		attractionLines = append(attractionLines, entity)
 	}))
 
 	// Test if a ball is accelerated
-	if ecs.Join(world.Components.Ball, world.Components.StickyBall.Not(), world.Components.Transform).Visit(
+	if ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(
 		func(index int) (skip bool) {
-			return world.Components.Ball.Get(ecs.Entity(index)).(*c.Ball).VelocityMult > 1
+			return gameComponents.Ball.Get(ecs.Entity(index)).(*gc.Ball).VelocityMult > 1
 		}) {
 		// Get last collision time
-		for _, stopBallAttractionEvent := range world.Resources.Game.Events.StopBallAttractionEvents {
+		for _, stopBallAttractionEvent := range gameResources.Events.StopBallAttractionEvents {
 			if ballAttractionLastCollisionTime.Sub(ballAttractionTimeAccelerated) < 0 {
 				ballAttractionLastCollisionTime = stopBallAttractionEvent.CollisionTime
 			}
@@ -43,11 +48,11 @@ func BallAttractionSystem(world w.World) {
 			}
 
 			attractionLineIndex := 0
-			ecs.Join(world.Components.Ball, world.Components.StickyBall.Not(), world.Components.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
-				world.Components.Ball.Get(ballEntity).(*c.Ball).VelocityMult = 1
+			ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
+				gameComponents.Ball.Get(ballEntity).(*gc.Ball).VelocityMult = 1
 
 				if attractionLineIndex < len(attractionLines) {
-					world.Resources.Game.Events.BallAttractionVfxEvents = append(world.Resources.Game.Events.BallAttractionVfxEvents, resources.BallAttractionVfxEvent{
+					gameResources.Events.BallAttractionVfxEvents = append(gameResources.Events.BallAttractionVfxEvents, resources.BallAttractionVfxEvent{
 						BallEntity:               ballEntity,
 						BallColorScale:           [4]float64{1, 1, 1, 1},
 						AttractionLineEntity:     attractionLines[attractionLineIndex],
@@ -58,20 +63,20 @@ func BallAttractionSystem(world w.World) {
 			}))
 		}
 	}
-	world.Resources.Game.Events.StopBallAttractionEvents = nil
+	gameResources.Events.StopBallAttractionEvents = nil
 
-	paddles := ecs.Join(world.Components.Paddle, world.Components.Transform)
+	paddles := ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform)
 	if paddles.Empty() {
 		return
 	}
 	firstPaddle := ecs.Entity(paddles.Next(-1))
-	paddle := world.Components.Paddle.Get(firstPaddle).(*c.Paddle)
-	paddleTranslation := world.Components.Transform.Get(firstPaddle).(*c.Transform).Translation
+	paddle := gameComponents.Paddle.Get(firstPaddle).(*gc.Paddle)
+	paddleTranslation := world.Components.Engine.Transform.Get(firstPaddle).(*ec.Transform).Translation
 
 	attractionLineIndex := 0
-	ecs.Join(world.Components.Ball, world.Components.StickyBall.Not(), world.Components.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
-		ball := world.Components.Ball.Get(ballEntity).(*c.Ball)
-		ballTranslation := &world.Components.Transform.Get(ballEntity).(*c.Transform).Translation
+	ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
+		ball := gameComponents.Ball.Get(ballEntity).(*gc.Ball)
+		ballTranslation := &world.Components.Engine.Transform.Get(ballEntity).(*ec.Transform).Translation
 
 		// Attract and accelerate ball with user action
 		if world.Resources.InputHandler.Actions[resources.BallAttractionAction] {
@@ -84,7 +89,7 @@ func BallAttractionSystem(world w.World) {
 			ball.Direction.Normalize()
 
 			if attractionLineIndex < len(attractionLines) {
-				world.Resources.Game.Events.BallAttractionVfxEvents = append(world.Resources.Game.Events.BallAttractionVfxEvents, resources.BallAttractionVfxEvent{
+				gameResources.Events.BallAttractionVfxEvents = append(gameResources.Events.BallAttractionVfxEvents, resources.BallAttractionVfxEvent{
 					BallEntity:               ballEntity,
 					BallColorScale:           [4]float64{0.9, 0.6, 0.6, 1},
 					AttractionLineEntity:     attractionLines[attractionLineIndex],
@@ -95,7 +100,7 @@ func BallAttractionSystem(world w.World) {
 			ball.VelocityMult = 1
 
 			if attractionLineIndex < len(attractionLines) {
-				world.Resources.Game.Events.BallAttractionVfxEvents = append(world.Resources.Game.Events.BallAttractionVfxEvents, resources.BallAttractionVfxEvent{
+				gameResources.Events.BallAttractionVfxEvents = append(gameResources.Events.BallAttractionVfxEvents, resources.BallAttractionVfxEvent{
 					BallEntity:               ballEntity,
 					BallColorScale:           [4]float64{1, 1, 1, 1},
 					AttractionLineEntity:     attractionLines[attractionLineIndex],
