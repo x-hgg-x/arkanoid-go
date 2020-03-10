@@ -2,9 +2,12 @@
 mouse_axis = { axis = 0 }
 # emulated = { pos = { key = "Right" }, neg = { key = "Left" } }
 
-[controls.actions]
-ReleaseBall = [[{ mouse_button = "MouseButtonLeft" }], [{ key = "Z" }]]
-BallAttraction = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
+[controls.actions.ReleaseBall]
+combinations = [[{ mouse_button = "MouseButtonLeft" }], [{ key = "Z" }]]
+once = true
+
+[controls.actions.BallAttraction]
+combinations = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 
 
 # Usage
@@ -34,8 +37,9 @@ BallAttraction = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 
 
 # Actions
-# [controls.actions]
-# XXX = [
+# [controls.actions.XXX]
+# combinations = [
 #     [{ key = "Control" }, { key = "Q" }],
 #     [{ key = "Escape" }]
 # ]
+# once = true

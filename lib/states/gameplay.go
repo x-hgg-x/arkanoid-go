@@ -23,9 +23,7 @@ import (
 )
 
 // GameplayState is the main game state
-type GameplayState struct {
-	game []ecs.Entity
-}
+type GameplayState struct{}
 
 // OnPause method
 func (st *GameplayState) OnPause(world w.World) {}
@@ -36,10 +34,10 @@ func (st *GameplayState) OnResume(world w.World) {}
 // OnStart method
 func (st *GameplayState) OnStart(world w.World) {
 	// Load game and ui entities
-	st.game = append(st.game, loader.LoadEntities("assets/metadata/entities/background.toml", world)...)
-	st.game = append(st.game, loader.LoadEntities("assets/metadata/entities/game.toml", world)...)
-	st.game = append(st.game, loader.LoadEntities("assets/metadata/entities/ui/score.toml", world)...)
-	st.game = append(st.game, loader.LoadEntities("assets/metadata/entities/ui/life.toml", world)...)
+	loader.LoadEntities("assets/metadata/entities/background.toml", world)
+	loader.LoadEntities("assets/metadata/entities/game.toml", world)
+	loader.LoadEntities("assets/metadata/entities/ui/score.toml", world)
+	loader.LoadEntities("assets/metadata/entities/ui/life.toml", world)
 
 	world.Resources.Game = resources.NewGame()
 	initializeCollisionWorld(world)
@@ -49,7 +47,7 @@ func (st *GameplayState) OnStart(world w.World) {
 func (st *GameplayState) OnStop(world w.World) {
 	destroyCollisionWorld(world)
 	world.Resources.Game = nil
-	world.Manager.DeleteEntities(st.game...)
+	world.Manager.DeleteAllEntities()
 }
 
 // Update method

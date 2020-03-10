@@ -19,41 +19,28 @@ type gameComponentList struct {
 	Block          *gc.Block
 }
 
-type gameComponents struct {
-	Game gameComponentList
-}
-
 type entity struct {
-	Components gameComponents
+	Components gameComponentList
 }
 
 type entityGameMetadata struct {
 	Entities []entity `toml:"entity"`
 }
 
-func loadGameComponents(entityMetadataPath string, world w.World) []gameComponentList {
+func loadGameComponents(entityMetadataPath string, world w.World) []interface{} {
 	var entityGameMetadata entityGameMetadata
 	_, err := toml.DecodeFile(entityMetadataPath, &entityGameMetadata)
 	utils.LogError(err)
 
-	gameComponentList := make([]gameComponentList, len(entityGameMetadata.Entities))
+	gameComponentList := make([]interface{}, len(entityGameMetadata.Entities))
 	for iEntity, entity := range entityGameMetadata.Entities {
-		gameComponentList[iEntity] = entity.Components.Game
+		gameComponentList[iEntity] = entity.Components
 	}
 	return gameComponentList
 }
 
 // LoadEntities creates entities with components from a TOML file
 func LoadEntities(entityMetadataPath string, world w.World) []ecs.Entity {
-	engineComponentList := loader.LoadEngineComponents(entityMetadataPath, world)
 	gameComponentList := loadGameComponents(entityMetadataPath, world)
-
-	entities := make([]ecs.Entity, len(engineComponentList))
-	for iEntity := range engineComponentList {
-		// Add components to a new entity
-		entities[iEntity] = world.Manager.NewEntity()
-		loader.AddEntityComponents(entities[iEntity], world.Components.Engine, engineComponentList[iEntity])
-		loader.AddEntityComponents(entities[iEntity], world.Components.Game, gameComponentList[iEntity])
-	}
-	return entities
+	return loader.LoadEntities(entityMetadataPath, world, gameComponentList)
 }

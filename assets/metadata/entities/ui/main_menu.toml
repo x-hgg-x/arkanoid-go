@@ -1,82 +1,82 @@
 [[entity]]
 
-    [entity.components.engine.Text]
+    [entity.components.Text]
     id = "title"
     text = "Arkanoid"
     font_face = { font = "joystix", options = { size = 80.0, hinting = "Full" } }
     color = [255, 255, 255, 255]
 
-    [entity.components.engine.UITransform]
+    [entity.components.UITransform]
     translation = { x = 360, y = 500 }
 
 
 [[entity]]
 
-    [entity.components.engine.Text]
+    [entity.components.Text]
     id = "cursor_new_game"
     text = "\u25ba"
     font_face = { font = "hack", options = { size = 40.0, hinting = "Full" } }
     color = [255, 255, 255, 255]
 
-    [entity.components.engine.UITransform]
+    [entity.components.UITransform]
     translation = { x = 180, y = 300 }
 
 
 [[entity]]
 
-    [entity.components.engine.Text]
+    [entity.components.Text]
     id = "cursor_exit"
     text = "\u25ba"
     font_face = { font = "hack", options = { size = 40.0, hinting = "Full" } }
     color = [255, 255, 255, 0]
 
-    [entity.components.engine.UITransform]
+    [entity.components.UITransform]
     translation = { x = 250, y = 200 }
 
 
 [[entity]]
 
-    [entity.components.engine.Text]
+    [entity.components.Text]
     id = "new_game"
     text = "NEW GAME"
     font_face = { font = "joystix", options = { size = 40.0, hinting = "Full" } }
     color = [255, 255, 255, 255]
 
-    [entity.components.engine.UITransform]
+    [entity.components.UITransform]
     translation = { x = 360, y = 300 }
 
 
 [[entity]]
 
-    [entity.components.engine.SpriteRender]
+    [entity.components.SpriteRender]
     fill = { width = 280, height = 40 }
 
-    [entity.components.engine.Transform]
+    [entity.components.Transform]
     translation = { x = 360.0, y = 300.0 }
 
-    [entity.components.engine.MouseReactive]
+    [entity.components.MouseReactive]
     id = "new_game"
 
 
 [[entity]]
 
-    [entity.components.engine.Text]
+    [entity.components.Text]
     id = "exit"
     text = "EXIT"
     font_face = { font = "joystix", options = { size = 40.0, hinting = "Full" } }
     color = [255, 255, 255, 255]
 
-    [entity.components.engine.UITransform]
+    [entity.components.UITransform]
     translation = { x = 360, y = 200 }
 
 
 [[entity]]
 
-    [entity.components.engine.SpriteRender]
+    [entity.components.SpriteRender]
     fill = { width = 150, height = 40 }
 
-    [entity.components.engine.Transform]
+    [entity.components.Transform]
     translation = { x = 360.0, y = 200.0 }
 
-    [entity.components.engine.MouseReactive]
+    [entity.components.MouseReactive]
     id = "exit"
