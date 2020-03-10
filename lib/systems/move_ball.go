@@ -1,7 +1,7 @@
 package gamesystem
 
 import (
-	gc "arkanoid/lib/components"
+	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"

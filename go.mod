@@ -1,4 +1,4 @@
-module arkanoid
+module github.com/x-hgg-x/arkanoid-go
 
 go 1.13
 
@@ -8,5 +8,5 @@ require (
 	github.com/hajimehoshi/ebiten v1.11.0-alpha.4.0.20200219165351-5b7151595b12
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/x-hgg-x/goecs v0.0.0-20200310163802-924386eb21ec
-	github.com/x-hgg-x/goecsengine v0.0.0-20200310165819-72aa9355200b
+	github.com/x-hgg-x/goecsengine v0.0.0-20200310181027-d43284ce6436
 )

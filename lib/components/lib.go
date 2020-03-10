@@ -1,7 +1,7 @@
 package components
 
 import (
-	"arkanoid/lib/math"
+	"github.com/x-hgg-x/arkanoid-go/lib/math"
 
 	ecs "github.com/x-hgg-x/goecs"
 

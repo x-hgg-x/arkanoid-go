@@ -1,9 +1,9 @@
 package main
 
 import (
-	gc "arkanoid/lib/components"
-	gr "arkanoid/lib/resources"
-	gs "arkanoid/lib/states"
+	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
+	gr "github.com/x-hgg-x/arkanoid-go/lib/resources"
+	gs "github.com/x-hgg-x/arkanoid-go/lib/states"
 
 	"github.com/x-hgg-x/goecsengine/loader"
 	er "github.com/x-hgg-x/goecsengine/resources"

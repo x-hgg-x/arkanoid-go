@@ -3,7 +3,7 @@ package gamesystem
 import (
 	"fmt"
 
-	"arkanoid/lib/resources"
+	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"

@@ -4,9 +4,9 @@ import (
 	"math"
 	"time"
 
-	gc "arkanoid/lib/components"
-	gm "arkanoid/lib/math"
-	"arkanoid/lib/resources"
+	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
+	gm "github.com/x-hgg-x/arkanoid-go/lib/math"
+	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"

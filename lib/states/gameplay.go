@@ -3,10 +3,10 @@ package states
 import (
 	"fmt"
 
-	gc "arkanoid/lib/components"
-	"arkanoid/lib/loader"
-	"arkanoid/lib/resources"
-	g "arkanoid/lib/systems"
+	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
+	"github.com/x-hgg-x/arkanoid-go/lib/loader"
+	"github.com/x-hgg-x/arkanoid-go/lib/resources"
+	g "github.com/x-hgg-x/arkanoid-go/lib/systems"
 
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"

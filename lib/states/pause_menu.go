@@ -3,7 +3,7 @@ package states
 import (
 	"fmt"
 
-	"arkanoid/lib/loader"
+	"github.com/x-hgg-x/arkanoid-go/lib/loader"
 
 	ecs "github.com/x-hgg-x/goecs"
 	"github.com/x-hgg-x/goecsengine/states"

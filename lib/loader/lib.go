@@ -1,7 +1,7 @@
 package loader
 
 import (
-	gc "arkanoid/lib/components"
+	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 
 	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/utils"
