@@ -1,4 +1,4 @@
-package gamesystem
+package systems
 
 import (
 	"math"
@@ -22,15 +22,14 @@ func StickyBallSystem(world w.World) {
 
 	gameComponents := world.Components.Game.(*gc.Components)
 
-	paddles := ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform)
-	if paddles.Empty() {
+	firstPaddle := ecs.GetFirst(world.Manager.Join(gameComponents.Paddle, world.Components.Engine.Transform))
+	if firstPaddle == nil {
 		return
 	}
-	firstPaddle := ecs.Entity(paddles.Next(-1))
-	paddleWidth := gameComponents.Paddle.Get(firstPaddle).(*gc.Paddle).Width
-	paddleX := world.Components.Engine.Transform.Get(firstPaddle).(*ec.Transform).Translation.X
+	paddleWidth := gameComponents.Paddle.Get(ecs.Entity(*firstPaddle)).(*gc.Paddle).Width
+	paddleX := world.Components.Engine.Transform.Get(ecs.Entity(*firstPaddle)).(*ec.Transform).Translation.X
 
-	stickyBalls := ecs.Join(gameComponents.Ball, gameComponents.StickyBall, world.Components.Engine.Transform)
+	stickyBalls := world.Manager.Join(gameComponents.Ball, gameComponents.StickyBall, world.Components.Engine.Transform)
 
 	stickyBalls.Visit(ecs.Visit(func(entity ecs.Entity) {
 		ball := gameComponents.Ball.Get(entity).(*gc.Ball)

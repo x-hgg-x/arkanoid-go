@@ -8,8 +8,6 @@ import (
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"
 	"github.com/x-hgg-x/goecsengine/states"
-	s "github.com/x-hgg-x/goecsengine/systems/sprite"
-	u "github.com/x-hgg-x/goecsengine/systems/ui"
 	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
@@ -65,7 +63,7 @@ func (st *LevelCompleteState) OnResume(world w.World) {}
 func (st *LevelCompleteState) OnStart(world w.World) {
 	st.levelCompleteMenu = loader.LoadEntities("assets/metadata/entities/ui/level_complete_menu.toml", world)
 
-	ecs.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		text := world.Components.Engine.Text.Get(entity).(*ec.Text)
 		if text.ID == "score" {
 			text.Text = fmt.Sprintf("SCORE: %d", st.Score)
@@ -80,10 +78,5 @@ func (st *LevelCompleteState) OnStop(world w.World) {
 
 // Update method
 func (st *LevelCompleteState) Update(world w.World, screen *ebiten.Image) states.Transition {
-	u.UISystem(world)
-	s.TransformSystem(world)
-	s.RenderSpriteSystem(world, screen)
-	u.RenderUISystem(world, screen)
-
 	return updateMenu(st, world)
 }

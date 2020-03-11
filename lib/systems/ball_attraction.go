@@ -1,4 +1,4 @@
-package gamesystem
+package systems
 
 import (
 	"time"
@@ -25,12 +25,12 @@ func BallAttractionSystem(world w.World) {
 	gameResources := world.Resources.Game.(*resources.Game)
 
 	attractionLines := []ecs.Entity{}
-	ecs.Join(gameComponents.AttractionLine, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(gameComponents.AttractionLine, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		attractionLines = append(attractionLines, entity)
 	}))
 
 	// Test if a ball is accelerated
-	if ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(
+	if world.Manager.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(
 		func(index int) (skip bool) {
 			return gameComponents.Ball.Get(ecs.Entity(index)).(*gc.Ball).VelocityMult > 1
 		}) {
@@ -48,7 +48,7 @@ func BallAttractionSystem(world w.World) {
 			}
 
 			attractionLineIndex := 0
-			ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
+			world.Manager.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
 				gameComponents.Ball.Get(ballEntity).(*gc.Ball).VelocityMult = 1
 
 				if attractionLineIndex < len(attractionLines) {
@@ -65,16 +65,15 @@ func BallAttractionSystem(world w.World) {
 	}
 	gameResources.Events.StopBallAttractionEvents = nil
 
-	paddles := ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform)
-	if paddles.Empty() {
+	firstPaddle := ecs.GetFirst(world.Manager.Join(gameComponents.Paddle, world.Components.Engine.Transform))
+	if firstPaddle == nil {
 		return
 	}
-	firstPaddle := ecs.Entity(paddles.Next(-1))
-	paddle := gameComponents.Paddle.Get(firstPaddle).(*gc.Paddle)
-	paddleTranslation := world.Components.Engine.Transform.Get(firstPaddle).(*ec.Transform).Translation
+	paddle := gameComponents.Paddle.Get(ecs.Entity(*firstPaddle)).(*gc.Paddle)
+	paddleTranslation := world.Components.Engine.Transform.Get(ecs.Entity(*firstPaddle)).(*ec.Transform).Translation
 
 	attractionLineIndex := 0
-	ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
+	world.Manager.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
 		ball := gameComponents.Ball.Get(ballEntity).(*gc.Ball)
 		ballTranslation := &world.Components.Engine.Transform.Get(ballEntity).(*ec.Transform).Translation
 

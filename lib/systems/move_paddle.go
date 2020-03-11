@@ -1,4 +1,4 @@
-package gamesystem
+package systems
 
 import (
 	"math"
@@ -17,7 +17,7 @@ import (
 func MovePaddleSystem(world w.World) {
 	gameComponents := world.Components.Game.(*gc.Components)
 
-	ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(gameComponents.Paddle, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		paddle := gameComponents.Paddle.Get(entity).(*gc.Paddle)
 		paddleTransform := world.Components.Engine.Transform.Get(entity).(*ec.Transform)
 

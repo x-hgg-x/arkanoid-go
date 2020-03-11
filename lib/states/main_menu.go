@@ -7,8 +7,6 @@ import (
 
 	ecs "github.com/x-hgg-x/goecs"
 	"github.com/x-hgg-x/goecsengine/states"
-	s "github.com/x-hgg-x/goecsengine/systems/sprite"
-	u "github.com/x-hgg-x/goecsengine/systems/ui"
 	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
@@ -74,11 +72,6 @@ func (st *MainMenuState) OnStop(world w.World) {
 
 // Update method
 func (st *MainMenuState) Update(world w.World, screen *ebiten.Image) states.Transition {
-	u.UISystem(world)
-	s.TransformSystem(world)
-	s.RenderSpriteSystem(world, screen)
-	u.RenderUISystem(world, screen)
-
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		return states.Transition{TransType: states.TransQuit}
 	}

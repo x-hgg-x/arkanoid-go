@@ -1,10 +1,9 @@
-package gamesystem
+package systems
 
 import (
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 
-	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"
 	w "github.com/x-hgg-x/goecsengine/world"
 )
@@ -29,7 +28,7 @@ func BlockHealthSystem(world w.World) {
 	}
 	gameResources.Events.BlockCollisionEvents = nil
 
-	if ecs.Join(gameComponents.Block).Empty() {
+	if world.Manager.Join(gameComponents.Block).Empty() {
 		gameResources.StateEvent = resources.StateEventLevelComplete
 	}
 }

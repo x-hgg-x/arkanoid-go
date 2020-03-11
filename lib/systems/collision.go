@@ -1,4 +1,4 @@
-package gamesystem
+package systems
 
 import (
 	"math"
@@ -22,19 +22,18 @@ func CollisionSystem(world w.World) {
 	gameResources := world.Resources.Game.(*resources.Game)
 	gameEvents := &gameResources.Events
 
-	paddles := ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform)
-	if paddles.Empty() {
+	firstPaddle := ecs.GetFirst(world.Manager.Join(gameComponents.Paddle, world.Components.Engine.Transform))
+	if firstPaddle == nil {
 		return
 	}
-	firstPaddle := ecs.Entity(paddles.Next(-1))
-	paddle := gameComponents.Paddle.Get(firstPaddle).(*gc.Paddle)
-	paddleTranslation := world.Components.Engine.Transform.Get(firstPaddle).(*ec.Transform).Translation
+	paddle := gameComponents.Paddle.Get(ecs.Entity(*firstPaddle)).(*gc.Paddle)
+	paddleTranslation := world.Components.Engine.Transform.Get(ecs.Entity(*firstPaddle)).(*ec.Transform).Translation
 
 	// Set paddle body transform
 	paddle.Body.SetTransform(box2d.MakeB2Vec2(paddleTranslation.X/resources.B2PixelRatio, paddleTranslation.Y/resources.B2PixelRatio), 0)
 
 	// Set balls body transform
-	ecs.Join(gameComponents.Ball, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(gameComponents.Ball, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		ball := gameComponents.Ball.Get(entity).(*gc.Ball)
 		ballTranslation := world.Components.Engine.Transform.Get(entity).(*ec.Transform).Translation
 		ball.Body.SetTransform(box2d.MakeB2Vec2(ballTranslation.X/resources.B2PixelRatio, ballTranslation.Y/resources.B2PixelRatio), 0)
@@ -59,13 +58,13 @@ func CollisionSystem(world w.World) {
 	}
 
 	attractionLines := []ecs.Entity{}
-	ecs.Join(gameComponents.AttractionLine, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(gameComponents.AttractionLine, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		attractionLines = append(attractionLines, entity)
 	}))
 
 	// Loop on balls
 	attractionLineIndex := 0
-	ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
+	world.Manager.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(ballEntity ecs.Entity) {
 		ball := gameComponents.Ball.Get(ballEntity).(*gc.Ball)
 		ballTranslation := &world.Components.Engine.Transform.Get(ballEntity).(*ec.Transform).Translation
 

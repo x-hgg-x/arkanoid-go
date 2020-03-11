@@ -11,9 +11,6 @@ import (
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"
 	"github.com/x-hgg-x/goecsengine/states"
-	i "github.com/x-hgg-x/goecsengine/systems/input"
-	s "github.com/x-hgg-x/goecsengine/systems/sprite"
-	u "github.com/x-hgg-x/goecsengine/systems/ui"
 	"github.com/x-hgg-x/goecsengine/utils"
 	w "github.com/x-hgg-x/goecsengine/world"
 
@@ -52,9 +49,6 @@ func (st *GameplayState) OnStop(world w.World) {
 
 // Update method
 func (st *GameplayState) Update(world w.World, screen *ebiten.Image) states.Transition {
-	i.InputSystem(world)
-	u.UISystem(world)
-
 	g.MovePaddleSystem(world)
 	g.StickyBallSystem(world)
 	g.BallAttractionSystem(world)
@@ -64,10 +58,6 @@ func (st *GameplayState) Update(world w.World, screen *ebiten.Image) states.Tran
 	g.BlockHealthSystem(world)
 	g.LifeSystem(world)
 	g.ScoreSystem(world)
-
-	s.TransformSystem(world)
-	s.RenderSpriteSystem(world, screen)
-	u.RenderUISystem(world, screen)
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
 		return states.Transition{TransType: states.TransPush, NewStates: []states.State{&PauseMenuState{}}}
@@ -93,23 +83,22 @@ func initializeCollisionWorld(world w.World) {
 	collisionWorld := box2d.MakeB2World(box2d.MakeB2Vec2(0, 0))
 
 	// Create paddle body
-	paddles := ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform)
-	if paddles.Empty() {
+	firstPaddle := ecs.GetFirst(world.Manager.Join(gameComponents.Paddle, world.Components.Engine.Transform))
+	if firstPaddle == nil {
 		utils.LogError(fmt.Errorf("unable to find paddle"))
 	}
-	firstPaddle := ecs.Entity(paddles.Next(-1))
-	paddle := gameComponents.Paddle.Get(firstPaddle).(*gc.Paddle)
+	paddle := gameComponents.Paddle.Get(ecs.Entity(*firstPaddle)).(*gc.Paddle)
 
 	paddleDef := box2d.MakeB2BodyDef()
 	paddleBody := collisionWorld.CreateBody(&paddleDef)
 	paddleShape := box2d.MakeB2PolygonShape()
 	paddleShape.SetAsBox(paddle.Width/2/resources.B2PixelRatio, paddle.Height/2/resources.B2PixelRatio)
 	paddleBody.CreateFixtureFromDef(&box2d.B2FixtureDef{Shape: &paddleShape})
-	paddleBody.SetUserData(firstPaddle)
+	paddleBody.SetUserData(*firstPaddle)
 	paddle.Body = paddleBody
 
 	// Create blocks bodies
-	ecs.Join(gameComponents.Block, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(gameComponents.Block, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		block := gameComponents.Block.Get(entity).(*gc.Block)
 		blockTranslation := world.Components.Engine.Transform.Get(entity).(*ec.Transform).Translation
 
@@ -124,7 +113,7 @@ func initializeCollisionWorld(world w.World) {
 	}))
 
 	// Create balls bodies
-	ecs.Join(gameComponents.Ball, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(gameComponents.Ball, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		ball := gameComponents.Ball.Get(entity).(*gc.Ball)
 
 		ballDef := box2d.MakeB2BodyDef()

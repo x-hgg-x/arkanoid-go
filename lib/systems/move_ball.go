@@ -1,4 +1,4 @@
-package gamesystem
+package systems
 
 import (
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
@@ -14,7 +14,7 @@ import (
 func MoveBallSystem(world w.World) {
 	gameComponents := world.Components.Game.(*gc.Components)
 
-	ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		ball := gameComponents.Ball.Get(entity).(*gc.Ball)
 		ballTranslation := &world.Components.Engine.Transform.Get(entity).(*ec.Transform).Translation
 

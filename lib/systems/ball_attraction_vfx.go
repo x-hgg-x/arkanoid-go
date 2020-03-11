@@ -1,4 +1,4 @@
-package gamesystem
+package systems
 
 import (
 	"math"
@@ -32,20 +32,19 @@ func BallAttractionVfxSystem(world w.World) {
 	}
 	gameResources.Events.BallAttractionVfxEvents = nil
 
-	paddles := ecs.Join(gameComponents.Paddle, world.Components.Engine.Transform)
-	if paddles.Empty() {
+	firstPaddle := ecs.GetFirst(world.Manager.Join(gameComponents.Paddle, world.Components.Engine.Transform))
+	if firstPaddle == nil {
 		return
 	}
-	firstPaddle := ecs.Entity(paddles.Next(-1))
-	paddle := gameComponents.Paddle.Get(firstPaddle).(*gc.Paddle)
-	paddleTranslation := world.Components.Engine.Transform.Get(firstPaddle).(*ec.Transform).Translation
+	paddle := gameComponents.Paddle.Get(ecs.Entity(*firstPaddle)).(*gc.Paddle)
+	paddleTranslation := world.Components.Engine.Transform.Get(ecs.Entity(*firstPaddle)).(*ec.Transform).Translation
 
 	attractionLines := []ecs.Entity{}
-	ecs.Join(gameComponents.AttractionLine, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
+	world.Manager.Join(gameComponents.AttractionLine, world.Components.Engine.Transform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		attractionLines = append(attractionLines, entity)
 	}))
 
-	balls := ecs.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform)
+	balls := world.Manager.Join(gameComponents.Ball, gameComponents.StickyBall.Not(), world.Components.Engine.Transform)
 	if len(attractionLines) != balls.Size() {
 		return
 	}

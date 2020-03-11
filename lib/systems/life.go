@@ -1,4 +1,4 @@
-package gamesystem
+package systems
 
 import (
 	"fmt"
@@ -17,7 +17,7 @@ func LifeSystem(world w.World) {
 	for range gameResources.Events.LifeEvents {
 		gameResources.Lifes--
 
-		ecs.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		world.Manager.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
 			text := world.Components.Engine.Text.Get(entity).(*ec.Text)
 			if text.ID == "life" {
 				text.Text = fmt.Sprintf("LIFES: %d", gameResources.Lifes)

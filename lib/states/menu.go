@@ -37,7 +37,7 @@ func updateMenu(menu menu, world w.World) states.Transition {
 
 	// Handle mouse events
 	for iElem, id := range menu.getMenuIDs() {
-		if ecs.Join(world.Components.Engine.SpriteRender, world.Components.Engine.Transform, world.Components.Engine.MouseReactive).Visit(
+		if world.Manager.Join(world.Components.Engine.SpriteRender, world.Components.Engine.Transform, world.Components.Engine.MouseReactive).Visit(
 			func(index int) (skip bool) {
 				mouseReactive := world.Components.Engine.MouseReactive.Get(ecs.Entity(index)).(*ec.MouseReactive)
 				if mouseReactive.ID == id && mouseReactive.Hovered {
@@ -56,7 +56,7 @@ func updateMenu(menu menu, world w.World) states.Transition {
 	// Set cursor color
 	newSelection := menu.getSelection()
 	for iCursor, id := range menu.getCursorMenuIDs() {
-		ecs.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
+		world.Manager.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
 			text := world.Components.Engine.Text.Get(entity).(*ec.Text)
 			if text.ID == id {
 				text.Color.A = 0
