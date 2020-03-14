@@ -22,12 +22,6 @@ import (
 // GameplayState is the main game state
 type GameplayState struct{}
 
-// OnPause method
-func (st *GameplayState) OnPause(world w.World) {}
-
-// OnResume method
-func (st *GameplayState) OnResume(world w.World) {}
-
 // OnStart method
 func (st *GameplayState) OnStart(world w.World) {
 	// Load game and ui entities
@@ -38,6 +32,18 @@ func (st *GameplayState) OnStart(world w.World) {
 
 	world.Resources.Game = resources.NewGame()
 	initializeCollisionWorld(world)
+
+	ebiten.SetCursorMode(ebiten.CursorModeHidden)
+}
+
+// OnPause method
+func (st *GameplayState) OnPause(world w.World) {
+	ebiten.SetCursorMode(ebiten.CursorModeVisible)
+}
+
+// OnResume method
+func (st *GameplayState) OnResume(world w.World) {
+	ebiten.SetCursorMode(ebiten.CursorModeHidden)
 }
 
 // OnStop method
@@ -45,6 +51,8 @@ func (st *GameplayState) OnStop(world w.World) {
 	destroyCollisionWorld(world)
 	world.Resources.Game = nil
 	world.Manager.DeleteAllEntities()
+
+	ebiten.SetCursorMode(ebiten.CursorModeVisible)
 }
 
 // Update method
