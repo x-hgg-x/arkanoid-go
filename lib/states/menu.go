@@ -5,6 +5,7 @@ import (
 
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"
+	m "github.com/x-hgg-x/goecsengine/math"
 	"github.com/x-hgg-x/goecsengine/states"
 	w "github.com/x-hgg-x/goecsengine/world"
 
@@ -19,6 +20,8 @@ type menu interface {
 	getMenuIDs() []string
 	getCursorMenuIDs() []string
 }
+
+var menuLastCursorPosition = m.VectorInt2{}
 
 func updateMenu(menu menu, world w.World) states.Transition {
 	var Transition states.Transition
@@ -35,21 +38,26 @@ func updateMenu(menu menu, world w.World) states.Transition {
 		return menu.confirmSelection()
 	}
 
-	// Handle mouse events
-	for iElem, id := range menu.getMenuIDs() {
-		if world.Manager.Join(world.Components.Engine.SpriteRender, world.Components.Engine.Transform, world.Components.Engine.MouseReactive).Visit(
-			func(index int) (skip bool) {
-				mouseReactive := world.Components.Engine.MouseReactive.Get(ecs.Entity(index)).(*ec.MouseReactive)
-				if mouseReactive.ID == id && mouseReactive.Hovered {
-					menu.setSelection(iElem)
-					if mouseReactive.JustClicked {
-						Transition = menu.confirmSelection()
-						return true
+	// Handle mouse events only if mouse is moved or clicked
+	x, y := ebiten.CursorPosition()
+	if x != menuLastCursorPosition.X || y != menuLastCursorPosition.Y || inpututil.IsMouseButtonJustPressed(ebiten.MouseButtonLeft) {
+		menuLastCursorPosition = m.VectorInt2{X: x, Y: y}
+
+		for iElem, id := range menu.getMenuIDs() {
+			if world.Manager.Join(world.Components.Engine.SpriteRender, world.Components.Engine.Transform, world.Components.Engine.MouseReactive).Visit(
+				func(index int) (skip bool) {
+					mouseReactive := world.Components.Engine.MouseReactive.Get(ecs.Entity(index)).(*ec.MouseReactive)
+					if mouseReactive.ID == id && mouseReactive.Hovered {
+						menu.setSelection(iElem)
+						if mouseReactive.JustClicked {
+							Transition = menu.confirmSelection()
+							return true
+						}
 					}
-				}
-				return false
-			}) {
-			return Transition
+					return false
+				}) {
+				return Transition
+			}
 		}
 	}
 
