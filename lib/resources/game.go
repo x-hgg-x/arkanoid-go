@@ -61,11 +61,11 @@ type Game struct {
 	CollisionWorld *box2d.B2World
 	Events         Events
 	StateEvent     StateEvent
-	Lifes          int
+	Lives          int
 	Score          int
 }
 
 // NewGame creates a new game
 func NewGame() *Game {
-	return &Game{Lifes: 5}
+	return &Game{Lives: 5}
 }

@@ -10,21 +10,21 @@ import (
 	w "github.com/x-hgg-x/goecsengine/world"
 )
 
-// LifeSystem manages lifes
+// LifeSystem manages lives
 func LifeSystem(world w.World) {
 	gameResources := world.Resources.Game.(*resources.Game)
 
 	for range gameResources.Events.LifeEvents {
-		gameResources.Lifes--
+		gameResources.Lives--
 
 		world.Manager.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
 			text := world.Components.Engine.Text.Get(entity).(*ec.Text)
 			if text.ID == "life" {
-				text.Text = fmt.Sprintf("LIFES: %d", gameResources.Lifes)
+				text.Text = fmt.Sprintf("LIVES: %d", gameResources.Lives)
 			}
 		}))
 
-		if gameResources.Lifes <= 0 {
+		if gameResources.Lives <= 0 {
 			gameResources.StateEvent = resources.StateEventGameOver
 		}
 	}
