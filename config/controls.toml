@@ -12,7 +12,7 @@ combinations = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 
 # Usage
 
-# Axis
+# Axes
 
 # With keyboard keys
 # [controls.axes.XXX]
@@ -37,9 +37,11 @@ combinations = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 
 
 # Actions
+
 # [controls.actions.XXX]
 # combinations = [
 #     [{ key = "Control" }, { key = "Q" }],
-#     [{ key = "Escape" }]
+#     [{ key = "Escape" }],
+#     [{ controller = { id = 0, button = "GamepadButton9" } }],
 # ]
 # once = true
