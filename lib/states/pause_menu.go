@@ -35,13 +35,13 @@ func (st *PauseMenuState) confirmSelection() states.Transition {
 	switch st.selection {
 	case 0:
 		// Resume
-		return states.Transition{TransType: states.TransPop}
+		return states.Transition{Type: states.TransPop}
 	case 1:
 		// Main Menu
-		return states.Transition{TransType: states.TransReplace, NewStates: []states.State{&MainMenuState{}}}
+		return states.Transition{Type: states.TransReplace, NewStates: []states.State{&MainMenuState{}}}
 	case 2:
 		// Exit
-		return states.Transition{TransType: states.TransQuit}
+		return states.Transition{Type: states.TransQuit}
 	}
 	panic(fmt.Errorf("unknown selection: %d", st.selection))
 }
@@ -77,7 +77,7 @@ func (st *PauseMenuState) OnStop(world w.World) {
 // Update method
 func (st *PauseMenuState) Update(world w.World, screen *ebiten.Image) states.Transition {
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		return states.Transition{TransType: states.TransPop}
+		return states.Transition{Type: states.TransPop}
 	}
 	return updateMenu(st, world)
 }

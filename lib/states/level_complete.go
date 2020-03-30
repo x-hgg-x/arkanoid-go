@@ -36,7 +36,7 @@ func (st *LevelCompleteState) confirmSelection() states.Transition {
 	switch st.selection {
 	case 0:
 		// Main Menu
-		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&MainMenuState{}}}
+		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&MainMenuState{}}}
 	}
 	panic(fmt.Errorf("unknown selection: %d", st.selection))
 }

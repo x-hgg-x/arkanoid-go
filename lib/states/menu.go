@@ -24,7 +24,7 @@ type menu interface {
 var menuLastCursorPosition = m.VectorInt2{}
 
 func updateMenu(menu menu, world w.World) states.Transition {
-	var Transition states.Transition
+	var transition states.Transition
 	selection := menu.getSelection()
 	numItems := len(menu.getCursorMenuIDs())
 
@@ -50,13 +50,13 @@ func updateMenu(menu menu, world w.World) states.Transition {
 					if mouseReactive.ID == id && mouseReactive.Hovered {
 						menu.setSelection(iElem)
 						if mouseReactive.JustClicked {
-							Transition = menu.confirmSelection()
+							transition = menu.confirmSelection()
 							return true
 						}
 					}
 					return false
 				}) {
-				return Transition
+				return transition
 			}
 		}
 	}
@@ -74,5 +74,5 @@ func updateMenu(menu menu, world w.World) states.Transition {
 			}
 		}))
 	}
-	return Transition
+	return transition
 }

@@ -68,17 +68,17 @@ func (st *GameplayState) Update(world w.World, screen *ebiten.Image) states.Tran
 	g.ScoreSystem(world)
 
 	if inpututil.IsKeyJustPressed(ebiten.KeyEscape) {
-		return states.Transition{TransType: states.TransPush, NewStates: []states.State{&PauseMenuState{}}}
+		return states.Transition{Type: states.TransPush, NewStates: []states.State{&PauseMenuState{}}}
 	}
 
 	gameResources := world.Resources.Game.(*resources.Game)
 	switch gameResources.StateEvent {
 	case resources.StateEventGameOver:
 		gameResources.StateEvent = resources.StateEventNone
-		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&GameOverState{Score: gameResources.Score}}}
+		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameOverState{Score: gameResources.Score}}}
 	case resources.StateEventLevelComplete:
 		gameResources.StateEvent = resources.StateEventNone
-		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&LevelCompleteState{Score: gameResources.Score}}}
+		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&LevelCompleteState{Score: gameResources.Score}}}
 	}
 
 	return states.Transition{}

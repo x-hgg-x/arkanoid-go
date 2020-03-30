@@ -36,13 +36,13 @@ func (st *GameOverState) confirmSelection() states.Transition {
 	switch st.selection {
 	case 0:
 		// Restart
-		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&GameplayState{}}}
+		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&GameplayState{}}}
 	case 1:
 		// Main Menu
-		return states.Transition{TransType: states.TransSwitch, NewStates: []states.State{&MainMenuState{}}}
+		return states.Transition{Type: states.TransSwitch, NewStates: []states.State{&MainMenuState{}}}
 	case 2:
 		// Exit
-		return states.Transition{TransType: states.TransQuit}
+		return states.Transition{Type: states.TransQuit}
 	}
 	panic(fmt.Errorf("unknown selection: %d", st.selection))
 }
