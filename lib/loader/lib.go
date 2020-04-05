@@ -3,12 +3,12 @@ package loader
 import (
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 
+	ecs "github.com/x-hgg-x/goecs"
 	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/utils"
 	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/BurntSushi/toml"
-	ecs "github.com/x-hgg-x/goecs"
 )
 
 type gameComponentList struct {
