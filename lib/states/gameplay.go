@@ -4,12 +4,12 @@ import (
 	"fmt"
 
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
-	"github.com/x-hgg-x/arkanoid-go/lib/loader"
 	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 	g "github.com/x-hgg-x/arkanoid-go/lib/systems"
 
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"
+	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/states"
 	"github.com/x-hgg-x/goecsengine/utils"
 	w "github.com/x-hgg-x/goecsengine/world"
@@ -25,10 +25,11 @@ type GameplayState struct{}
 // OnStart method
 func (st *GameplayState) OnStart(world w.World) {
 	// Load game and ui entities
-	loader.LoadEntities("assets/metadata/entities/background.toml", world)
-	loader.LoadEntities("assets/metadata/entities/game.toml", world)
-	loader.LoadEntities("assets/metadata/entities/ui/score.toml", world)
-	loader.LoadEntities("assets/metadata/entities/ui/life.toml", world)
+	prefabs := world.Resources.Prefabs.(*resources.Prefabs)
+	loader.AddEntities(world, prefabs.Game.Background)
+	loader.AddEntities(world, prefabs.Game.Game)
+	loader.AddEntities(world, prefabs.Game.Score)
+	loader.AddEntities(world, prefabs.Game.Life)
 
 	world.Resources.Game = resources.NewGame()
 	initializeCollisionWorld(world)

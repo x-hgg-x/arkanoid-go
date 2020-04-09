@@ -3,7 +3,6 @@ package loader
 import (
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 
-	ecs "github.com/x-hgg-x/goecs"
 	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/utils"
 	w "github.com/x-hgg-x/goecsengine/world"
@@ -39,8 +38,10 @@ func loadGameComponents(entityMetadataPath string, world w.World) []interface{} 
 	return gameComponentList
 }
 
-// LoadEntities creates entities with components from a TOML file
-func LoadEntities(entityMetadataPath string, world w.World) []ecs.Entity {
-	gameComponentList := loadGameComponents(entityMetadataPath, world)
-	return loader.LoadEntities(entityMetadataPath, world, gameComponentList)
+// PreloadEntities preloads entities with components
+func PreloadEntities(entityMetadataPath string, world w.World) loader.EntityComponentList {
+	return loader.EntityComponentList{
+		Engine: loader.LoadEngineComponents(entityMetadataPath, world),
+		Game:   loadGameComponents(entityMetadataPath, world),
+	}
 }

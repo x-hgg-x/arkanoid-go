@@ -2,6 +2,7 @@ package main
 
 import (
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
+	gloader "github.com/x-hgg-x/arkanoid-go/lib/loader"
 	gr "github.com/x-hgg-x/arkanoid-go/lib/resources"
 	gs "github.com/x-hgg-x/arkanoid-go/lib/states"
 
@@ -39,7 +40,7 @@ func (game *mainGame) Update(screen *ebiten.Image) error {
 }
 
 func main() {
-	world := w.InitWorld(&gc.Components{}, nil)
+	world := w.InitWorld(&gc.Components{})
 
 	// Init screen dimensions
 	world.Resources.ScreenDimensions = &er.ScreenDimensions{Width: windowWidth, Height: windowHeight}
@@ -58,6 +59,22 @@ func main() {
 	// Load fonts
 	fonts := loader.LoadFonts("assets/metadata/fonts/fonts.toml")
 	world.Resources.Fonts = &fonts
+
+	// Load prefabs
+	world.Resources.Prefabs = &gr.Prefabs{
+		Menu: gr.MenuPrefabs{
+			MainMenu:          gloader.PreloadEntities("assets/metadata/entities/ui/main_menu.toml", world),
+			PauseMenu:         gloader.PreloadEntities("assets/metadata/entities/ui/pause_menu.toml", world),
+			GameOverMenu:      gloader.PreloadEntities("assets/metadata/entities/ui/game_over_menu.toml", world),
+			LevelCompleteMenu: gloader.PreloadEntities("assets/metadata/entities/ui/level_complete_menu.toml", world),
+		},
+		Game: gr.GamePrefabs{
+			Background: gloader.PreloadEntities("assets/metadata/entities/background.toml", world),
+			Game:       gloader.PreloadEntities("assets/metadata/entities/game.toml", world),
+			Score:      gloader.PreloadEntities("assets/metadata/entities/ui/score.toml", world),
+			Life:       gloader.PreloadEntities("assets/metadata/entities/ui/life.toml", world),
+		},
+	}
 
 	ebiten.SetWindowResizable(true)
 	ebiten.SetWindowSize(windowWidth, windowHeight)

@@ -3,10 +3,11 @@ package states
 import (
 	"fmt"
 
-	"github.com/x-hgg-x/arkanoid-go/lib/loader"
+	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 
 	ecs "github.com/x-hgg-x/goecs"
 	ec "github.com/x-hgg-x/goecsengine/components"
+	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/states"
 	w "github.com/x-hgg-x/goecsengine/world"
 
@@ -67,7 +68,8 @@ func (st *GameOverState) OnResume(world w.World) {}
 
 // OnStart method
 func (st *GameOverState) OnStart(world w.World) {
-	st.gameOverMenu = loader.LoadEntities("assets/metadata/entities/ui/game_over_menu.toml", world)
+	prefabs := world.Resources.Prefabs.(*resources.Prefabs)
+	st.gameOverMenu = append(st.gameOverMenu, loader.AddEntities(world, prefabs.Menu.GameOverMenu)...)
 
 	world.Manager.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		text := world.Components.Engine.Text.Get(entity).(*ec.Text)

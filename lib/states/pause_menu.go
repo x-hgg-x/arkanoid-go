@@ -3,9 +3,10 @@ package states
 import (
 	"fmt"
 
-	"github.com/x-hgg-x/arkanoid-go/lib/loader"
+	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 
 	ecs "github.com/x-hgg-x/goecs"
+	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/states"
 	w "github.com/x-hgg-x/goecsengine/world"
 
@@ -66,7 +67,8 @@ func (st *PauseMenuState) OnResume(world w.World) {}
 
 // OnStart method
 func (st *PauseMenuState) OnStart(world w.World) {
-	st.pauseMenu = loader.LoadEntities("assets/metadata/entities/ui/pause_menu.toml", world)
+	prefabs := world.Resources.Prefabs.(*resources.Prefabs)
+	st.pauseMenu = append(st.pauseMenu, loader.AddEntities(world, prefabs.Menu.PauseMenu)...)
 }
 
 // OnStop method
