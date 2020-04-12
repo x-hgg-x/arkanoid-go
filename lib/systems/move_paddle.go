@@ -6,7 +6,7 @@ import (
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 
-	ecs "github.com/x-hgg-x/goecs"
+	ecs "github.com/x-hgg-x/goecs/v2"
 	ec "github.com/x-hgg-x/goecsengine/components"
 	w "github.com/x-hgg-x/goecsengine/world"
 

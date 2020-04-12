@@ -6,8 +6,8 @@ github.com/go-gl/glfw/v3.3/glfw v0.0.0-20200222043503-6f7a984d4dc4/go.mod h1:tQ2
 github.com/gofrs/flock v0.7.1/go.mod h1:F1TvTiK9OcQqauNUHlbJvyl9Qa1QvF/gOUDKA14jxHU=
 github.com/golang/freetype v0.0.0-20170609003504-e2365dfdc4a0/go.mod h1:E/TSTwGwJL78qG/PmXZO1EjYhfJinVAhrmmHX6Z8B9k=
 github.com/hajimehoshi/bitmapfont v1.2.0/go.mod h1:h9QrPk6Ktb2neObTlAbma6Ini1xgMjbJ3w7ysmD7IOU=
-github.com/hajimehoshi/ebiten v1.11.0-rc.2 h1:oFTp4/YYf1xptFbNzI4BFXqNIO8SBdbl9yWBQGmnkiA=
-github.com/hajimehoshi/ebiten v1.11.0-rc.2/go.mod h1:aDEhx0K9gSpXw3Cxf2hCXDxPSoF8vgjNqKxrZa/B4Dg=
+github.com/hajimehoshi/ebiten v1.11.0 h1:+pIxfzfVgRbHGM7wBAJtgzPiWiZopA7lyIKNQqc9amk=
+github.com/hajimehoshi/ebiten v1.11.0/go.mod h1:aDEhx0K9gSpXw3Cxf2hCXDxPSoF8vgjNqKxrZa/B4Dg=
 github.com/hajimehoshi/go-mp3 v0.2.1 h1:DH4ns3cPv39n3cs8MPcAlWqPeAwLCK8iNgqvg0QBWI8=
 github.com/hajimehoshi/go-mp3 v0.2.1/go.mod h1:Rr+2P46iH6PwTPVgSsEwBkon0CK5DxCAeX/Rp65DCTE=
 github.com/hajimehoshi/oto v0.3.4/go.mod h1:PgjqsBJff0efqL2nlMJidJgVJywLn6M4y8PI4TfeWfA=
@@ -22,9 +22,10 @@ github.com/kr/pretty v0.1.0/go.mod h1:dAy3ld7l9f0ibDNOQOHHMYYIIbhfbHSm3C4ZsoJORN
 github.com/kr/pty v1.1.1/go.mod h1:pFQYn66WHrOpPYNljwOMqo10TkYh1fy3cYio2l3bCsQ=
 github.com/kr/text v0.1.0/go.mod h1:4Jbv+DJW3UT/LiOwJeYQe1efqtUx/iVham/4vfdArNI=
 github.com/pkg/browser v0.0.0-20180916011732-0a3d74bf9ce4/go.mod h1:4OwLy04Bl9Ef3GJJCoec+30X3LQs/0/m4HFRt/2LUSA=
-github.com/x-hgg-x/goecs v1.1.0/go.mod h1:hTFG9lszIE3BhyWk/Gbk+kcI5YFYF2m32ydc+S+edgk=
-github.com/x-hgg-x/goecsengine v0.4.0 h1:z2DwKqtuotVXcdONH0hl1F+L3S6rHXRYqoE9BfKJcHY=
-github.com/x-hgg-x/goecsengine v0.4.0/go.mod h1:nEN0DmBwVMqnjrItmoHIlg/1Y0BiLcnIO+M+2TByaCc=
+github.com/x-hgg-x/goecs/v2 v2.0.3 h1:5+Je92XmY9lDg/RDXZU03YF4h3hGufCnv+n/JGyBlOk=
+github.com/x-hgg-x/goecs/v2 v2.0.3/go.mod h1:j7lDz3fNR2Gkr5YCs7Dn9nLFgqVAWIMszdDt12HtZgo=
+github.com/x-hgg-x/goecsengine v0.5.2 h1:uaNjsUfoLeUITwEjpOyv9hIeNXBXGhQ0UjOvvgjfRYo=
+github.com/x-hgg-x/goecsengine v0.5.2/go.mod h1:O3oiJLmXLLyz54HscvdvK2pjeUJj4ZFDWsedkso6Wo0=
 github.com/yourbasic/bit v0.0.0-20180313074424-45a4409f4082/go.mod h1:SC4yTthuwUIud4hT6D7kJGIYmhnskaQnm3VD2VYM8EM=
 golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2/go.mod h1:djNgcEr1/C05ACkg1iLfiJU5Ep61QUkGW8qpdssI0+w=
 golang.org/x/crypto v0.0.0-20190510104115-cbcb75029529/go.mod h1:yigFU9vqHzYiE8UmvKecakEJjdnWj3jj499lnFckfCI=

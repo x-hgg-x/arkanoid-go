@@ -7,7 +7,7 @@ import (
 	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 	g "github.com/x-hgg-x/arkanoid-go/lib/systems"
 
-	ecs "github.com/x-hgg-x/goecs"
+	ecs "github.com/x-hgg-x/goecs/v2"
 	ec "github.com/x-hgg-x/goecsengine/components"
 	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/states"

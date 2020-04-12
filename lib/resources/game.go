@@ -3,7 +3,7 @@ package resources
 import (
 	"time"
 
-	ecs "github.com/x-hgg-x/goecs"
+	ecs "github.com/x-hgg-x/goecs/v2"
 
 	"github.com/ByteArena/box2d"
 )

@@ -3,18 +3,18 @@ package components
 import (
 	"github.com/x-hgg-x/arkanoid-go/lib/math"
 
-	ecs "github.com/x-hgg-x/goecs"
+	ecs "github.com/x-hgg-x/goecs/v2"
 
 	"github.com/ByteArena/box2d"
 )
 
 // Components contains references to all game components
 type Components struct {
-	Paddle         *ecs.Component
-	Ball           *ecs.Component
-	StickyBall     *ecs.Component
-	AttractionLine *ecs.Component
-	Block          *ecs.Component
+	Paddle         *ecs.SliceComponent
+	Ball           *ecs.SliceComponent
+	StickyBall     *ecs.SliceComponent
+	AttractionLine *ecs.NullComponent
+	Block          *ecs.SliceComponent
 }
 
 // Paddle component

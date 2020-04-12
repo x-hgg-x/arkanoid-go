@@ -3,7 +3,7 @@ package systems
 import (
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 
-	ecs "github.com/x-hgg-x/goecs"
+	ecs "github.com/x-hgg-x/goecs/v2"
 	ec "github.com/x-hgg-x/goecsengine/components"
 	w "github.com/x-hgg-x/goecsengine/world"
 

@@ -8,7 +8,7 @@ import (
 	gm "github.com/x-hgg-x/arkanoid-go/lib/math"
 	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 
-	ecs "github.com/x-hgg-x/goecs"
+	ecs "github.com/x-hgg-x/goecs/v2"
 	ec "github.com/x-hgg-x/goecsengine/components"
 	em "github.com/x-hgg-x/goecsengine/math"
 	w "github.com/x-hgg-x/goecsengine/world"

@@ -3,7 +3,7 @@ package states
 import (
 	"github.com/x-hgg-x/arkanoid-go/lib/math"
 
-	ecs "github.com/x-hgg-x/goecs"
+	ecs "github.com/x-hgg-x/goecs/v2"
 	ec "github.com/x-hgg-x/goecsengine/components"
 	m "github.com/x-hgg-x/goecsengine/math"
 	"github.com/x-hgg-x/goecsengine/states"
