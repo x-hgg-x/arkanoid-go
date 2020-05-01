@@ -7,7 +7,7 @@ import (
 	"github.com/x-hgg-x/goecsengine/utils"
 	w "github.com/x-hgg-x/goecsengine/world"
 
-	"github.com/BurntSushi/toml"
+	"github.com/x-hgg-x/go-toml"
 )
 
 type gameComponentList struct {
@@ -28,8 +28,9 @@ type entityGameMetadata struct {
 
 func loadGameComponents(entityMetadataPath string, world w.World) []interface{} {
 	var entityGameMetadata entityGameMetadata
-	_, err := toml.DecodeFile(entityMetadataPath, &entityGameMetadata)
+	tree, err := toml.LoadFile(entityMetadataPath)
 	utils.LogError(err)
+	utils.LogError(tree.Unmarshal(&entityGameMetadata))
 
 	gameComponentList := make([]interface{}, len(entityGameMetadata.Entities))
 	for iEntity, entity := range entityGameMetadata.Entities {

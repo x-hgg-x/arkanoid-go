@@ -13,7 +13,7 @@
     [entity.components.Text]
     id = "cursor_resume"
     text = "\u25ba"
-    font_face = { font = "hack", options = { size = 40.0, hinting = "Full" } }
+    font_face = { font = "hack", options.size = 40.0 }
     color = [255, 255, 255, 255]
 
     [entity.components.UITransform]
@@ -25,7 +25,7 @@
     [entity.components.Text]
     id = "cursor_main_menu"
     text = "\u25ba"
-    font_face = { font = "hack", options = { size = 40.0, hinting = "Full" } }
+    font_face = { font = "hack", options.size = 40.0 }
     color = [255, 255, 255, 0]
 
     [entity.components.UITransform]
@@ -37,7 +37,7 @@
     [entity.components.Text]
     id = "cursor_exit"
     text = "\u25ba"
-    font_face = { font = "hack", options = { size = 40.0, hinting = "Full" } }
+    font_face = { font = "hack", options.size = 40.0 }
     color = [255, 255, 255, 0]
 
     [entity.components.UITransform]
@@ -49,7 +49,7 @@
     [entity.components.Text]
     id = "resume"
     text = "RESUME"
-    font_face = { font = "joystix", options = { size = 40.0, hinting = "Full" } }
+    font_face = { font = "joystix", options.size = 40.0 }
     color = [255, 255, 255, 255]
 
     [entity.components.UITransform]
@@ -73,7 +73,7 @@
     [entity.components.Text]
     id = "main_menu"
     text = "MAIN MENU"
-    font_face = { font = "joystix", options = { size = 40.0, hinting = "Full" } }
+    font_face = { font = "joystix", options.size = 40.0 }
     color = [255, 255, 255, 255]
 
     [entity.components.UITransform]
@@ -97,7 +97,7 @@
     [entity.components.Text]
     id = "exit"
     text = "EXIT"
-    font_face = { font = "joystix", options = { size = 40.0, hinting = "Full" } }
+    font_face = { font = "joystix", options.size = 40.0 }
     color = [255, 255, 255, 255]
 
     [entity.components.UITransform]

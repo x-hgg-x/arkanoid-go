@@ -8,6 +8,7 @@ import (
 
 	ecs "github.com/x-hgg-x/goecs/v2"
 	ec "github.com/x-hgg-x/goecsengine/components"
+	er "github.com/x-hgg-x/goecsengine/resources"
 	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/hajimehoshi/ebiten"
@@ -25,8 +26,8 @@ func MovePaddleSystem(world w.World) {
 		paddleX := paddleTransform.Translation.X
 		axisValue := world.Resources.InputHandler.Axes[resources.PaddleAxis]
 
-		if world.Resources.Controls.Axes[resources.PaddleAxis].Type == "MouseAxis" {
-			paddleX = axisValue * screenWidth
+		if _, ok := world.Resources.Controls.Axes[resources.PaddleAxis].Value.(*er.MouseAxis); ok {
+			paddleX = (axisValue + 1) / 2 * screenWidth
 		} else {
 			paddleX += axisValue * screenWidth / ebiten.DefaultTPS
 		}

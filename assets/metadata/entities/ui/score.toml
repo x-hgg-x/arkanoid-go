@@ -3,7 +3,7 @@
     [entity.components.Text]
     id = "score"
     text = "SCORE: 0"
-    font_face = { font = "joystix", options = { size = 25.0, hinting = "Full" } }
+    font_face = { font = "joystix", options.size = 25.0 }
     color = [255, 255, 255, 255]
 
     [entity.components.UITransform]

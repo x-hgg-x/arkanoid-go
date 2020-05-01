@@ -1,6 +1,9 @@
 [controls.axes.Paddle]
-mouse_axis = { axis = 0 }
-# emulated = { pos = { key = "Right" }, neg = { key = "Left" } }
+mouse_axis.axis = 0
+
+# [controls.axes.Paddle]
+# emulated.neg.key = "Left"
+# emulated.pos.key = "Right"
 
 [controls.actions.ReleaseBall]
 combinations = [[{ mouse_button = "MouseButtonLeft" }], [{ key = "Z" }]]
@@ -16,16 +19,18 @@ combinations = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 
 # With keyboard keys
 # [controls.axes.XXX]
-# emulated = { pos = { key = "Right" }, neg = { key = "Left" } }
+# emulated.neg.key = "Left"
+# emulated.pos.key = "Right"
 
 # With mouse buttons
 # [controls.axes.XXX]
-# emulated = { pos = { mouse_button = "MouseButtonRight" }, neg = { mouse_button = "MouseButtonLeft" } }
+# emulated.neg.mouse_button = "MouseButtonLeft"
+# emulated.pos.mouse_button = "MouseButtonRight"
 
 # With gamepad buttons
 # [controls.axes.XXX.emulated]
-# pos = { controller = { id = 0, button = "GamepadButton15" } }
-# neg = { controller = { id = 0, button = "GamepadButton14" } }
+# emulated.neg.controller = { id = 0, button = "GamepadButton14" }
+# emulated.pos.controller = { id = 0, button = "GamepadButton15" }
 
 # With gamepad axis
 # [controls.axes.XXX]
@@ -33,7 +38,7 @@ combinations = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 
 # With mouse axis
 # [controls.axes.XXX]
-# mouse_axis = { axis = 0 }
+# mouse_axis.axis = 0
 
 
 # Actions
