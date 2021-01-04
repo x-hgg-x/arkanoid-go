@@ -10,8 +10,6 @@ import (
 	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/states"
 	w "github.com/x-hgg-x/goecsengine/world"
-
-	"github.com/hajimehoshi/ebiten"
 )
 
 // LevelCompleteState is the level complete menu state
@@ -79,6 +77,6 @@ func (st *LevelCompleteState) OnStop(world w.World) {
 }
 
 // Update method
-func (st *LevelCompleteState) Update(world w.World, screen *ebiten.Image) states.Transition {
+func (st *LevelCompleteState) Update(world w.World) states.Transition {
 	return updateMenu(st, world)
 }

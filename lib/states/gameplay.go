@@ -15,8 +15,8 @@ import (
 	w "github.com/x-hgg-x/goecsengine/world"
 
 	"github.com/ByteArena/box2d"
-	"github.com/hajimehoshi/ebiten"
-	"github.com/hajimehoshi/ebiten/inpututil"
+	"github.com/hajimehoshi/ebiten/v2"
+	"github.com/hajimehoshi/ebiten/v2/inpututil"
 )
 
 // GameplayState is the main game state
@@ -57,7 +57,7 @@ func (st *GameplayState) OnStop(world w.World) {
 }
 
 // Update method
-func (st *GameplayState) Update(world w.World, screen *ebiten.Image) states.Transition {
+func (st *GameplayState) Update(world w.World) states.Transition {
 	g.MovePaddleSystem(world)
 	g.StickyBallSystem(world)
 	g.BallAttractionSystem(world)
@@ -102,7 +102,7 @@ func initializeCollisionWorld(world w.World) {
 	paddleBody := collisionWorld.CreateBody(&paddleDef)
 	paddleShape := box2d.MakeB2PolygonShape()
 	paddleShape.SetAsBox(paddle.Width/2/resources.B2PixelRatio, paddle.Height/2/resources.B2PixelRatio)
-	paddleBody.CreateFixtureFromDef(&box2d.B2FixtureDef{Shape: &paddleShape})
+	paddleBody.CreateFixtureFromDef(&box2d.B2FixtureDef{Shape: &paddleShape, Filter: box2d.MakeB2Filter()})
 	paddleBody.SetUserData(*firstPaddle)
 	paddle.Body = paddleBody
 
@@ -116,7 +116,7 @@ func initializeCollisionWorld(world w.World) {
 		blockBody := collisionWorld.CreateBody(&blockDef)
 		blockShape := box2d.MakeB2PolygonShape()
 		blockShape.SetAsBox(block.Width/2/resources.B2PixelRatio, block.Height/2/resources.B2PixelRatio)
-		blockBody.CreateFixtureFromDef(&box2d.B2FixtureDef{Shape: &blockShape})
+		blockBody.CreateFixtureFromDef(&box2d.B2FixtureDef{Shape: &blockShape, Filter: box2d.MakeB2Filter()})
 		blockBody.SetUserData(entity)
 		block.Body = blockBody
 	}))
@@ -130,7 +130,7 @@ func initializeCollisionWorld(world w.World) {
 		ballBody := collisionWorld.CreateBody(&ballDef)
 		ballShape := box2d.MakeB2CircleShape()
 		ballShape.M_radius = ball.Radius / resources.B2PixelRatio
-		ballBody.CreateFixtureFromDef(&box2d.B2FixtureDef{Shape: &ballShape})
+		ballBody.CreateFixtureFromDef(&box2d.B2FixtureDef{Shape: &ballShape, Filter: box2d.MakeB2Filter()})
 		ballBody.SetUserData(entity)
 		ball.Body = ballBody
 	}))

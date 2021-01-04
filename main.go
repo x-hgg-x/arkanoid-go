@@ -1,6 +1,8 @@
 package main
 
 import (
+	_ "image/png"
+
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 	gloader "github.com/x-hgg-x/arkanoid-go/lib/loader"
 	gr "github.com/x-hgg-x/arkanoid-go/lib/resources"
@@ -12,7 +14,7 @@ import (
 	"github.com/x-hgg-x/goecsengine/utils"
 	w "github.com/x-hgg-x/goecsengine/world"
 
-	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 const (
@@ -26,17 +28,16 @@ type mainGame struct {
 }
 
 func (game *mainGame) Layout(outsideWidth, outsideHeight int) (int, int) {
-	ebiten.SetWindowSize(outsideWidth, outsideHeight)
 	return windowWidth, windowHeight
 }
 
-func (game *mainGame) Update(screen *ebiten.Image) error {
-	if ebiten.IsDrawingSkipped() {
-		return nil
-	}
-
-	game.stateMachine.Update(game.world, screen)
+func (game *mainGame) Update() error {
+	game.stateMachine.Update(game.world)
 	return nil
+}
+
+func (game *mainGame) Draw(screen *ebiten.Image) {
+	game.stateMachine.Draw(game.world, screen)
 }
 
 func main() {

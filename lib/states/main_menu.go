@@ -10,7 +10,7 @@ import (
 	"github.com/x-hgg-x/goecsengine/states"
 	w "github.com/x-hgg-x/goecsengine/world"
 
-	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 // MainMenuState is the main menu state
@@ -73,7 +73,7 @@ func (st *MainMenuState) OnStop(world w.World) {
 }
 
 // Update method
-func (st *MainMenuState) Update(world w.World, screen *ebiten.Image) states.Transition {
+func (st *MainMenuState) Update(world w.World) states.Transition {
 	if ebiten.IsKeyPressed(ebiten.KeyEscape) {
 		return states.Transition{Type: states.TransQuit}
 	}

@@ -11,7 +11,7 @@ import (
 	er "github.com/x-hgg-x/goecsengine/resources"
 	w "github.com/x-hgg-x/goecsengine/world"
 
-	"github.com/hajimehoshi/ebiten"
+	"github.com/hajimehoshi/ebiten/v2"
 )
 
 // MovePaddleSystem moves paddle
