@@ -1,8 +1,6 @@
 package states
 
 import (
-	"fmt"
-
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 	g "github.com/x-hgg-x/arkanoid-go/lib/systems"
@@ -94,7 +92,7 @@ func initializeCollisionWorld(world w.World) {
 	// Create paddle body
 	firstPaddle := ecs.GetFirst(world.Manager.Join(gameComponents.Paddle, world.Components.Engine.Transform))
 	if firstPaddle == nil {
-		utils.LogError(fmt.Errorf("unable to find paddle"))
+		utils.LogFatalf("unable to find paddle")
 	}
 	paddle := gameComponents.Paddle.Get(ecs.Entity(*firstPaddle)).(*gc.Paddle)
 

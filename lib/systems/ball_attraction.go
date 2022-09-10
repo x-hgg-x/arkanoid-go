@@ -43,7 +43,7 @@ func BallAttractionSystem(world w.World) {
 
 		// Decelerate ball after timeout
 		if ballAttractionLastCollisionTime.Sub(ballAttractionTimeAccelerated) >= 0 {
-			if time.Now().Sub(ballAttractionLastCollisionTime.Add(timeoutMillis*time.Millisecond)) < 0 {
+			if time.Since(ballAttractionLastCollisionTime.Add(timeoutMillis*time.Millisecond)) < 0 {
 				return
 			}
 

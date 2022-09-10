@@ -28,7 +28,7 @@ combinations = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 # emulated.pos.mouse_button = "MouseButtonRight"
 
 # With gamepad buttons
-# [controls.axes.XXX.emulated]
+# [controls.axes.XXX]
 # emulated.neg.controller = { id = 0, button = "GamepadButton14" }
 # emulated.pos.controller = { id = 0, button = "GamepadButton15" }
 
@@ -45,7 +45,7 @@ combinations = [[{ mouse_button = "MouseButtonRight" }], [{ key = "X" }]]
 
 # [controls.actions.XXX]
 # combinations = [
-#     [{ key = "Control" }, { key = "Q" }],
+#     [{ key = "ControlLeft" }, { key = "Q" }],
 #     [{ key = "Escape" }],
 #     [{ controller = { id = 0, button = "GamepadButton9" } }],
 # ]

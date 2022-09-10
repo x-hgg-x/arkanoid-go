@@ -1,13 +1,15 @@
 package loader
 
 import (
+	"os"
+
 	gc "github.com/x-hgg-x/arkanoid-go/lib/components"
 
 	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/utils"
 	w "github.com/x-hgg-x/goecsengine/world"
 
-	"github.com/pelletier/go-toml"
+	"github.com/BurntSushi/toml"
 )
 
 type gameComponentList struct {
@@ -26,11 +28,9 @@ type entityGameMetadata struct {
 	Entities []entity `toml:"entity"`
 }
 
-func loadGameComponents(entityMetadataPath string, world w.World) []interface{} {
+func loadGameComponents(entityMetadataContent []byte, world w.World) []interface{} {
 	var entityGameMetadata entityGameMetadata
-	tree, err := toml.LoadFile(entityMetadataPath)
-	utils.LogError(err)
-	utils.LogError(tree.Unmarshal(&entityGameMetadata))
+	utils.Try(toml.Decode(string(entityMetadataContent), &entityGameMetadata))
 
 	gameComponentList := make([]interface{}, len(entityGameMetadata.Entities))
 	for iEntity, entity := range entityGameMetadata.Entities {
@@ -41,8 +41,10 @@ func loadGameComponents(entityMetadataPath string, world w.World) []interface{} 
 
 // PreloadEntities preloads entities with components
 func PreloadEntities(entityMetadataPath string, world w.World) loader.EntityComponentList {
+	entityMetadataContent := utils.Try(os.ReadFile(entityMetadataPath))
+
 	return loader.EntityComponentList{
-		Engine: loader.LoadEngineComponents(entityMetadataPath, world),
-		Game:   loadGameComponents(entityMetadataPath, world),
+		Engine: loader.LoadEngineComponents(entityMetadataContent, world),
+		Game:   loadGameComponents(entityMetadataContent, world),
 	}
 }

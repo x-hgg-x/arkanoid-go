@@ -38,7 +38,7 @@ func Abs(x int) int {
 	return x
 }
 
-// Mod returns the euclidian division between 2 integers
+// Mod returns the Euclidean division remainder between 2 integers
 func Mod(a, b int) int {
 	m := a % b
 	if m < 0 {
