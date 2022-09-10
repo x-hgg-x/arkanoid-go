@@ -1,8 +1,6 @@
 [sprite_sheet.background]
 texture_image = "assets/textures/background.png"
-sprites = [
-    { x = 0, y = 0, width = 720, height = 600 },
-]
+sprites = [{ x = 0, y = 0, width = 720, height = 600 }]
 
 [sprite_sheet.game]
 texture_image = "assets/textures/game.png"

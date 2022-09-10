@@ -1,11 +1,11 @@
 [[entity]]
 
-    [entity.components.Text]
-    id = "score"
-    text = "SCORE: 0"
-    font_face = { font = "joystix", options.size = 25.0 }
-    color = [255, 255, 255, 255]
+[entity.components.Text]
+id = "score"
+text = "SCORE: 0"
+font_face = { font = "joystix", options.size = 25.0 }
+color = [255, 255, 255, 255]
 
-    [entity.components.UITransform]
-    translation = { x = 10, y = 590 }
-    pivot = "TopLeft"
+[entity.components.UITransform]
+translation = { x = 10, y = 590 }
+pivot = "TopLeft"
