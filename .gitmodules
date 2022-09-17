@@ -1,0 +1,4 @@
+[submodule "assets/lfs"]
+	path = assets/lfs
+	url = ./
+	branch = lfs

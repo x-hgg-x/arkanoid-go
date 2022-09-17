@@ -2,7 +2,7 @@
 
 Arkanoid game in Go using Ebitengine with ECS.
 
-You must have [Git LFS](https://git-lfs.github.com/) installed when cloning the repository to download assets.
+You must use the `--recursive` or `--recurse-submodules` flag when cloning the repository to initialize submodules.
 
 See [config/controls.toml](config/controls.toml) for editing controls.
 
