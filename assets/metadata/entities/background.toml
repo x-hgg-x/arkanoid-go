@@ -5,5 +5,6 @@ sprite_sheet_name = "background"
 sprite_number = 0
 
 [entity.components.Transform]
-translation = { x = 360.0, y = 300.0 }
+translation = { x = 0.0, y = 0.0 }
+origin = "Middle"
 depth = -1.0

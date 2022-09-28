@@ -7,5 +7,6 @@ font_face = { font = "joystix", options.size = 25.0 }
 color = [255, 255, 255, 255]
 
 [entity.components.UITransform]
-translation = { x = 10, y = 590 }
+translation = { x = 10, y = -10 }
+origin = "TopLeft"
 pivot = "TopLeft"

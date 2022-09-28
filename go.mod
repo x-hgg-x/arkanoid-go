@@ -7,7 +7,7 @@ require (
 	github.com/ByteArena/box2d v1.0.3-0.20200713122713-acbde413692f
 	github.com/hajimehoshi/ebiten/v2 v2.4.2
 	github.com/x-hgg-x/goecs/v2 v2.0.5
-	github.com/x-hgg-x/goecsengine v0.10.1
+	github.com/x-hgg-x/goecsengine v0.11.0
 )
 
 require (

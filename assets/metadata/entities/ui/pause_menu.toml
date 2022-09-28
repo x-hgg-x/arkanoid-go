@@ -4,7 +4,8 @@
 fill = { width = 720, height = 600, color = [0, 0, 0, 120] }
 
 [entity.components.Transform]
-translation = { x = 360.0, y = 300.0 }
+translation = { x = 0.0, y = 0.0 }
+origin = "Middle"
 depth = 1.0
 
 
