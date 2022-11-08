@@ -14,9 +14,8 @@ import (
 
 // LevelCompleteState is the level complete menu state
 type LevelCompleteState struct {
-	Score             int
-	levelCompleteMenu []ecs.Entity
-	selection         int
+	Score     int
+	selection int
 }
 
 //
@@ -61,7 +60,7 @@ func (st *LevelCompleteState) OnResume(world w.World) {}
 // OnStart method
 func (st *LevelCompleteState) OnStart(world w.World) {
 	prefabs := world.Resources.Prefabs.(*resources.Prefabs)
-	st.levelCompleteMenu = append(st.levelCompleteMenu, loader.AddEntities(world, prefabs.Menu.LevelCompleteMenu)...)
+	loader.AddEntities(world, prefabs.Menu.LevelCompleteMenu)
 
 	world.Manager.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		text := world.Components.Engine.Text.Get(entity).(*ec.Text)
@@ -73,7 +72,7 @@ func (st *LevelCompleteState) OnStart(world w.World) {
 
 // OnStop method
 func (st *LevelCompleteState) OnStop(world w.World) {
-	world.Manager.DeleteEntities(st.levelCompleteMenu...)
+	world.Manager.DeleteAllEntities()
 }
 
 // Update method

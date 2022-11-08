@@ -14,9 +14,8 @@ import (
 
 // GameOverState is the game over menu state
 type GameOverState struct {
-	Score        int
-	gameOverMenu []ecs.Entity
-	selection    int
+	Score     int
+	selection int
 }
 
 //
@@ -67,7 +66,7 @@ func (st *GameOverState) OnResume(world w.World) {}
 // OnStart method
 func (st *GameOverState) OnStart(world w.World) {
 	prefabs := world.Resources.Prefabs.(*resources.Prefabs)
-	st.gameOverMenu = append(st.gameOverMenu, loader.AddEntities(world, prefabs.Menu.GameOverMenu)...)
+	loader.AddEntities(world, prefabs.Menu.GameOverMenu)
 
 	world.Manager.Join(world.Components.Engine.Text, world.Components.Engine.UITransform).Visit(ecs.Visit(func(entity ecs.Entity) {
 		text := world.Components.Engine.Text.Get(entity).(*ec.Text)
@@ -79,7 +78,7 @@ func (st *GameOverState) OnStart(world w.World) {
 
 // OnStop method
 func (st *GameOverState) OnStop(world w.World) {
-	world.Manager.DeleteEntities(st.gameOverMenu...)
+	world.Manager.DeleteAllEntities()
 }
 
 // Update method

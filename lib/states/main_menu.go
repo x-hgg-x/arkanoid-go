@@ -5,7 +5,6 @@ import (
 
 	"github.com/x-hgg-x/arkanoid-go/lib/resources"
 
-	ecs "github.com/x-hgg-x/goecs/v2"
 	"github.com/x-hgg-x/goecsengine/loader"
 	"github.com/x-hgg-x/goecsengine/states"
 	w "github.com/x-hgg-x/goecsengine/world"
@@ -15,7 +14,6 @@ import (
 
 // MainMenuState is the main menu state
 type MainMenuState struct {
-	mainMenu  []ecs.Entity
 	selection int
 }
 
@@ -64,12 +62,12 @@ func (st *MainMenuState) OnResume(world w.World) {}
 // OnStart method
 func (st *MainMenuState) OnStart(world w.World) {
 	prefabs := world.Resources.Prefabs.(*resources.Prefabs)
-	st.mainMenu = append(st.mainMenu, loader.AddEntities(world, prefabs.Menu.MainMenu)...)
+	loader.AddEntities(world, prefabs.Menu.MainMenu)
 }
 
 // OnStop method
 func (st *MainMenuState) OnStop(world w.World) {
-	world.Manager.DeleteEntities(st.mainMenu...)
+	world.Manager.DeleteAllEntities()
 }
 
 // Update method
