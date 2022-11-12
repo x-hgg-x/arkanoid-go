@@ -32,8 +32,8 @@ github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZb
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/x-hgg-x/goecs/v2 v2.0.5 h1:Tn1Na7YcQRMODfQn2zCLCbpkPkCiSmZo39WPv1Az0z4=
 github.com/x-hgg-x/goecs/v2 v2.0.5/go.mod h1:v7U7OcJneN0L/nxpqitx/csEPRjzbA9i5m3l3WFmkHg=
-github.com/x-hgg-x/goecsengine v0.11.1 h1:S9QF1fOvCfM6g7KHOxyvCQJTdFqvzWjtdmaqkOyijX0=
-github.com/x-hgg-x/goecsengine v0.11.1/go.mod h1:88cpIpXi2ZDVsZyPcMM3KQIl7oLABTi+EFnmGEAPBQE=
+github.com/x-hgg-x/goecsengine v0.11.2 h1:UTYlde5d7SDlcvpvvuQXsvg2ZDt45mvSKvrFckI/l4g=
+github.com/x-hgg-x/goecsengine v0.11.2/go.mod h1:88cpIpXi2ZDVsZyPcMM3KQIl7oLABTi+EFnmGEAPBQE=
 github.com/yourbasic/bit v0.0.0-20180313074424-45a4409f4082 h1:AWIZQ6fJPAAZdCUElj007LvHa/ER8nOn3CHWajn+1QY=
 github.com/yourbasic/bit v0.0.0-20180313074424-45a4409f4082/go.mod h1:SC4yTthuwUIud4hT6D7kJGIYmhnskaQnm3VD2VYM8EM=
 github.com/yuin/goldmark v1.4.0/go.mod h1:mwnBkeHKe2W/ZEtQ+71ViKU8L12m81fl3OWwC1Zlc8k=
