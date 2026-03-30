@@ -1,6 +1,6 @@
 module github.com/x-hgg-x/arkanoid-go
 
-go 1.19
+go 1.25.0
 
 require (
 	github.com/BurntSushi/toml v1.2.1
@@ -23,7 +23,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/yourbasic/bit v0.0.0-20180313074424-45a4409f4082 // indirect
 	golang.org/x/exp v0.0.0-20190731235908-ec7cb31e5a56 // indirect
-	golang.org/x/image v0.18.0 // indirect
+	golang.org/x/image v0.38.0 // indirect
 	golang.org/x/mobile v0.0.0-20220722155234-aaac322e2105 // indirect
 	golang.org/x/sys v0.5.0 // indirect
 )
